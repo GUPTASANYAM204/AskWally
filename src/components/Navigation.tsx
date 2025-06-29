@@ -84,10 +84,22 @@ export const Navigation: React.FC = () => {
             {/* Auth Section */}
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2 text-gray-600">
-                  <User className="w-4 h-4" />
+                <button
+                  onClick={() => navigate('/profile')}
+                  className="flex items-center space-x-2 text-gray-600 hover:bg-walmart-blue/10 px-2 py-1 rounded-lg transition-all duration-200 focus:outline-none"
+                  title="Go to Profile"
+                >
+                  {user?.profilePicture ? (
+                    <img
+                      src={user.profilePicture}
+                      alt="Profile"
+                      className="w-7 h-7 rounded-full object-cover border-2 border-walmart-blue shadow-sm"
+                    />
+                  ) : (
+                    <User className="w-6 h-6 text-walmart-blue" />
+                  )}
                   <span className="font-medium">Hi, {user?.firstName}</span>
-                </div>
+                </button>
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200"

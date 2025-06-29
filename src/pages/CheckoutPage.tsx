@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CreditCard, MapPin, User, Mail, Phone, Lock } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useOrders } from '../contexts/OrderContext';
 import { loadStripe } from '@stripe/stripe-js';
 
 // Initialize Stripe (you'll need to replace with your actual publishable key)
@@ -25,6 +26,7 @@ interface CheckoutForm {
 export const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { items, total, itemCount, clearCart } = useCart();
+  const { addOrder } = useOrders();
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentStep, setCurrentStep] = useState<'shipping' | 'payment' | 'review'>('shipping');
   
@@ -97,24 +99,34 @@ export const CheckoutPage: React.FC = () => {
 
   const handleSubmitOrder = async () => {
     setIsProcessing(true);
-    
     try {
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // In a real app, you would:
-      // 1. Create payment intent with Stripe
-      // 2. Process the payment
-      // 3. Save order to database
-      // 4. Send confirmation email
-      
+
+      // Persist order to OrderContext
+      const orderId = `WM${Date.now()}`;
+      const order = {
+        id: orderId,
+        items: items.map(item => ({
+          id: item.id,
+          name: item.name,
+          image: item.image,
+          brand: item.brand,
+          price: item.price,
+          quantity: item.quantity,
+          selectedSize: item.selectedSize,
+        })),
+        total: total,
+        createdAt: new Date().toISOString(),
+      };
+      addOrder(order);
       clearCart();
-      navigate('/order-confirmation', { 
-        state: { 
-          orderNumber: `WM${Date.now()}`,
+      navigate('/order-confirmation', {
+        state: {
+          orderNumber: orderId,
           total: total,
-          items: items 
-        } 
+          items: items,
+        }
       });
     } catch (error) {
       console.error('Payment failed:', error);
