@@ -5,6 +5,7 @@ import { useCart } from '../contexts/CartContext';
 import { AddToCartModal } from './AddToCartModal';
 import type { Product } from '../data/mockProducts';
 import { useWishlist } from '../contexts/WishlistContext';
+import ReactDOM from 'react-dom';
 
 interface ProductCardProps {
   product: Product;
@@ -73,11 +74,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const handleViewOnMap = (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigate('/store-map', { 
-      state: { 
+    navigate('/store-map', {
+      state: {
         product,
-        highlightAisle: product.aisle 
-      } 
+        highlightAisle: product.aisle
+      }
     });
   };
 
@@ -92,9 +93,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <>
-      <div 
+      <div
         className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group hover:-translate-y-1 cursor-pointer relative"
-        onClick={handleViewDetails}
+        onClick={e => {
+          if (!showWishlistPicker) handleViewDetails();
+        }}
       >
         {wishlistFeedback && (
           <div className="absolute left-1/2 -translate-x-1/2 top-2 z-30 bg-walmart-blue text-white px-4 py-1 rounded shadow-lg text-sm animate-fade-in-out">
@@ -108,39 +111,84 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         >
           <Heart className={`w-6 h-6 ${inWishlist || wishlistActive ? 'fill-walmart-blue text-walmart-blue' : 'text-gray-400'}`} />
         </button>
-        {showWishlistPicker && (
-          <div className="absolute top-12 right-3 z-20 bg-white border border-gray-200 rounded shadow-lg p-2 w-64 min-w-[16rem]">
-            <div className="font-semibold text-gray-700 mb-2">Add to wishlist:</div>
-            <ul>
-              {wishlists.map(wl => (
-                <li key={wl.id}>
-                  <button
-                    className={`block w-full text-left px-2 py-1 rounded hover:bg-walmart-blue/10 ${wl.id === selectedWishlistId ? 'font-bold text-walmart-blue' : ''}`}
-                    onClick={e => { e.stopPropagation(); handleAddToSelectedWishlist(wl.id); }}
-                  >
-                    {wl.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <hr className="my-2" />
-            <div className="flex gap-2 items-center mt-2">
-              <input
-                type="text"
-                value={newWishlistName}
-                onChange={e => setNewWishlistName(e.target.value)}
-                placeholder="Create new wishlist"
-                className="flex-1 px-2 py-1 border rounded text-sm"
+        {showWishlistPicker && typeof window !== 'undefined' && typeof document !== 'undefined' &&
+          ReactDOM.createPortal(
+            <>
+              <div
+                className="fixed inset-0 z-[100] w-screen h-screen bg-black bg-opacity-60 backdrop-blur-sm transition-opacity duration-200 animate-fade-in"
+                onClick={handleCancelWishlistPicker}
+                aria-label="Close wishlist modal"
+                tabIndex={-1}
               />
-              <button
-                className="bg-walmart-blue text-white px-3 py-1 rounded text-sm font-semibold disabled:opacity-50"
-                disabled={!newWishlistName.trim()}
-                onClick={e => { e.stopPropagation(); handleCreateAndAddToWishlist(); }}
-              >Create</button>
-            </div>
-            <button className="mt-2 text-xs text-gray-500 hover:underline w-full text-center" onClick={e => { e.stopPropagation(); handleCancelWishlistPicker(); }}>Cancel</button>
-          </div>
-        )}
+              <div
+                className="fixed inset-0 z-[110] w-screen h-screen flex items-center justify-center overflow-y-auto"
+                aria-modal="true"
+                role="dialog"
+                style={{ pointerEvents: 'auto' }}
+              >
+                <div
+                  className="w-full max-w-lg bg-white rounded-2xl shadow-2xl p-8 flex flex-col space-y-6 relative border border-gray-200 animate-fade-in"
+                  onClick={e => e.stopPropagation()}
+                  style={{ outline: 'none', boxShadow: '0 8px 40px 0 rgba(0,0,0,0.25)' }}
+                >
+                  <button
+                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none"
+                    onClick={e => { e.stopPropagation(); handleCancelWishlistPicker(); }}
+                    aria-label="Close"
+                    tabIndex={0}
+                  >
+                    &times;
+                  </button>
+                  <div className="font-bold text-2xl text-gray-800 mb-2 text-center">Add to Wishlist</div>
+                  <div className="flex flex-col space-y-3 max-h-64 overflow-y-auto custom-scrollbar pr-1">
+                    {wishlists.length === 0 && (
+                      <div className="text-gray-500 text-center py-2">No wishlists yet.</div>
+                    )}
+                    {wishlists.map(wishlist => (
+                      <button
+                        key={wishlist.id}
+                        className={`w-full px-4 py-3 rounded-lg text-left font-semibold transition-all duration-150 border flex items-center space-x-3 text-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue ${wishlist.id === selectedWishlistId ? 'bg-walmart-blue/10 border-walmart-blue text-walmart-blue' : 'bg-gray-50 border-gray-200 hover:bg-walmart-blue/10 hover:text-walmart-blue'}`}
+                        onClick={e => { e.stopPropagation(); handleAddToSelectedWishlist(wishlist.id); }}
+                        tabIndex={0}
+                      >
+                        <Heart className="w-5 h-5" />
+                        <span>{wishlist.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <form
+                    className="flex items-center mt-2 gap-2"
+                    onSubmit={e => {
+                      e.preventDefault();
+                      handleCreateAndAddToWishlist();
+                    }}
+                  >
+                    <input
+                      type="text"
+                      value={newWishlistName}
+                      onChange={e => setNewWishlistName(e.target.value)}
+                      placeholder="Create new wishlist"
+                      className="flex-1 px-3 py-2 border rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-walmart-blue"
+                      autoFocus
+                      aria-label="New wishlist name"
+                    />
+                    <button
+                      type="submit"
+                      className="bg-walmart-blue text-white px-4 py-2 rounded-lg text-base font-bold disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-walmart-blue"
+                      disabled={!newWishlistName.trim()}
+                    >Create</button>
+                  </form>
+                  <button
+                    className="mt-2 text-sm text-gray-500 hover:underline w-full text-center focus:outline-none"
+                    onClick={e => { e.stopPropagation(); handleCancelWishlistPicker(); }}
+                    tabIndex={0}
+                  >Cancel</button>
+                </div>
+              </div>
+            </>,
+            document.body
+          )
+        }
 
         <div className="relative overflow-hidden">
           <img
