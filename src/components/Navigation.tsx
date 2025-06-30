@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShoppingCart, MapPin, Home, ShoppingBag, User, LogOut } from 'lucide-react';
+import { ShoppingCart, MapPin, Home, ShoppingBag, User, LogOut, Heart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -100,9 +100,18 @@ export const Navigation: React.FC = () => {
                   )}
                   <span className="font-medium">Hi, {user?.firstName}</span>
                 </button>
+                <Link
+                  to="/wishlist"
+                  className="flex items-center space-x-1 px-3 py-2 rounded-lg text-gray-600 hover:text-walmart-blue hover:bg-walmart-blue/10 transition-all duration-200"
+                  title="Wishlist"
+                >
+                  <Heart className="w-5 h-5" />
+                  <span className="font-medium hidden sm:inline">Wishlist</span>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-2 px-3 py-2 rounded-lg text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200"
+                  title="Logout"
                 >
                   <LogOut className="w-4 h-4" />
                   <span className="font-medium">Logout</span>
