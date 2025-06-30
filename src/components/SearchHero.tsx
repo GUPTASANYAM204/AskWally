@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Sparkles, Loader2 } from 'lucide-react';
+import { VoiceAssistant } from './VoiceAssistant';
 
 interface SearchHeroProps {
   onSearch: (query: string) => void;
@@ -14,6 +15,11 @@ export const SearchHero: React.FC<SearchHeroProps> = ({ onSearch, isSearching })
     if (query.trim() && !isSearching) {
       onSearch(query.trim());
     }
+  };
+
+  const handleVoiceSearch = (voiceQuery: string) => {
+    setQuery(voiceQuery);
+    onSearch(voiceQuery);
   };
 
   return (
@@ -47,37 +53,44 @@ export const SearchHero: React.FC<SearchHeroProps> = ({ onSearch, isSearching })
           available at your local Walmart with precise aisle locations.
         </p>
 
-        {/* Search Form */}
-        <form onSubmit={handleSubmit} className="animate-slide-up" style={{animationDelay: '0.4s'}}>
-          <div className="relative max-w-2xl mx-auto">
+        {/* Search Form with Voice Assistant */}
+        <div className="animate-slide-up" style={{animationDelay: '0.4s'}}>
+          <form onSubmit={handleSubmit} className="relative max-w-2xl mx-auto">
             <div className="relative group">
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Try: 'Show me a yellow top under $15 available near me'"
-                className="w-full px-6 py-4 pl-14 pr-20 text-lg rounded-2xl border-2 border-gray-200 bg-white/80 backdrop-blur-sm shadow-lg focus:outline-none focus:border-walmart-blue focus:ring-4 focus:ring-walmart-blue/20 transition-all duration-300 group-hover:shadow-xl"
+                className="w-full px-6 py-4 pl-14 pr-32 text-lg rounded-2xl border-2 border-gray-200 bg-white/80 backdrop-blur-sm shadow-lg focus:outline-none focus:border-walmart-blue focus:ring-4 focus:ring-walmart-blue/20 transition-all duration-300 group-hover:shadow-xl"
                 disabled={isSearching}
               />
               <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               
-              <button
-                type="submit"
-                disabled={!query.trim() || isSearching}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-walmart-blue to-walmart-blue-dark text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center space-x-2"
-              >
-                {isSearching ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Searching...</span>
-                  </>
-                ) : (
-                  <>
-                    <Search className="w-4 h-4" />
-                    <span>Search</span>
-                  </>
-                )}
-              </button>
+              {/* Voice Assistant and Search Button Container */}
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+                {/* Voice Assistant */}
+                <VoiceAssistant onSearch={handleVoiceSearch} isSearching={isSearching} />
+                
+                {/* Search Button */}
+                <button
+                  type="submit"
+                  disabled={!query.trim() || isSearching}
+                  className="px-6 py-2 bg-gradient-to-r from-walmart-blue to-walmart-blue-dark text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center space-x-2"
+                >
+                  {isSearching ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Searching...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Search className="w-4 h-4" />
+                      <span>Search</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
             
             {/* Search Status */}
@@ -88,8 +101,17 @@ export const SearchHero: React.FC<SearchHeroProps> = ({ onSearch, isSearching })
                 <Sparkles className="w-4 h-4" />
               </div>
             )}
+          </form>
+
+          {/* Voice Search Tip */}
+          <div className="mt-6 flex items-center justify-center space-x-2 text-gray-500">
+            <div className="w-2 h-2 bg-walmart-blue rounded-full animate-pulse"></div>
+            <span className="text-sm">
+              💡 <strong>Tip:</strong> Click the microphone to search with your voice
+            </span>
+            <div className="w-2 h-2 bg-walmart-blue rounded-full animate-pulse"></div>
           </div>
-        </form>
+        </div>
       </div>
     </section>
   );
