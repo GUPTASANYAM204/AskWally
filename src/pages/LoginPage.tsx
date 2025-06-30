@@ -35,8 +35,6 @@ export const LoginPage: React.FC = () => {
     
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -48,12 +46,12 @@ export const LoginPage: React.FC = () => {
     
     if (!validateForm()) return;
 
-    const success = await login(formData.email, formData.password);
+    const result = await login(formData.email, formData.password);
     
-    if (success) {
+    if (result.success) {
       navigate(from, { replace: true });
     } else {
-      setErrors({ general: 'Invalid email or password. Please try again.' });
+      setErrors({ general: result.message || 'Invalid email or password. Please try again.' });
     }
   };
 
