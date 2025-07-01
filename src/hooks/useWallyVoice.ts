@@ -5,6 +5,7 @@ interface UseWallyVoiceOptions {
   onError?: (error: string) => void;
   onStart?: () => void;
   onEnd?: () => void;
+  onWakeWordDetected?: () => void;
   wakeWord?: string;
   enabled?: boolean;
 }
@@ -45,26 +46,46 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isWakeWordListening, setIsWakeWordListening] = useState(false);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const wakeWordRecognitionRef = useRef<SpeechRecognition | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isActiveRef = useRef(true);
 
   const {
     onResult,
     onError,
     onStart,
     onEnd,
+    onWakeWordDetected,
     wakeWord = 'hey wally',
     enabled = true
   } = options;
+
+  // Check microphone permission
+  const checkMicrophonePermission = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(track => track.stop());
+      setHasPermission(true);
+      return true;
+    } catch (error) {
+      setHasPermission(false);
+      setError('Microphone access denied. Please enable microphone permissions for voice features.');
+      return false;
+    }
+  }, []);
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (SpeechRecognition) {
       setIsSupported(true);
+      
+      // Check permission on mount
+      checkMicrophonePermission();
       
       // Main recognition for commands
       recognitionRef.current = new SpeechRecognition();
@@ -106,9 +127,11 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
             break;
           case 'audio-capture':
             errorMessage = 'Microphone not accessible. Please check permissions.';
+            setHasPermission(false);
             break;
           case 'not-allowed':
             errorMessage = 'Microphone access denied. Please enable microphone permissions.';
+            setHasPermission(false);
             break;
           case 'network':
             errorMessage = 'Network error. Please check your connection.';
@@ -136,47 +159,102 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       wakeWordRecognition.lang = 'en-US';
 
       wakeWordRecognition.onresult = (event: SpeechRecognitionEvent) => {
+        if (!isActiveRef.current) return;
+        
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const result = event.results[i];
           if (result.isFinal) {
             const transcript = result[0].transcript.toLowerCase().trim();
-            if (transcript.includes(wakeWord.toLowerCase())) {
-              // Wake word detected, start main recognition
-              startListening();
+            console.log('Wake word detection heard:', transcript);
+            
+            // Check for wake word with some flexibility
+            const wakeWords = [
+              wakeWord.toLowerCase(),
+              'hey wally',
+              'hi wally',
+              'hello wally',
+              'wally'
+            ];
+            
+            const isWakeWordDetected = wakeWords.some(word => 
+              transcript.includes(word) || 
+              transcript.replace(/[^\w\s]/g, '').includes(word.replace(/[^\w\s]/g, ''))
+            );
+            
+            if (isWakeWordDetected) {
+              console.log('Wake word detected!');
+              onWakeWordDetected?.();
             }
           }
         }
       };
 
-      wakeWordRecognition.onerror = () => {
-        // Silently restart wake word listening on error with longer delay
+      wakeWordRecognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+        console.log('Wake word recognition error:', event.error);
+        
+        // Don't show errors for wake word recognition unless it's permission-related
+        if (event.error === 'not-allowed' || event.error === 'audio-capture') {
+          setHasPermission(false);
+        }
+        
+        // Restart wake word listening after a delay
         if (restartTimeoutRef.current) {
           clearTimeout(restartTimeoutRef.current);
         }
         restartTimeoutRef.current = setTimeout(() => {
-          if (isWakeWordListening && enabled) {
+          if (isWakeWordListening && enabled && isActiveRef.current) {
             startWakeWordListening();
           }
-        }, 2000); // Increased delay to reduce flickering
+        }, 3000);
       };
 
       wakeWordRecognition.onend = () => {
-        // Automatically restart wake word listening with longer delay
+        // Automatically restart wake word listening
         if (restartTimeoutRef.current) {
           clearTimeout(restartTimeoutRef.current);
         }
         restartTimeoutRef.current = setTimeout(() => {
-          if (isWakeWordListening && enabled) {
+          if (isWakeWordListening && enabled && isActiveRef.current) {
             startWakeWordListening();
           }
-        }, 500); // Increased delay to reduce flickering
+        }, 1000);
       };
 
     } else {
       setIsSupported(false);
     }
 
+    // Handle page visibility changes
+    const handleVisibilityChange = () => {
+      isActiveRef.current = !document.hidden;
+      
+      if (document.hidden) {
+        // Page is hidden, stop wake word listening
+        if (wakeWordRecognitionRef.current && isWakeWordListening) {
+          try {
+            wakeWordRecognitionRef.current.stop();
+          } catch (e) {
+            console.log('Error stopping wake word recognition:', e);
+          }
+        }
+      } else {
+        // Page is visible again, restart wake word listening if it was enabled
+        if (enabled && isSupported && hasPermission && !isWakeWordListening) {
+          setTimeout(() => {
+            if (isActiveRef.current) {
+              startWakeWordListening();
+            }
+          }, 1000);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
+      isActiveRef.current = false;
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      
       if (recognitionRef.current) {
         recognitionRef.current.abort();
       }
@@ -190,19 +268,30 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
         clearTimeout(restartTimeoutRef.current);
       }
     };
-  }, [onResult, onError, onStart, onEnd, wakeWord, isWakeWordListening, enabled]);
+  }, [onResult, onError, onStart, onEnd, onWakeWordDetected, wakeWord, enabled, hasPermission, isWakeWordListening, checkMicrophonePermission]);
 
-  // Control wake word listening based on enabled prop
+  // Control wake word listening based on enabled prop and permissions
   useEffect(() => {
-    if (enabled && isSupported && !isWakeWordListening) {
-      startWakeWordListening();
+    if (enabled && isSupported && hasPermission && !isWakeWordListening && isActiveRef.current) {
+      const timer = setTimeout(() => {
+        startWakeWordListening();
+      }, 1000);
+      return () => clearTimeout(timer);
     } else if (!enabled && isWakeWordListening) {
       stopWakeWordListening();
     }
-  }, [enabled, isSupported, isWakeWordListening]);
+  }, [enabled, isSupported, hasPermission, isWakeWordListening]);
 
-  const startListening = useCallback((timeout?: number) => {
+  const startListening = useCallback(async (timeout?: number) => {
     if (!recognitionRef.current || isListening) return false;
+
+    // Check permission before starting
+    if (hasPermission === false) {
+      const hasPermissionNow = await checkMicrophonePermission();
+      if (!hasPermissionNow) {
+        return false;
+      }
+    }
 
     try {
       setError(null);
@@ -217,10 +306,11 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       
       return true;
     } catch (error) {
+      console.error('Failed to start voice recognition:', error);
       setError('Failed to start voice recognition.');
       return false;
     }
-  }, [isListening]);
+  }, [isListening, hasPermission, checkMicrophonePermission]);
 
   const stopListening = useCallback(() => {
     if (recognitionRef.current && isListening) {
@@ -231,25 +321,42 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
     }
   }, [isListening]);
 
-  const startWakeWordListening = useCallback(() => {
-    if (!wakeWordRecognitionRef.current || !isSupported || !enabled) return false;
+  const startWakeWordListening = useCallback(async () => {
+    if (!wakeWordRecognitionRef.current || !isSupported || !enabled || !isActiveRef.current) {
+      return false;
+    }
+
+    // Check permission before starting
+    if (hasPermission === false) {
+      const hasPermissionNow = await checkMicrophonePermission();
+      if (!hasPermissionNow) {
+        return false;
+      }
+    }
 
     try {
+      console.log('Starting wake word listening...');
       setIsWakeWordListening(true);
       wakeWordRecognitionRef.current.start();
       return true;
     } catch (error) {
       console.error('Failed to start wake word listening:', error);
+      setIsWakeWordListening(false);
       return false;
     }
-  }, [isSupported, enabled]);
+  }, [isSupported, enabled, hasPermission, checkMicrophonePermission]);
 
   const stopWakeWordListening = useCallback(() => {
-    if (wakeWordRecognitionRef.current) {
+    if (wakeWordRecognitionRef.current && isWakeWordListening) {
+      console.log('Stopping wake word listening...');
       setIsWakeWordListening(false);
-      wakeWordRecognitionRef.current.stop();
+      try {
+        wakeWordRecognitionRef.current.stop();
+      } catch (error) {
+        console.error('Error stopping wake word recognition:', error);
+      }
     }
-  }, []);
+  }, [isWakeWordListening]);
 
   const clearError = useCallback(() => {
     setError(null);
@@ -259,17 +366,23 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
     setTranscript('');
   }, []);
 
+  const requestPermission = useCallback(async () => {
+    return await checkMicrophonePermission();
+  }, [checkMicrophonePermission]);
+
   return {
     isListening,
     isSupported,
     transcript,
     error,
     isWakeWordListening,
+    hasPermission,
     startListening,
     stopListening,
     startWakeWordListening,
     stopWakeWordListening,
     clearError,
-    clearTranscript
+    clearTranscript,
+    requestPermission
   };
 };

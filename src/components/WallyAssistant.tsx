@@ -11,7 +11,9 @@ import {
   Heart, 
   ExternalLink,
   Minimize2,
-  Maximize2
+  Maximize2,
+  Volume2,
+  AlertCircle
 } from 'lucide-react';
 import { useWally } from '../contexts/WallyContext';
 import { useWallyVoice } from '../hooks/useWallyVoice';
@@ -32,6 +34,7 @@ export const WallyAssistant: React.FC = () => {
     conversationContext,
     toggleAssistant,
     closeAssistant,
+    openAssistant,
     addMessage,
     updateMessage,
     startProcessing,
@@ -44,6 +47,7 @@ export const WallyAssistant: React.FC = () => {
   
   const [textInput, setTextInput] = useState('');
   const [isMinimized, setIsMinimized] = useState(false);
+  const [showPermissionPrompt, setShowPermissionPrompt] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textInputRef = useRef<HTMLInputElement>(null);
 
@@ -56,11 +60,14 @@ export const WallyAssistant: React.FC = () => {
     transcript,
     error: voiceError,
     isWakeWordListening,
+    hasPermission,
     startListening,
     stopListening,
     startWakeWordListening,
     stopWakeWordListening,
-    clearTranscript
+    clearTranscript,
+    clearError,
+    requestPermission
   } = useWallyVoice({
     onResult: (transcript, isFinal) => {
       if (isFinal && transcript.trim()) {
@@ -71,7 +78,17 @@ export const WallyAssistant: React.FC = () => {
     onError: (error) => {
       console.error('Voice error:', error);
     },
-    enabled: !isHomePage // Only enable wake word listening when not on home page
+    onWakeWordDetected: () => {
+      console.log('Wake word detected - opening assistant');
+      if (!isOpen) {
+        openAssistant();
+      }
+      // Start listening for command after wake word
+      setTimeout(() => {
+        startListening(10000); // Listen for 10 seconds
+      }, 500);
+    },
+    enabled: !isHomePage && hasPermission !== false
   });
 
   // Auto-scroll to bottom when new messages arrive
@@ -87,6 +104,15 @@ export const WallyAssistant: React.FC = () => {
       }, 100);
     }
   }, [isOpen, isMinimized]);
+
+  // Show permission prompt if needed
+  useEffect(() => {
+    if (isSupported && hasPermission === false && !isHomePage) {
+      setShowPermissionPrompt(true);
+    } else {
+      setShowPermissionPrompt(false);
+    }
+  }, [isSupported, hasPermission, isHomePage]);
 
   const handleUserInput = async (input: string, isVoice = false) => {
     if (!input.trim()) return;
@@ -173,7 +199,7 @@ export const WallyAssistant: React.FC = () => {
         return "I'll take you to the store map! 🗺️";
       }
       if (input.includes('cart') || input.includes('shopping cart')) {
-        openCart(); // Open the cart drawer
+        openCart();
         return "I'll show you your shopping cart! 🛒";
       }
       if (input.includes('wishlist') || input.includes('wish list')) {
@@ -204,7 +230,14 @@ export const WallyAssistant: React.FC = () => {
     }
   };
 
-  const handleVoiceToggle = () => {
+  const handleVoiceToggle = async () => {
+    if (hasPermission === false) {
+      const granted = await requestPermission();
+      if (!granted) {
+        return;
+      }
+    }
+
     if (isListening) {
       stopListening();
     } else {
@@ -239,9 +272,72 @@ export const WallyAssistant: React.FC = () => {
     });
   };
 
+  const handleRequestPermission = async () => {
+    const granted = await requestPermission();
+    if (granted) {
+      setShowPermissionPrompt(false);
+    }
+  };
+
   // Don't render Wally assistant on home page
   if (isHomePage) {
     return null;
+  }
+
+  // Permission prompt modal
+  if (showPermissionPrompt) {
+    return (
+      <>
+        {/* Backdrop */}
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
+        
+        {/* Permission Modal */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-walmart-blue to-walmart-blue-dark rounded-full flex items-center justify-center">
+                <Mic className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-800">Enable Voice Features</h3>
+                <p className="text-sm text-gray-600">Unlock the full Wally experience</p>
+              </div>
+            </div>
+            
+            <div className="mb-6">
+              <p className="text-gray-700 mb-4">
+                To use voice commands and wake-word activation ("Hey Wally"), please allow microphone access.
+              </p>
+              
+              <div className="bg-walmart-blue/5 rounded-lg p-4 mb-4">
+                <h4 className="font-semibold text-walmart-blue mb-2">Voice Features Include:</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• Wake-word activation: "Hey Wally"</li>
+                  <li>• Voice search: "Find a black laptop"</li>
+                  <li>• Hands-free navigation</li>
+                  <li>• Voice commands for cart and wishlist</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowPermissionPrompt(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200"
+              >
+                Maybe Later
+              </button>
+              <button
+                onClick={handleRequestPermission}
+                className="flex-1 bg-gradient-to-r from-walmart-blue to-walmart-blue-dark text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-200"
+              >
+                Enable Voice
+              </button>
+            </div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   if (!isOpen) {
@@ -249,19 +345,32 @@ export const WallyAssistant: React.FC = () => {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={toggleAssistant}
-          className="w-16 h-16 bg-gradient-to-r from-walmart-blue to-walmart-blue-dark text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group hover:scale-110"
+          className="relative w-16 h-16 bg-gradient-to-r from-walmart-blue to-walmart-blue-dark text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group hover:scale-110"
           title="Open Wally Assistant"
         >
           <div className="relative">
             <MessageCircle className="w-8 h-8" />
+            
+            {/* Wake word listening indicator */}
             {isWakeWordListening && (
               <>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                {/* Ripple effect only when wake word is active */}
                 <div className="absolute inset-0 rounded-full bg-walmart-blue opacity-30 animate-ping"></div>
               </>
             )}
+            
+            {/* Voice error indicator */}
+            {voiceError && (
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full"></div>
+            )}
           </div>
+          
+          {/* Wake word status tooltip */}
+          {isWakeWordListening && (
+            <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-black text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Listening for "Hey Wally"
+            </div>
+          )}
         </button>
       </div>
     );
@@ -275,12 +384,17 @@ export const WallyAssistant: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-walmart-blue to-walmart-blue-dark text-white rounded-t-2xl">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+            <div className="relative w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
               <MessageCircle className="w-5 h-5" />
+              {isWakeWordListening && (
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              )}
             </div>
             <div>
               <h3 className="font-bold text-lg">Wally</h3>
-              <p className="text-xs opacity-90">AI Shopping Assistant</p>
+              <p className="text-xs opacity-90">
+                {isWakeWordListening ? 'Listening for "Hey Wally"' : 'AI Shopping Assistant'}
+              </p>
             </div>
           </div>
           
@@ -318,7 +432,7 @@ export const WallyAssistant: React.FC = () => {
                   <div className="text-xs text-gray-500 space-y-1">
                     <p>Try saying: "Find a black laptop under $500"</p>
                     <p>Or: "Navigate me to store map"</p>
-                    <p>Wake word: "Hey Wally"</p>
+                    {isWakeWordListening && <p className="text-green-600 font-medium">🎤 Wake word: "Hey Wally"</p>}
                   </div>
                 </div>
               )}
@@ -409,17 +523,31 @@ export const WallyAssistant: React.FC = () => {
             <div className="border-t border-gray-200 p-4">
               {/* Voice transcript display */}
               {isListening && transcript && (
-                <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    🎤 "{transcript}"
-                  </p>
+                <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-start space-x-2">
+                  <Volume2 className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-sm text-blue-800 font-medium">
+                      🎤 "{transcript}"
+                    </p>
+                    <p className="text-xs text-blue-600 mt-1">Listening...</p>
+                  </div>
                 </div>
               )}
 
               {/* Voice error display */}
               {voiceError && (
-                <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded-lg">
-                  <p className="text-sm text-red-800">{voiceError}</p>
+                <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-2">
+                  <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-sm text-red-800 font-medium">Voice Error</p>
+                    <p className="text-xs text-red-600">{voiceError}</p>
+                    <button
+                      onClick={clearError}
+                      className="text-xs text-red-600 hover:text-red-800 underline mt-1"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -438,14 +566,27 @@ export const WallyAssistant: React.FC = () => {
                     <button
                       type="button"
                       onClick={handleVoiceToggle}
-                      className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-lg transition-colors duration-200 ${
+                      disabled={hasPermission === false}
+                      className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-lg transition-all duration-200 ${
                         isListening
-                          ? 'text-red-500 hover:bg-red-50'
-                          : 'text-gray-400 hover:bg-gray-100'
+                          ? 'text-red-500 hover:bg-red-50 animate-pulse'
+                          : hasPermission === false
+                          ? 'text-gray-300 cursor-not-allowed'
+                          : 'text-gray-400 hover:bg-gray-100 hover:text-walmart-blue'
                       }`}
-                      title={isListening ? 'Stop listening' : 'Start voice input'}
+                      title={
+                        hasPermission === false 
+                          ? 'Microphone permission required'
+                          : isListening 
+                          ? 'Stop listening' 
+                          : 'Start voice input'
+                      }
                     >
-                      {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+                      {isListening ? (
+                        <MicOff className="w-5 h-5" />
+                      ) : (
+                        <Mic className="w-5 h-5" />
+                      )}
                     </button>
                   )}
                 </div>
@@ -477,6 +618,12 @@ export const WallyAssistant: React.FC = () => {
                     <div className="flex items-center space-x-1">
                       <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
                       <span>Recording...</span>
+                    </div>
+                  )}
+                  {hasPermission === false && (
+                    <div className="flex items-center space-x-1">
+                      <AlertCircle className="w-3 h-3 text-amber-500" />
+                      <span className="text-amber-600">Voice features disabled</span>
                     </div>
                   )}
                 </div>
