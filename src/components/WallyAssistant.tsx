@@ -230,18 +230,38 @@ export const WallyAssistant: React.FC = () => {
     }
   };
 
-  const handleVoiceToggle = async () => {
-    if (hasPermission === false) {
+  const handleVoiceToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('Voice toggle clicked', { hasPermission, isListening, isSupported });
+    
+    // Check if voice is supported
+    if (!isSupported) {
+      console.log('Voice not supported');
+      return;
+    }
+
+    // Request permission if not granted
+    if (hasPermission === false || hasPermission === null) {
+      console.log('Requesting permission...');
       const granted = await requestPermission();
       if (!granted) {
+        console.log('Permission denied');
         return;
       }
     }
 
+    // Toggle listening state
     if (isListening) {
+      console.log('Stopping listening...');
       stopListening();
     } else {
-      startListening(10000); // 10 second timeout
+      console.log('Starting listening...');
+      const started = await startListening(10000); // 10 second timeout
+      if (!started) {
+        console.log('Failed to start listening');
+      }
     }
   };
 
@@ -566,10 +586,10 @@ export const WallyAssistant: React.FC = () => {
                     <button
                       type="button"
                       onClick={handleVoiceToggle}
-                      disabled={hasPermission === false}
-                      className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-lg transition-all duration-200 ${
+                      disabled={isProcessing}
+                      className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1.5 rounded-lg transition-all duration-200 ${
                         isListening
-                          ? 'text-red-500 hover:bg-red-50 animate-pulse'
+                          ? 'text-white bg-red-500 hover:bg-red-600 animate-pulse'
                           : hasPermission === false
                           ? 'text-gray-300 cursor-not-allowed'
                           : 'text-gray-400 hover:bg-gray-100 hover:text-walmart-blue'
@@ -583,9 +603,9 @@ export const WallyAssistant: React.FC = () => {
                       }
                     >
                       {isListening ? (
-                        <MicOff className="w-5 h-5" />
+                        <MicOff className="w-4 h-4" />
                       ) : (
-                        <Mic className="w-5 h-5" />
+                        <Mic className="w-4 h-4" />
                       )}
                     </button>
                   )}
