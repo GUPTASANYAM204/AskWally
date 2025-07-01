@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useOrders } from '../contexts/OrderContext';
-import { Download, Edit } from 'lucide-react';
+import { Download, Edit, Heart, Trash2 } from 'lucide-react';
+import { useWishlist } from '../contexts/WishlistContext';
 
 const ProfilePage: React.FC = () => {
   const { user, updateProfile } = useAuth();
   const { orders } = useOrders();
+  const { items: wishlistRaw, removeFromWishlist } = useWishlist();
+  const wishlist = wishlistRaw ?? [];
+
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({
     profilePicture: user?.profilePicture || '',
@@ -19,8 +24,14 @@ const ProfilePage: React.FC = () => {
     zipCode: user?.zipCode || '',
   });
 
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate('/login');
+    }
+  }, [user, navigate]);
   if (!user) {
-    return <div className="pt-16 min-h-screen flex items-center justify-center text-xl">Please log in to view your profile.</div>;
+    return null;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,9 +235,35 @@ const ProfilePage: React.FC = () => {
           )}
         </div>
 
+        {/* Wishlist Section */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">My Wishlist</h2>
+          {(wishlist?.length ?? 0) === 0 ? (
+            <div className="text-gray-600">No items in your wishlist yet.</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {wishlist.map(item => (
+                <div key={item.id + (item.selectedSize || '')} className="relative bg-gray-50 border border-gray-100 rounded-xl p-4 flex flex-col items-center">
+                  <button
+                    className="absolute top-2 right-2 p-1 rounded-full bg-white hover:bg-red-100 border border-gray-200"
+                    onClick={() => removeFromWishlist(item.id, item.selectedSize)}
+                    aria-label="Remove from wishlist"
+                  >
+                    <Trash2 className="w-5 h-5 text-red-400" />
+                  </button>
+                  <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded mb-2" />
+                  <div className="font-semibold text-gray-800 text-center mb-1">{item.name}</div>
+                  {item.brand && <div className="text-xs text-gray-500 mb-1">{item.brand}</div>}
+                  <div className="text-walmart-blue font-bold">${item.price.toFixed(2)}</div>
+                  {item.selectedSize && <div className="text-xs text-gray-500">Size: {item.selectedSize}</div>}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Order History Section */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Order History</h2>
           {orders.length === 0 ? (
             <div className="text-gray-600">No orders found.</div>
           ) : (

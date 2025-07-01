@@ -1,9 +1,11 @@
-import React from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 import { OrderProvider } from './contexts/OrderContext';
+import { WishlistProvider } from './contexts/WishlistContext';
 import { Navigation } from './components/Navigation';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { CartDrawer } from './components/CartDrawer';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { LandingPage } from './pages/LandingPage';
@@ -18,12 +20,18 @@ import ProfilePage from './pages/ProfilePage';
 import { TermsPage } from './pages/TermsPage';
 import { PrivacyPage } from './pages/PrivacyPage';
 
+import WishlistPage from './pages/WishlistPage';
+
 function App() {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <OrderProvider>
-            <Router>
+    <ErrorBoundary>
+      <AuthProvider>
+        <CartProvider>
+          <OrderProvider>
+            <WishlistProvider>
+              <Router>
+
+
               <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-yellow-50 font-inter">
                 <Navigation />
                 <CartDrawer />
@@ -58,14 +66,23 @@ function App() {
                       </ProtectedRoute>
                     } 
                   />
-                  <Route path="/terms" element={<TermsPage />} />
+
+                    <Route path="/terms" element={<TermsPage />} />
                   <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/wishlist" element={
+                    <ProtectedRoute>
+                      <WishlistPage />
+                    </ProtectedRoute>
+                  } />
                 </Routes>
               </div>
             </Router>
-        </OrderProvider>
-      </CartProvider>
-    </AuthProvider>
+            </WishlistProvider>
+          </OrderProvider>
+        </CartProvider>
+      </AuthProvider>
+    </ErrorBoundary>
+
   );
 }
 
