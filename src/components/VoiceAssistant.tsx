@@ -46,7 +46,7 @@ export const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onSearch, isSear
   const [confidence, setConfidence] = useState(0);
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     // Check if speech recognition is supported

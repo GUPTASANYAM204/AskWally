@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   MessageCircle, 
   Mic, 
@@ -22,6 +22,7 @@ import type { Product } from '../data/mockProducts';
 
 export const WallyAssistant: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     isOpen,
     isProcessing,
@@ -38,13 +39,16 @@ export const WallyAssistant: React.FC = () => {
     updateContext
   } = useWally();
 
-  const { addItem } = useCart();
+  const { addItem, openCart } = useCart();
   const { addToWishlist } = useWishlist();
   
   const [textInput, setTextInput] = useState('');
   const [isMinimized, setIsMinimized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textInputRef = useRef<HTMLInputElement>(null);
+
+  // Check if we're on the home page
+  const isHomePage = location.pathname === '/';
 
   const {
     isListening,
@@ -66,24 +70,14 @@ export const WallyAssistant: React.FC = () => {
     },
     onError: (error) => {
       console.error('Voice error:', error);
-    }
+    },
+    enabled: !isHomePage // Only enable wake word listening when not on home page
   });
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // Start wake word listening when component mounts
-  useEffect(() => {
-    if (isSupported && !isWakeWordListening) {
-      startWakeWordListening();
-    }
-    
-    return () => {
-      stopWakeWordListening();
-    };
-  }, [isSupported, startWakeWordListening, stopWakeWordListening, isWakeWordListening]);
 
   // Focus text input when assistant opens
   useEffect(() => {
@@ -96,6 +90,20 @@ export const WallyAssistant: React.FC = () => {
 
   const handleUserInput = async (input: string, isVoice = false) => {
     if (!input.trim()) return;
+
+    // Check for navigation commands first
+    const navigationResult = handleNavigationCommands(input.toLowerCase());
+    if (navigationResult) {
+      addMessage({
+        type: 'user',
+        content: input,
+      });
+      addMessage({
+        type: 'assistant',
+        content: navigationResult,
+      });
+      return;
+    }
 
     // Add user message
     addMessage({
@@ -158,6 +166,36 @@ export const WallyAssistant: React.FC = () => {
     }
   };
 
+  const handleNavigationCommands = (input: string): string | null => {
+    if (input.includes('navigate') || input.includes('go to') || input.includes('take me to') || input.includes('open')) {
+      if (input.includes('store map') || input.includes('map')) {
+        navigate('/store-map');
+        return "I'll take you to the store map! 🗺️";
+      }
+      if (input.includes('cart') || input.includes('shopping cart')) {
+        openCart(); // Open the cart drawer
+        return "I'll show you your shopping cart! 🛒";
+      }
+      if (input.includes('wishlist') || input.includes('wish list')) {
+        navigate('/wishlist');
+        return "I'll take you to your wishlist! 💝";
+      }
+      if (input.includes('products') || input.includes('shop')) {
+        navigate('/products');
+        return "I'll take you to the products page! 🛍️";
+      }
+      if (input.includes('home') || input.includes('main page')) {
+        navigate('/');
+        return "I'll take you back to the home page! 🏠";
+      }
+      if (input.includes('profile') || input.includes('account')) {
+        navigate('/profile');
+        return "I'll take you to your profile! 👤";
+      }
+    }
+    return null;
+  };
+
   const handleTextSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (textInput.trim()) {
@@ -201,6 +239,11 @@ export const WallyAssistant: React.FC = () => {
     });
   };
 
+  // Don't render Wally assistant on home page
+  if (isHomePage) {
+    return null;
+  }
+
   if (!isOpen) {
     return (
       <div className="fixed bottom-6 right-6 z-50">
@@ -212,12 +255,13 @@ export const WallyAssistant: React.FC = () => {
           <div className="relative">
             <MessageCircle className="w-8 h-8" />
             {isWakeWordListening && (
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                {/* Ripple effect only when wake word is active */}
+                <div className="absolute inset-0 rounded-full bg-walmart-blue opacity-30 animate-ping"></div>
+              </>
             )}
           </div>
-          
-          {/* Pulse animation */}
-          <div className="absolute inset-0 rounded-full bg-walmart-blue opacity-30 animate-ping"></div>
         </button>
       </div>
     );
@@ -269,11 +313,11 @@ export const WallyAssistant: React.FC = () => {
                   </div>
                   <h4 className="font-semibold text-gray-800 mb-2">Hi! I'm Wally 👋</h4>
                   <p className="text-gray-600 text-sm mb-4">
-                    Your AI shopping assistant. I can help you find products, add items to your wishlist, and more!
+                    Your AI shopping assistant. I can help you find products, navigate the store, and more!
                   </p>
                   <div className="text-xs text-gray-500 space-y-1">
                     <p>Try saying: "Find a black laptop under $500"</p>
-                    <p>Or: "Add this to my wishlist"</p>
+                    <p>Or: "Navigate me to store map"</p>
                     <p>Wake word: "Hey Wally"</p>
                   </div>
                 </div>

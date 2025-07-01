@@ -6,6 +6,7 @@ interface UseWallyVoiceOptions {
   onStart?: () => void;
   onEnd?: () => void;
   wakeWord?: string;
+  enabled?: boolean;
 }
 
 interface SpeechRecognitionEvent extends Event {
@@ -47,14 +48,16 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
   
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const wakeWordRecognitionRef = useRef<SpeechRecognition | null>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const {
     onResult,
     onError,
     onStart,
     onEnd,
-    wakeWord = 'hey wally'
+    wakeWord = 'hey wally',
+    enabled = true
   } = options;
 
   useEffect(() => {
@@ -146,21 +149,27 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       };
 
       wakeWordRecognition.onerror = () => {
-        // Silently restart wake word listening on error
-        setTimeout(() => {
-          if (isWakeWordListening) {
+        // Silently restart wake word listening on error with longer delay
+        if (restartTimeoutRef.current) {
+          clearTimeout(restartTimeoutRef.current);
+        }
+        restartTimeoutRef.current = setTimeout(() => {
+          if (isWakeWordListening && enabled) {
             startWakeWordListening();
           }
-        }, 1000);
+        }, 2000); // Increased delay to reduce flickering
       };
 
       wakeWordRecognition.onend = () => {
-        // Automatically restart wake word listening
-        if (isWakeWordListening) {
-          setTimeout(() => {
-            startWakeWordListening();
-          }, 100);
+        // Automatically restart wake word listening with longer delay
+        if (restartTimeoutRef.current) {
+          clearTimeout(restartTimeoutRef.current);
         }
+        restartTimeoutRef.current = setTimeout(() => {
+          if (isWakeWordListening && enabled) {
+            startWakeWordListening();
+          }
+        }, 500); // Increased delay to reduce flickering
       };
 
     } else {
@@ -177,8 +186,20 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
+      if (restartTimeoutRef.current) {
+        clearTimeout(restartTimeoutRef.current);
+      }
     };
-  }, [onResult, onError, onStart, onEnd, wakeWord, isWakeWordListening]);
+  }, [onResult, onError, onStart, onEnd, wakeWord, isWakeWordListening, enabled]);
+
+  // Control wake word listening based on enabled prop
+  useEffect(() => {
+    if (enabled && isSupported && !isWakeWordListening) {
+      startWakeWordListening();
+    } else if (!enabled && isWakeWordListening) {
+      stopWakeWordListening();
+    }
+  }, [enabled, isSupported, isWakeWordListening]);
 
   const startListening = useCallback((timeout?: number) => {
     if (!recognitionRef.current || isListening) return false;
@@ -211,7 +232,7 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
   }, [isListening]);
 
   const startWakeWordListening = useCallback(() => {
-    if (!wakeWordRecognitionRef.current || !isSupported) return false;
+    if (!wakeWordRecognitionRef.current || !isSupported || !enabled) return false;
 
     try {
       setIsWakeWordListening(true);
@@ -221,7 +242,7 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       console.error('Failed to start wake word listening:', error);
       return false;
     }
-  }, [isSupported]);
+  }, [isSupported, enabled]);
 
   const stopWakeWordListening = useCallback(() => {
     if (wakeWordRecognitionRef.current) {
