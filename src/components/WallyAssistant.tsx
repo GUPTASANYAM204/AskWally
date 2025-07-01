@@ -88,7 +88,7 @@ export const WallyAssistant: React.FC = () => {
         startListening(10000); // Listen for 10 seconds
       }, 500);
     },
-    enabled: !isHomePage && hasPermission !== false
+    enabled: !isHomePage
   });
 
   // Auto-scroll to bottom when new messages arrive
