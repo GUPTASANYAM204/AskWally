@@ -1,5 +1,5 @@
 import React from 'react';
-import { Brain, MapPin, Filter, Zap } from 'lucide-react';
+import { Brain, MapPin, Filter, Zap, Camera, Sparkles } from 'lucide-react';
 
 export const FeatureGrid: React.FC = () => {
   const features = [
@@ -8,6 +8,12 @@ export const FeatureGrid: React.FC = () => {
       title: "AI-Powered Search",
       description: "Natural language processing understands exactly what you're looking for",
       color: "from-walmart-blue to-walmart-blue-dark"
+    },
+    {
+      icon: Camera,
+      title: "Visual Search",
+      description: "Upload or capture images to find similar products instantly with AI recognition",
+      color: "from-accent-purple to-purple-600"
     },
     {
       icon: MapPin,
@@ -19,13 +25,19 @@ export const FeatureGrid: React.FC = () => {
       icon: Filter,
       title: "Smart Filtering",
       description: "Advanced filters for price, color, brand, ratings, and availability",
-      color: "from-accent-purple to-purple-600"
+      color: "from-accent-warning to-orange-600"
     },
     {
       icon: Zap,
       title: "Instant Results",
       description: "Get comprehensive product information and location details in seconds",
       color: "from-walmart-yellow to-walmart-yellow-dark"
+    },
+    {
+      icon: Sparkles,
+      title: "Voice Commands",
+      description: "Speak naturally to search for products using advanced voice recognition",
+      color: "from-accent-pink to-pink-600"
     }
   ];
 
@@ -39,7 +51,7 @@ export const FeatureGrid: React.FC = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <div 
               key={index}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Phone, Eye, EyeOff, ShoppingCart, Loader2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { PasswordStrengthIndicator } from '../components/PasswordStrengthIndicator';
 
 export const SignupPage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,6 +25,10 @@ export const SignupPage: React.FC = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+    // Clear general error when user starts typing
+    if (errors.general) {
+      setErrors(prev => ({ ...prev, general: '' }));
     }
   };
 
@@ -69,7 +74,7 @@ export const SignupPage: React.FC = () => {
     
     if (!validateForm()) return;
 
-    const success = await signup({
+    const result = await signup({
       email: formData.email,
       password: formData.password,
       firstName: formData.firstName,
@@ -77,10 +82,20 @@ export const SignupPage: React.FC = () => {
       phone: formData.phone,
     });
     
-    if (success) {
+    if (result.success) {
       navigate('/', { replace: true });
     } else {
-      setErrors({ general: 'Failed to create account. Please try again.' });
+      // Handle specific validation errors from backend
+      if (result.errors && result.errors.length > 0) {
+        const backendErrors: { [key: string]: string } = {};
+        result.errors.forEach((error: any) => {
+          backendErrors[error.path] = error.msg;
+        });
+        setErrors(backendErrors);
+      } else {
+        // Handle general error message
+        setErrors({ general: result.message || 'Failed to create account. Please try again.' });
+      }
     }
   };
 
@@ -103,7 +118,7 @@ export const SignupPage: React.FC = () => {
 
         {/* Signup Form */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-gray-200/50">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
             {errors.general && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                 <p className="text-red-600 text-sm">{errors.general}</p>
@@ -127,6 +142,7 @@ export const SignupPage: React.FC = () => {
                     }`}
                     placeholder="John"
                     disabled={isLoading}
+                    autoComplete="given-name"
                   />
                 </div>
                 {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
@@ -145,6 +161,7 @@ export const SignupPage: React.FC = () => {
                   }`}
                   placeholder="Doe"
                   disabled={isLoading}
+                  autoComplete="family-name"
                 />
                 {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
               </div>
@@ -166,6 +183,7 @@ export const SignupPage: React.FC = () => {
                   }`}
                   placeholder="your@email.com"
                   disabled={isLoading}
+                  autoComplete="email"
                 />
               </div>
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -185,8 +203,10 @@ export const SignupPage: React.FC = () => {
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-walmart-blue transition-all duration-200"
                   placeholder="(555) 123-4567"
                   disabled={isLoading}
+                  autoComplete="tel"
                 />
               </div>
+              {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
             </div>
 
             {/* Password Fields */}
@@ -206,6 +226,7 @@ export const SignupPage: React.FC = () => {
                     }`}
                     placeholder="Create a password"
                     disabled={isLoading}
+                    autoComplete="new-password"
                   />
                   <button
                     type="button"
@@ -217,6 +238,7 @@ export const SignupPage: React.FC = () => {
                   </button>
                 </div>
                 {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                <PasswordStrengthIndicator password={formData.password} />
               </div>
 
               <div>
@@ -234,6 +256,7 @@ export const SignupPage: React.FC = () => {
                     }`}
                     placeholder="Confirm your password"
                     disabled={isLoading}
+                    autoComplete="new-password"
                   />
                   <button
                     type="button"

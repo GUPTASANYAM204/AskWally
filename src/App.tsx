@@ -17,6 +17,9 @@ import { StoreMapPage } from './pages/StoreMapPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { OrderConfirmationPage } from './pages/OrderConfirmationPage';
 import ProfilePage from './pages/ProfilePage';
+import { TermsPage } from './pages/TermsPage';
+import { PrivacyPage } from './pages/PrivacyPage';
+
 import WishlistPage from './pages/WishlistPage';
 
 function App() {
@@ -27,6 +30,8 @@ function App() {
           <OrderProvider>
             <WishlistProvider>
               <Router>
+
+
               <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-yellow-50 font-inter">
                 <Navigation />
                 <CartDrawer />
@@ -61,6 +66,9 @@ function App() {
                       </ProtectedRoute>
                     } 
                   />
+
+                    <Route path="/terms" element={<TermsPage />} />
+                  <Route path="/privacy" element={<PrivacyPage />} />
                   <Route path="/wishlist" element={
                     <ProtectedRoute>
                       <WishlistPage />
@@ -74,6 +82,7 @@ function App() {
         </CartProvider>
       </AuthProvider>
     </ErrorBoundary>
+
   );
 }
 

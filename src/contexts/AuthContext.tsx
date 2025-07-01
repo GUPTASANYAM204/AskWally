@@ -13,21 +13,24 @@ export interface User {
     zipCode: string;
   };
   createdAt: Date;
+  role?: string;
+  isEmailVerified?: boolean;
 }
 
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  token: string | null;
 }
 
 type AuthAction =
   | { type: 'LOGIN_START' }
-  | { type: 'LOGIN_SUCCESS'; payload: User }
+  | { type: 'LOGIN_SUCCESS'; payload: { user: User; token: string } }
   | { type: 'LOGIN_FAILURE' }
   | { type: 'LOGOUT' }
   | { type: 'SIGNUP_START' }
-  | { type: 'SIGNUP_SUCCESS'; payload: User }
+  | { type: 'SIGNUP_SUCCESS'; payload: { user: User; token: string } }
   | { type: 'SIGNUP_FAILURE' }
   | { type: 'UPDATE_PROFILE'; payload: Partial<User> };
 
@@ -41,7 +44,8 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
     case 'SIGNUP_SUCCESS':
       return {
         ...state,
-        user: action.payload,
+        user: action.payload.user,
+        token: action.payload.token,
         isAuthenticated: true,
         isLoading: false,
       };
@@ -51,6 +55,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       return {
         ...state,
         user: null,
+        token: null,
         isAuthenticated: false,
         isLoading: false,
       };
@@ -59,6 +64,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
       return {
         ...state,
         user: null,
+        token: null,
         isAuthenticated: false,
         isLoading: false,
       };
@@ -78,77 +84,111 @@ const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   isLoading: false,
+  token: null,
 };
 
 interface AuthContextType extends AuthState {
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; message?: string; errors?: any[] }>;
   signup: (userData: {
     email: string;
     password: string;
     firstName: string;
     lastName: string;
     phone?: string;
-  }) => Promise<boolean>;
+  }) => Promise<{ success: boolean; message?: string; errors?: any[] }>;
   logout: () => void;
   updateProfile: (data: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// API base URL
+const API_BASE_URL = 'http://localhost:5000/api';
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Load user from localStorage on mount
+  // Load user and token from localStorage on mount
   useEffect(() => {
     const savedUser = localStorage.getItem('askwally-user');
-    if (savedUser) {
+    const savedToken = localStorage.getItem('askwally-token');
+    
+    if (savedUser && savedToken) {
       try {
         const userData = JSON.parse(savedUser);
-        dispatch({ type: 'LOGIN_SUCCESS', payload: userData });
+        dispatch({ 
+          type: 'LOGIN_SUCCESS', 
+          payload: { user: userData, token: savedToken } 
+        });
       } catch (error) {
         console.error('Error loading user from localStorage:', error);
         localStorage.removeItem('askwally-user');
+        localStorage.removeItem('askwally-token');
       }
     }
   }, []);
 
-  // Save user to localStorage whenever it changes
+  // Save user and token to localStorage whenever they change
   useEffect(() => {
-    if (state.user) {
+    if (state.user && state.token) {
       localStorage.setItem('askwally-user', JSON.stringify(state.user));
+      localStorage.setItem('askwally-token', state.token);
     } else {
       localStorage.removeItem('askwally-user');
+      localStorage.removeItem('askwally-token');
     }
-  }, [state.user]);
+  }, [state.user, state.token]);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; message?: string; errors?: any[] }> => {
     dispatch({ type: 'LOGIN_START' });
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('🚀 Attempting login with email:', email);
+      console.log('📡 Making request to:', `${API_BASE_URL}/auth/login`);
       
-      // Mock user data - in real app, this would come from your backend
-      const mockUser: User = {
-        id: '1',
-        email,
-        firstName: 'John',
-        lastName: 'Doe',
-        phone: '(555) 123-4567',
-        address: {
-          street: '123 Main St',
-          city: 'New York',
-          state: 'NY',
-          zipCode: '10001'
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        createdAt: new Date(),
-      };
-      
-      dispatch({ type: 'LOGIN_SUCCESS', payload: mockUser });
-      return true;
+        body: JSON.stringify({ email, password }),
+      });
+
+      console.log('📥 Response status:', response.status);
+      console.log('📥 Response headers:', response.headers);
+
+      const data = await response.json();
+      console.log('📥 Response data:', data);
+
+      if (response.ok && data.success) {
+        const user: User = {
+          id: data.data.user.id,
+          email: data.data.user.email,
+          firstName: data.data.user.firstName,
+          lastName: data.data.user.lastName,
+          role: data.data.user.role,
+          isEmailVerified: data.data.user.isEmailVerified,
+          createdAt: new Date(data.data.user.createdAt || Date.now()),
+        };
+
+        console.log('✅ Login successful, user:', user);
+        dispatch({ 
+          type: 'LOGIN_SUCCESS', 
+          payload: { user, token: data.data.token } 
+        });
+        return { success: true };
+      } else {
+        console.error('❌ Login failed:', data.message);
+        dispatch({ type: 'LOGIN_FAILURE' });
+        return { success: false, message: data.message };
+      }
     } catch (error) {
+      console.error('❌ Login error:', error);
       dispatch({ type: 'LOGIN_FAILURE' });
-      return false;
+      return { 
+        success: false, 
+        message: error instanceof Error ? error.message : 'An unexpected error occurred' 
+      };
     }
   };
 
@@ -158,32 +198,87 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     firstName: string;
     lastName: string;
     phone?: string;
-  }): Promise<boolean> => {
+  }): Promise<{ success: boolean; message?: string; errors?: any[] }> => {
     dispatch({ type: 'SIGNUP_START' });
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log('🚀 Attempting signup with data:', userData);
+      console.log('📡 Making request to:', `${API_BASE_URL}/auth/register`);
       
-      const newUser: User = {
-        id: Date.now().toString(),
-        email: userData.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        phone: userData.phone,
-        createdAt: new Date(),
+      // Map 'phone' to 'phoneNumber' for backend compatibility
+      const payload = {
+        ...userData,
+        phoneNumber: userData.phone,
       };
-      
-      dispatch({ type: 'SIGNUP_SUCCESS', payload: newUser });
-      return true;
+      delete payload.phone;
+
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      console.log('📥 Response status:', response.status);
+      console.log('📥 Response headers:', response.headers);
+
+      const data = await response.json();
+      console.log('📥 Response data:', data);
+
+      if (response.ok && data.success) {
+        const user: User = {
+          id: data.data.user.id,
+          email: data.data.user.email,
+          firstName: data.data.user.firstName,
+          lastName: data.data.user.lastName,
+          role: data.data.user.role,
+          isEmailVerified: data.data.user.isEmailVerified,
+          createdAt: new Date(data.data.user.createdAt || Date.now()),
+        };
+
+        console.log('✅ Signup successful, user created:', user);
+        dispatch({ 
+          type: 'SIGNUP_SUCCESS', 
+          payload: { user, token: data.data.token } 
+        });
+        return { success: true };
+      } else {
+        console.error('❌ Signup failed:', data.message);
+        if (data.errors) {
+          console.error('❌ Validation errors:', data.errors);
+        }
+        dispatch({ type: 'SIGNUP_FAILURE' });
+        return { success: false, message: data.message, errors: data.errors };
+      }
     } catch (error) {
+      console.error('❌ Signup error:', error);
       dispatch({ type: 'SIGNUP_FAILURE' });
-      return false;
+      return { 
+        success: false, 
+        message: error instanceof Error ? error.message : 'An unexpected error occurred' 
+      };
     }
   };
 
-  const logout = () => {
-    dispatch({ type: 'LOGOUT' });
+  const logout = async () => {
+    try {
+      // Call logout endpoint if we have a token
+      if (state.token) {
+        await fetch(`${API_BASE_URL}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${state.token}`,
+          },
+          body: JSON.stringify({ refreshToken: localStorage.getItem('askwally-refresh-token') }),
+        });
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      dispatch({ type: 'LOGOUT' });
+    }
   };
 
   const updateProfile = (data: Partial<User>) => {
