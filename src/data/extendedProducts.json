@@ -1,0 +1,322 @@
+[
+  {
+    "id": "ELEC006",
+    "title": "iPad Air 10.9-inch 64GB",
+    "description": "Powerful iPad Air with A14 Bionic chip, 10.9-inch Liquid Retina display, and all-day battery life.",
+    "category": "Electronics",
+    "brand": "Apple",
+    "price": 599.99,
+    "image_url": "https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.7,
+    "is_featured": true,
+    "barcode": "194252707234",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "E3", "section": "Tablets", "shelf_label": "T1", "quantity": 20},
+      {"store_id": "WM002", "aisle_number": "E2", "section": "Apple Products", "shelf_label": "A2", "quantity": 15}
+    ]
+  },
+  {
+    "id": "ELEC007",
+    "title": "Dell 27-inch 4K Monitor",
+    "description": "Ultra-sharp 4K monitor with USB-C connectivity and adjustable stand. Perfect for work and gaming.",
+    "category": "Electronics",
+    "brand": "Dell",
+    "price": 329.99,
+    "image_url": "https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "884116234567",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "E2", "section": "Monitors", "shelf_label": "M1", "quantity": 12},
+      {"store_id": "WM003", "aisle_number": "E1", "section": "Computer Displays", "shelf_label": "D1", "quantity": 8}
+    ]
+  },
+  {
+    "id": "ELEC008",
+    "title": "Wireless Gaming Mouse",
+    "description": "High-precision wireless gaming mouse with RGB lighting and programmable buttons.",
+    "category": "Electronics",
+    "brand": "Logitech",
+    "price": 79.99,
+    "image_url": "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "097855345678",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "E5", "section": "Gaming Accessories", "shelf_label": "G2", "quantity": 35},
+      {"store_id": "WM004", "aisle_number": "E3", "section": "Computer Accessories", "shelf_label": "M1", "quantity": 28}
+    ]
+  },
+  {
+    "id": "ELEC009",
+    "title": "Bluetooth Portable Speaker",
+    "description": "Waterproof Bluetooth speaker with 360-degree sound and 12-hour battery life.",
+    "category": "Electronics",
+    "brand": "JBL",
+    "price": 99.99,
+    "image_url": "https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "050036456789",
+    "store_availability": [
+      {"store_id": "WM002", "aisle_number": "E2", "section": "Audio", "shelf_label": "S1", "quantity": 25},
+      {"store_id": "WM005", "aisle_number": "E2", "section": "Portable Audio", "shelf_label": "B2", "quantity": 20}
+    ]
+  },
+  {
+    "id": "ELEC010",
+    "title": "Smart Watch - Fitness Tracker",
+    "description": "Advanced fitness tracker with heart rate monitoring, GPS, and smartphone notifications.",
+    "category": "Electronics",
+    "brand": "Fitbit",
+    "price": 199.99,
+    "image_url": "https://images.pexels.com/photos/393047/pexels-photo-393047.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": true,
+    "barcode": "810038567890",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "E6", "section": "Wearables", "shelf_label": "W1", "quantity": 30},
+      {"store_id": "WM003", "aisle_number": "E4", "section": "Fitness Tech", "shelf_label": "F1", "quantity": 22}
+    ]
+  },
+  {
+    "id": "GROC006",
+    "title": "Organic Chicken Breast - 2 lbs",
+    "description": "Fresh organic chicken breast, antibiotic-free and hormone-free. Perfect for healthy meals.",
+    "category": "Groceries",
+    "brand": "Organic Valley",
+    "price": 8.99,
+    "image_url": "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "033383678901",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "G4", "section": "Organic Meat", "shelf_label": "O1", "quantity": 25},
+      {"store_id": "WM003", "aisle_number": "G2", "section": "Premium Poultry", "shelf_label": "P1", "quantity": 20}
+    ]
+  },
+  {
+    "id": "GROC007",
+    "title": "Avocados - Pack of 6",
+    "description": "Fresh Hass avocados, perfect for guacamole, salads, and healthy snacking.",
+    "category": "Groceries",
+    "brand": "Fresh Market",
+    "price": 4.99,
+    "image_url": "https://images.pexels.com/photos/2872755/pexels-photo-2872755.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "021130789012",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "G1", "section": "Produce", "shelf_label": "A1", "quantity": 80},
+      {"store_id": "WM002", "aisle_number": "G1", "section": "Fresh Fruits", "shelf_label": "A2", "quantity": 65}
+    ]
+  },
+  {
+    "id": "GROC008",
+    "title": "Greek Yogurt - Vanilla 32oz",
+    "description": "Creamy Greek yogurt with vanilla flavor. High in protein and probiotics.",
+    "category": "Groceries",
+    "brand": "Chobani",
+    "price": 5.49,
+    "image_url": "https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "894700890123",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "G3", "section": "Yogurt", "shelf_label": "Y1", "quantity": 45},
+      {"store_id": "WM004", "aisle_number": "G2", "section": "Dairy Products", "shelf_label": "D1", "quantity": 38}
+    ]
+  },
+  {
+    "id": "GROC009",
+    "title": "Quinoa - Organic 2 lbs",
+    "description": "Organic quinoa, a complete protein superfood. Perfect for salads and healthy meals.",
+    "category": "Groceries",
+    "brand": "Bob's Red Mill",
+    "price": 7.99,
+    "image_url": "https://images.pexels.com/photos/1295572/pexels-photo-1295572.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "039978901234",
+    "store_availability": [
+      {"store_id": "WM002", "aisle_number": "G5", "section": "Health Foods", "shelf_label": "H1", "quantity": 30},
+      {"store_id": "WM003", "aisle_number": "G4", "section": "Organic Grains", "shelf_label": "G1", "quantity": 25}
+    ]
+  },
+  {
+    "id": "GROC010",
+    "title": "Almond Milk - Unsweetened 64oz",
+    "description": "Unsweetened almond milk, dairy-free and low in calories. Perfect for cereal and smoothies.",
+    "category": "Groceries",
+    "brand": "Silk",
+    "price": 3.99,
+    "image_url": "https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.2,
+    "is_featured": false,
+    "barcode": "025293012345",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "G3", "section": "Plant-Based Milk", "shelf_label": "P1", "quantity": 50},
+      {"store_id": "WM005", "aisle_number": "G3", "section": "Alternative Dairy", "shelf_label": "A1", "quantity": 42}
+    ]
+  },
+  {
+    "id": "APPR006",
+    "title": "Men's Polo Shirt - Navy",
+    "description": "Classic navy polo shirt made from breathable cotton blend. Perfect for casual and business casual wear.",
+    "category": "Apparel",
+    "brand": "Polo Ralph Lauren",
+    "price": 49.99,
+    "image_url": "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "888602123456",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "C7", "section": "Men's Polos", "shelf_label": "P1", "quantity": 35},
+      {"store_id": "WM003", "aisle_number": "C3", "section": "Men's Casual", "shelf_label": "C1", "quantity": 28}
+    ]
+  },
+  {
+    "id": "APPR007",
+    "title": "Women's Yoga Leggings - Black",
+    "description": "High-waisted yoga leggings with moisture-wicking fabric and four-way stretch.",
+    "category": "Apparel",
+    "brand": "Lululemon",
+    "price": 89.99,
+    "image_url": "https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.7,
+    "is_featured": true,
+    "barcode": "628586234567",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "C6", "section": "Activewear", "shelf_label": "A1", "quantity": 40},
+      {"store_id": "WM004", "aisle_number": "C2", "section": "Women's Athletic", "shelf_label": "L1", "quantity": 32}
+    ]
+  },
+  {
+    "id": "APPR008",
+    "title": "Kids' Graphic T-Shirt - Dinosaur",
+    "description": "Fun dinosaur graphic t-shirt for kids. Soft cotton fabric in bright colors.",
+    "category": "Apparel",
+    "brand": "Carter's",
+    "price": 14.99,
+    "image_url": "https://images.pexels.com/photos/914668/pexels-photo-914668.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "888510345678",
+    "store_availability": [
+      {"store_id": "WM002", "aisle_number": "C4", "section": "Kids' Clothing", "shelf_label": "K1", "quantity": 60},
+      {"store_id": "WM005", "aisle_number": "C3", "section": "Children's Tops", "shelf_label": "T1", "quantity": 48}
+    ]
+  },
+  {
+    "id": "APPR009",
+    "title": "Winter Jacket - Waterproof",
+    "description": "Insulated winter jacket with waterproof exterior and warm fleece lining.",
+    "category": "Apparel",
+    "brand": "Columbia",
+    "price": 129.99,
+    "image_url": "https://images.pexels.com/photos/1124465/pexels-photo-1124465.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "888664456789",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "C8", "section": "Outerwear", "shelf_label": "O1", "quantity": 20},
+      {"store_id": "WM003", "aisle_number": "C5", "section": "Winter Coats", "shelf_label": "W1", "quantity": 15}
+    ]
+  },
+  {
+    "id": "APPR010",
+    "title": "Casual Sneakers - White",
+    "description": "Comfortable white sneakers perfect for everyday wear. Cushioned sole and breathable upper.",
+    "category": "Apparel",
+    "brand": "Adidas",
+    "price": 79.99,
+    "image_url": "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "191028567890",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "C11", "section": "Athletic Shoes", "shelf_label": "S2", "quantity": 50},
+      {"store_id": "WM005", "aisle_number": "C7", "section": "Sneakers", "shelf_label": "A3", "quantity": 42}
+    ]
+  },
+  {
+    "id": "HOME006",
+    "title": "Stainless Steel Cookware Set - 10 Piece",
+    "description": "Professional-grade stainless steel cookware set with non-stick coating and heat-resistant handles.",
+    "category": "Home Essentials",
+    "brand": "Cuisinart",
+    "price": 149.99,
+    "image_url": "https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.7,
+    "is_featured": true,
+    "barcode": "086279678901",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "H3", "section": "Cookware", "shelf_label": "C2", "quantity": 15},
+      {"store_id": "WM002", "aisle_number": "H2", "section": "Kitchen Sets", "shelf_label": "K1", "quantity": 12}
+    ]
+  },
+  {
+    "id": "HOME007",
+    "title": "Air Purifier - HEPA Filter",
+    "description": "High-efficiency air purifier with HEPA filter. Removes 99.97% of airborne particles.",
+    "category": "Home Essentials",
+    "brand": "Honeywell",
+    "price": 199.99,
+    "image_url": "https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "085267789012",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "H6", "section": "Air Quality", "shelf_label": "A2", "quantity": 18},
+      {"store_id": "WM003", "aisle_number": "H3", "section": "Home Appliances", "shelf_label": "H1", "quantity": 14}
+    ]
+  },
+  {
+    "id": "HOME008",
+    "title": "Bamboo Cutting Board Set - 3 Piece",
+    "description": "Eco-friendly bamboo cutting boards in three sizes. Naturally antimicrobial and durable.",
+    "category": "Home Essentials",
+    "brand": "Bambüsi",
+    "price": 29.99,
+    "image_url": "https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "850890123456",
+    "store_availability": [
+      {"store_id": "WM002", "aisle_number": "H2", "section": "Kitchen Tools", "shelf_label": "T1", "quantity": 40},
+      {"store_id": "WM004", "aisle_number": "H4", "section": "Cutting Boards", "shelf_label": "B1", "quantity": 32}
+    ]
+  },
+  {
+    "id": "HOME009",
+    "title": "Smart Thermostat - WiFi Enabled",
+    "description": "Programmable smart thermostat with WiFi connectivity and energy-saving features.",
+    "category": "Home Essentials",
+    "brand": "Nest",
+    "price": 249.99,
+    "image_url": "https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": true,
+    "barcode": "193575234567",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "H8", "section": "Smart Home", "shelf_label": "S1", "quantity": 12},
+      {"store_id": "WM005", "aisle_number": "H5", "section": "Home Automation", "shelf_label": "H2", "quantity": 10}
+    ]
+  },
+  {
+    "id": "HOME010",
+    "title": "Vacuum Cleaner - Cordless Stick",
+    "description": "Lightweight cordless stick vacuum with powerful suction and multiple attachments.",
+    "category": "Home Essentials",
+    "brand": "Dyson",
+    "price": 399.99,
+    "image_url": "https://images.pexels.com/photos/4239146/pexels-photo-4239146.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.8,
+    "is_featured": true,
+    "barcode": "885609345678",
+    "store_availability": [
+      {"store_id": "WM001", "aisle_number": "H15", "section": "Cleaning Appliances", "shelf_label": "V1", "quantity": 8},
+      {"store_id": "WM003", "aisle_number": "H9", "section": "Vacuums", "shelf_label": "V2", "quantity": 6}
+    ]
+  }
+]

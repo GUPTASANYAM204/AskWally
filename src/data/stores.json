@@ -1,0 +1,571 @@
+[
+  {
+    "store_id": "WM001",
+    "store_name": "Walmart Supercenter - Downtown",
+    "latitude": 40.7589,
+    "longitude": -73.9851,
+    "address": "123 Main Street, New York, NY 10001",
+    "phone": "(555) 123-4567",
+    "hours": {
+      "monday": "6:00 AM - 11:00 PM",
+      "tuesday": "6:00 AM - 11:00 PM",
+      "wednesday": "6:00 AM - 11:00 PM",
+      "thursday": "6:00 AM - 11:00 PM",
+      "friday": "6:00 AM - 11:00 PM",
+      "saturday": "6:00 AM - 11:00 PM",
+      "sunday": "7:00 AM - 10:00 PM"
+    },
+    "services": ["Pharmacy", "Auto Center", "Vision Center", "McDonald's", "Grocery Pickup"],
+    "layout": {
+      "total_aisles": 45,
+      "departments": [
+        {
+          "name": "Electronics",
+          "aisles": ["E1", "E2", "E3", "E4", "E5", "E6"],
+          "sections": [
+            {"aisle": "E1", "section": "TVs & Home Theater", "coordinates": {"x": 200, "y": 120}},
+            {"aisle": "E2", "section": "Computers & Laptops", "coordinates": {"x": 320, "y": 120}},
+            {"aisle": "E3", "section": "Cell Phones", "coordinates": {"x": 440, "y": 120}},
+            {"aisle": "E4", "section": "Audio & Headphones", "coordinates": {"x": 200, "y": 150}},
+            {"aisle": "E5", "section": "Gaming & Consoles", "coordinates": {"x": 320, "y": 150}},
+            {"aisle": "E6", "section": "Cameras & Photo", "coordinates": {"x": 440, "y": 150}}
+          ]
+        },
+        {
+          "name": "Groceries",
+          "aisles": ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"],
+          "sections": [
+            {"aisle": "G1", "section": "Produce", "coordinates": {"x": 50, "y": 120}},
+            {"aisle": "G2", "section": "Fresh Vegetables", "coordinates": {"x": 50, "y": 150}},
+            {"aisle": "G3", "section": "Dairy", "coordinates": {"x": 50, "y": 180}},
+            {"aisle": "G4", "section": "Meat & Seafood", "coordinates": {"x": 50, "y": 240}},
+            {"aisle": "G5", "section": "Frozen Foods", "coordinates": {"x": 50, "y": 210}},
+            {"aisle": "G6", "section": "Nuts & Trail Mix", "coordinates": {"x": 50, "y": 330}},
+            {"aisle": "G7", "section": "Bakery", "coordinates": {"x": 50, "y": 270}},
+            {"aisle": "G8", "section": "Beverages", "coordinates": {"x": 50, "y": 300}}
+          ]
+        },
+        {
+          "name": "Apparel",
+          "aisles": ["C6", "C7", "C8", "C9", "C10", "C11"],
+          "sections": [
+            {"aisle": "C6", "section": "Women's Tops", "coordinates": {"x": 200, "y": 200}},
+            {"aisle": "C7", "section": "Men's T-Shirts", "coordinates": {"x": 300, "y": 200}},
+            {"aisle": "C8", "section": "Hoodies & Sweatshirts", "coordinates": {"x": 400, "y": 200}},
+            {"aisle": "C9", "section": "Jeans & Denim", "coordinates": {"x": 200, "y": 230}},
+            {"aisle": "C10", "section": "Dress Pants", "coordinates": {"x": 300, "y": 230}},
+            {"aisle": "C11", "section": "Shoes & Footwear", "coordinates": {"x": 400, "y": 230}}
+          ]
+        },
+        {
+          "name": "Home Essentials",
+          "aisles": ["H3", "H6", "H8", "H12", "H15"],
+          "sections": [
+            {"aisle": "H3", "section": "Kitchen & Dining", "coordinates": {"x": 560, "y": 120}},
+            {"aisle": "H6", "section": "Small Appliances", "coordinates": {"x": 560, "y": 150}},
+            {"aisle": "H8", "section": "Home Decor & Lighting", "coordinates": {"x": 560, "y": 180}},
+            {"aisle": "H12", "section": "Bedding & Bath", "coordinates": {"x": 560, "y": 210}},
+            {"aisle": "H15", "section": "Storage & Organization", "coordinates": {"x": 560, "y": 240}}
+          ]
+        },
+        {
+          "name": "Health & Beauty",
+          "aisles": ["HB2", "HB5", "HB7", "HB9"],
+          "sections": [
+            {"aisle": "HB2", "section": "Oral Care", "coordinates": {"x": 200, "y": 300}},
+            {"aisle": "HB5", "section": "Vitamins & Supplements", "coordinates": {"x": 300, "y": 300}},
+            {"aisle": "HB7", "section": "Skincare & Beauty", "coordinates": {"x": 400, "y": 300}},
+            {"aisle": "HB9", "section": "Personal Care", "coordinates": {"x": 200, "y": 330}}
+          ]
+        },
+        {
+          "name": "Toys",
+          "aisles": ["T3", "T5", "T7", "T8"],
+          "sections": [
+            {"aisle": "T3", "section": "Educational Toys", "coordinates": {"x": 50, "y": 380}},
+            {"aisle": "T5", "section": "Remote Control Toys", "coordinates": {"x": 160, "y": 380}},
+            {"aisle": "T7", "section": "Puzzles & Games", "coordinates": {"x": 270, "y": 380}},
+            {"aisle": "T8", "section": "Building Blocks", "coordinates": {"x": 380, "y": 380}}
+          ]
+        },
+        {
+          "name": "Stationery",
+          "aisles": ["S1", "S2", "S3"],
+          "sections": [
+            {"aisle": "S1", "section": "Office Supplies", "coordinates": {"x": 100, "y": 450}},
+            {"aisle": "S2", "section": "Writing Instruments", "coordinates": {"x": 200, "y": 450}},
+            {"aisle": "S3", "section": "Office Supplies", "coordinates": {"x": 300, "y": 450}}
+          ]
+        },
+        {
+          "name": "Furniture",
+          "aisles": ["F1", "F4", "F6"],
+          "sections": [
+            {"aisle": "F1", "section": "Office Furniture", "coordinates": {"x": 650, "y": 300}},
+            {"aisle": "F4", "section": "Storage Furniture", "coordinates": {"x": 650, "y": 350}},
+            {"aisle": "F6", "section": "Bedroom Furniture", "coordinates": {"x": 650, "y": 400}}
+          ]
+        },
+        {
+          "name": "Automotive",
+          "aisles": ["A1", "A2", "A3"],
+          "sections": [
+            {"aisle": "A1", "section": "Motor Oil", "coordinates": {"x": 50, "y": 500}},
+            {"aisle": "A2", "section": "Automotive Fluids", "coordinates": {"x": 150, "y": 500}},
+            {"aisle": "A3", "section": "Car Wash", "coordinates": {"x": 250, "y": 500}}
+          ]
+        },
+        {
+          "name": "Pet Supplies",
+          "aisles": ["P1", "P2", "P5"],
+          "sections": [
+            {"aisle": "P1", "section": "Dog Food", "coordinates": {"x": 500, "y": 450}},
+            {"aisle": "P2", "section": "Dog Accessories", "coordinates": {"x": 600, "y": 450}},
+            {"aisle": "P5", "section": "Aquarium Supplies", "coordinates": {"x": 700, "y": 450}}
+          ]
+        }
+      ],
+      "special_areas": [
+        {"name": "Customer Service", "coordinates": {"x": 90, "y": 70}},
+        {"name": "Pharmacy", "coordinates": {"x": 620, "y": 70}},
+        {"name": "McDonald's", "coordinates": {"x": 90, "y": 105}},
+        {"name": "Restrooms", "coordinates": {"x": 620, "y": 105}},
+        {"name": "Checkout Lanes", "coordinates": {"x": 360, "y": 70}}
+      ]
+    }
+  },
+  {
+    "store_id": "WM002",
+    "store_name": "Walmart Supercenter - Midtown",
+    "latitude": 40.7505,
+    "longitude": -73.9934,
+    "address": "456 Broadway Avenue, New York, NY 10018",
+    "phone": "(555) 234-5678",
+    "hours": {
+      "monday": "6:00 AM - 11:00 PM",
+      "tuesday": "6:00 AM - 11:00 PM",
+      "wednesday": "6:00 AM - 11:00 PM",
+      "thursday": "6:00 AM - 11:00 PM",
+      "friday": "6:00 AM - 12:00 AM",
+      "saturday": "6:00 AM - 12:00 AM",
+      "sunday": "7:00 AM - 10:00 PM"
+    },
+    "services": ["Pharmacy", "Vision Center", "Subway", "Grocery Pickup", "Photo Center"],
+    "layout": {
+      "total_aisles": 38,
+      "departments": [
+        {
+          "name": "Electronics",
+          "aisles": ["E1", "E2"],
+          "sections": [
+            {"aisle": "E1", "section": "Computers", "coordinates": {"x": 180, "y": 100}},
+            {"aisle": "E2", "section": "Electronics", "coordinates": {"x": 280, "y": 100}}
+          ]
+        },
+        {
+          "name": "Groceries",
+          "aisles": ["G1", "G2", "G3", "G5"],
+          "sections": [
+            {"aisle": "G1", "section": "Fresh Fruits", "coordinates": {"x": 60, "y": 120}},
+            {"aisle": "G2", "section": "Dairy", "coordinates": {"x": 60, "y": 160}},
+            {"aisle": "G3", "section": "Fresh Meat", "coordinates": {"x": 60, "y": 200}},
+            {"aisle": "G5", "section": "Cookies & Snacks", "coordinates": {"x": 60, "y": 240}}
+          ]
+        },
+        {
+          "name": "Apparel",
+          "aisles": ["C2", "C4"],
+          "sections": [
+            {"aisle": "C2", "section": "Women's Casual", "coordinates": {"x": 200, "y": 180}},
+            {"aisle": "C4", "section": "Hoodies & Sweatshirts", "coordinates": {"x": 300, "y": 180}}
+          ]
+        },
+        {
+          "name": "Home Essentials",
+          "aisles": ["H2", "H7"],
+          "sections": [
+            {"aisle": "H2", "section": "Kitchen & Dining", "coordinates": {"x": 480, "y": 120}},
+            {"aisle": "H7", "section": "Bedding", "coordinates": {"x": 480, "y": 160}}
+          ]
+        },
+        {
+          "name": "Health & Beauty",
+          "aisles": ["HB3"],
+          "sections": [
+            {"aisle": "HB3", "section": "Vitamins & Supplements", "coordinates": {"x": 200, "y": 280}}
+          ]
+        },
+        {
+          "name": "Toys",
+          "aisles": ["T2", "T5"],
+          "sections": [
+            {"aisle": "T2", "section": "Remote Control Toys", "coordinates": {"x": 80, "y": 350}},
+            {"aisle": "T5", "section": "Action Figures", "coordinates": {"x": 180, "y": 350}}
+          ]
+        },
+        {
+          "name": "Stationery",
+          "aisles": ["S2", "S3"],
+          "sections": [
+            {"aisle": "S2", "section": "Desk Accessories", "coordinates": {"x": 120, "y": 400}},
+            {"aisle": "S3", "section": "School Supplies", "coordinates": {"x": 220, "y": 400}}
+          ]
+        },
+        {
+          "name": "Furniture",
+          "aisles": ["F3", "F5"],
+          "sections": [
+            {"aisle": "F3", "section": "Living Room", "coordinates": {"x": 520, "y": 280}},
+            {"aisle": "F5", "section": "Dining Room", "coordinates": {"x": 520, "y": 320}}
+          ]
+        },
+        {
+          "name": "Automotive",
+          "aisles": ["A2", "A3"],
+          "sections": [
+            {"aisle": "A2", "section": "Tire Care", "coordinates": {"x": 80, "y": 450}},
+            {"aisle": "A3", "section": "Car Care", "coordinates": {"x": 180, "y": 450}}
+          ]
+        },
+        {
+          "name": "Pet Supplies",
+          "aisles": ["P3", "P4"],
+          "sections": [
+            {"aisle": "P3", "section": "Cat Supplies", "coordinates": {"x": 420, "y": 400}},
+            {"aisle": "P4", "section": "Pet Comfort", "coordinates": {"x": 520, "y": 400}}
+          ]
+        }
+      ],
+      "special_areas": [
+        {"name": "Customer Service", "coordinates": {"x": 80, "y": 60}},
+        {"name": "Pharmacy", "coordinates": {"x": 500, "y": 60}},
+        {"name": "Subway", "coordinates": {"x": 80, "y": 90}},
+        {"name": "Restrooms", "coordinates": {"x": 500, "y": 90}},
+        {"name": "Checkout Lanes", "coordinates": {"x": 290, "y": 60}}
+      ]
+    }
+  },
+  {
+    "store_id": "WM003",
+    "store_name": "Walmart Supercenter - Upper East Side",
+    "latitude": 40.7736,
+    "longitude": -73.9566,
+    "address": "789 Lexington Avenue, New York, NY 10065",
+    "phone": "(555) 345-6789",
+    "hours": {
+      "monday": "7:00 AM - 10:00 PM",
+      "tuesday": "7:00 AM - 10:00 PM",
+      "wednesday": "7:00 AM - 10:00 PM",
+      "thursday": "7:00 AM - 10:00 PM",
+      "friday": "7:00 AM - 11:00 PM",
+      "saturday": "7:00 AM - 11:00 PM",
+      "sunday": "8:00 AM - 9:00 PM"
+    },
+    "services": ["Pharmacy", "Auto Center", "Grocery Pickup", "Money Services"],
+    "layout": {
+      "total_aisles": 42,
+      "departments": [
+        {
+          "name": "Electronics",
+          "aisles": ["E1", "E3", "E4"],
+          "sections": [
+            {"aisle": "E1", "section": "Mobile Devices", "coordinates": {"x": 220, "y": 110}},
+            {"aisle": "E3", "section": "Audio", "coordinates": {"x": 320, "y": 110}},
+            {"aisle": "E4", "section": "Gaming", "coordinates": {"x": 420, "y": 110}}
+          ]
+        },
+        {
+          "name": "Groceries",
+          "aisles": ["G2", "G4", "G6"],
+          "sections": [
+            {"aisle": "G2", "section": "Organic Produce", "coordinates": {"x": 70, "y": 130}},
+            {"aisle": "G4", "section": "Healthy Snacks", "coordinates": {"x": 70, "y": 170}},
+            {"aisle": "G6", "section": "International Foods", "coordinates": {"x": 70, "y": 210}}
+          ]
+        },
+        {
+          "name": "Apparel",
+          "aisles": ["C3", "C5"],
+          "sections": [
+            {"aisle": "C3", "section": "Designer Collection", "coordinates": {"x": 240, "y": 190}},
+            {"aisle": "C5", "section": "Casual Wear", "coordinates": {"x": 340, "y": 190}}
+          ]
+        },
+        {
+          "name": "Home Essentials",
+          "aisles": ["H3", "H9"],
+          "sections": [
+            {"aisle": "H3", "section": "Kitchen Appliances", "coordinates": {"x": 540, "y": 130}},
+            {"aisle": "H9", "section": "Storage & Organization", "coordinates": {"x": 540, "y": 170}}
+          ]
+        },
+        {
+          "name": "Health & Beauty",
+          "aisles": ["HB4"],
+          "sections": [
+            {"aisle": "HB4", "section": "Beauty", "coordinates": {"x": 240, "y": 290}}
+          ]
+        },
+        {
+          "name": "Toys",
+          "aisles": ["T3", "T6"],
+          "sections": [
+            {"aisle": "T3", "section": "Construction Toys", "coordinates": {"x": 90, "y": 370}},
+            {"aisle": "T6", "section": "Collectibles", "coordinates": {"x": 190, "y": 370}}
+          ]
+        },
+        {
+          "name": "Stationery",
+          "aisles": ["S2", "S4"],
+          "sections": [
+            {"aisle": "S2", "section": "Computer Accessories", "coordinates": {"x": 140, "y": 420}},
+            {"aisle": "S4", "section": "Office Organization", "coordinates": {"x": 240, "y": 420}}
+          ]
+        },
+        {
+          "name": "Furniture",
+          "aisles": ["F2", "F4"],
+          "sections": [
+            {"aisle": "F2", "section": "Chairs", "coordinates": {"x": 580, "y": 290}},
+            {"aisle": "F4", "section": "Dining Sets", "coordinates": {"x": 580, "y": 330}}
+          ]
+        },
+        {
+          "name": "Automotive",
+          "aisles": ["A2", "A4"],
+          "sections": [
+            {"aisle": "A2", "section": "Automotive Fluids", "coordinates": {"x": 90, "y": 470}},
+            {"aisle": "A4", "section": "Auto Tools", "coordinates": {"x": 190, "y": 470}}
+          ]
+        },
+        {
+          "name": "Pet Supplies",
+          "aisles": ["P1"],
+          "sections": [
+            {"aisle": "P1", "section": "Pet Accessories", "coordinates": {"x": 480, "y": 420}}
+          ]
+        }
+      ],
+      "special_areas": [
+        {"name": "Customer Service", "coordinates": {"x": 100, "y": 70}},
+        {"name": "Pharmacy", "coordinates": {"x": 550, "y": 70}},
+        {"name": "Auto Center", "coordinates": {"x": 100, "y": 100}},
+        {"name": "Money Services", "coordinates": {"x": 550, "y": 100}},
+        {"name": "Checkout Lanes", "coordinates": {"x": 325, "y": 70}}
+      ]
+    }
+  },
+  {
+    "store_id": "WM004",
+    "store_name": "Walmart Supercenter - Brooklyn Heights",
+    "latitude": 40.6892,
+    "longitude": -73.9942,
+    "address": "321 Atlantic Avenue, Brooklyn, NY 11201",
+    "phone": "(555) 456-7890",
+    "hours": {
+      "monday": "6:00 AM - 11:00 PM",
+      "tuesday": "6:00 AM - 11:00 PM",
+      "wednesday": "6:00 AM - 11:00 PM",
+      "thursday": "6:00 AM - 11:00 PM",
+      "friday": "6:00 AM - 12:00 AM",
+      "saturday": "6:00 AM - 12:00 AM",
+      "sunday": "7:00 AM - 10:00 PM"
+    },
+    "services": ["Pharmacy", "Vision Center", "Tire & Lube Express", "Grocery Pickup", "Photo Center"],
+    "layout": {
+      "total_aisles": 40,
+      "departments": [
+        {
+          "name": "Electronics",
+          "aisles": ["E3"],
+          "sections": [
+            {"aisle": "E3", "section": "Audio", "coordinates": {"x": 250, "y": 120}}
+          ]
+        },
+        {
+          "name": "Groceries",
+          "aisles": ["G2", "G4"],
+          "sections": [
+            {"aisle": "G2", "section": "Refrigerated", "coordinates": {"x": 80, "y": 140}},
+            {"aisle": "G4", "section": "Organic Section", "coordinates": {"x": 80, "y": 180}}
+          ]
+        },
+        {
+          "name": "Apparel",
+          "aisles": ["C2", "C6"],
+          "sections": [
+            {"aisle": "C2", "section": "Women's Casual", "coordinates": {"x": 220, "y": 200}},
+            {"aisle": "C6", "section": "Women's Professional", "coordinates": {"x": 320, "y": 200}}
+          ]
+        },
+        {
+          "name": "Home Essentials",
+          "aisles": ["H4"],
+          "sections": [
+            {"aisle": "H4", "section": "Dinnerware", "coordinates": {"x": 520, "y": 140}}
+          ]
+        },
+        {
+          "name": "Health & Beauty",
+          "aisles": ["HB1", "HB3"],
+          "sections": [
+            {"aisle": "HB1", "section": "Dental Care", "coordinates": {"x": 220, "y": 300}},
+            {"aisle": "HB3", "section": "Supplements", "coordinates": {"x": 320, "y": 300}}
+          ]
+        },
+        {
+          "name": "Toys",
+          "aisles": ["T1"],
+          "sections": [
+            {"aisle": "T1", "section": "Learning Toys", "coordinates": {"x": 100, "y": 380}}
+          ]
+        },
+        {
+          "name": "Stationery",
+          "aisles": ["S1", "S4"],
+          "sections": [
+            {"aisle": "S1", "section": "Notebooks", "coordinates": {"x": 160, "y": 430}},
+            {"aisle": "S4", "section": "Paper Products", "coordinates": {"x": 260, "y": 430}}
+          ]
+        },
+        {
+          "name": "Furniture",
+          "aisles": ["F1", "F5"],
+          "sections": [
+            {"aisle": "F1", "section": "Tables", "coordinates": {"x": 560, "y": 300}},
+            {"aisle": "F5", "section": "Bedroom", "coordinates": {"x": 560, "y": 340}}
+          ]
+        },
+        {
+          "name": "Automotive",
+          "aisles": ["A1"],
+          "sections": [
+            {"aisle": "A1", "section": "Car Maintenance", "coordinates": {"x": 100, "y": 480}}
+          ]
+        },
+        {
+          "name": "Pet Supplies",
+          "aisles": ["P2", "P3"],
+          "sections": [
+            {"aisle": "P2", "section": "Pet Food", "coordinates": {"x": 460, "y": 430}},
+            {"aisle": "P3", "section": "Pet Beds", "coordinates": {"x": 560, "y": 430}}
+          ]
+        }
+      ],
+      "special_areas": [
+        {"name": "Customer Service", "coordinates": {"x": 110, "y": 80}},
+        {"name": "Pharmacy", "coordinates": {"x": 530, "y": 80}},
+        {"name": "Vision Center", "coordinates": {"x": 110, "y": 110}},
+        {"name": "Tire & Lube Express", "coordinates": {"x": 530, "y": 110}},
+        {"name": "Checkout Lanes", "coordinates": {"x": 320, "y": 80}}
+      ]
+    }
+  },
+  {
+    "store_id": "WM005",
+    "store_name": "Walmart Supercenter - Queens Plaza",
+    "latitude": 40.7505,
+    "longitude": -73.9370,
+    "address": "654 Northern Boulevard, Long Island City, NY 11101",
+    "phone": "(555) 567-8901",
+    "hours": {
+      "monday": "6:00 AM - 11:00 PM",
+      "tuesday": "6:00 AM - 11:00 PM",
+      "wednesday": "6:00 AM - 11:00 PM",
+      "thursday": "6:00 AM - 11:00 PM",
+      "friday": "6:00 AM - 12:00 AM",
+      "saturday": "6:00 AM - 12:00 AM",
+      "sunday": "7:00 AM - 10:00 PM"
+    },
+    "services": ["Pharmacy", "Auto Center", "Vision Center", "Grocery Pickup", "Money Services", "Photo Center"],
+    "layout": {
+      "total_aisles": 50,
+      "departments": [
+        {
+          "name": "Electronics",
+          "aisles": ["E2"],
+          "sections": [
+            {"aisle": "E2", "section": "Laptops", "coordinates": {"x": 280, "y": 130}}
+          ]
+        },
+        {
+          "name": "Groceries",
+          "aisles": ["G3"],
+          "sections": [
+            {"aisle": "G3", "section": "Snacks", "coordinates": {"x": 90, "y": 150}}
+          ]
+        },
+        {
+          "name": "Apparel",
+          "aisles": ["C3", "C7"],
+          "sections": [
+            {"aisle": "C3", "section": "Men's Bottoms", "coordinates": {"x": 250, "y": 210}},
+            {"aisle": "C7", "section": "Athletic Footwear", "coordinates": {"x": 350, "y": 210}}
+          ]
+        },
+        {
+          "name": "Home Essentials",
+          "aisles": ["H5", "H6"],
+          "sections": [
+            {"aisle": "H5", "section": "Lighting", "coordinates": {"x": 570, "y": 150}},
+            {"aisle": "H6", "section": "Organization", "coordinates": {"x": 570, "y": 190}}
+          ]
+        },
+        {
+          "name": "Health & Beauty",
+          "aisles": ["HB2", "HB5"],
+          "sections": [
+            {"aisle": "HB2", "section": "Health Supplements", "coordinates": {"x": 250, "y": 320}},
+            {"aisle": "HB5", "section": "Hair Care", "coordinates": {"x": 350, "y": 320}}
+          ]
+        },
+        {
+          "name": "Toys",
+          "aisles": ["T2", "T4"],
+          "sections": [
+            {"aisle": "T2", "section": "Board Games", "coordinates": {"x": 110, "y": 400}},
+            {"aisle": "T4", "section": "RC Vehicles", "coordinates": {"x": 210, "y": 400}}
+          ]
+        },
+        {
+          "name": "Stationery",
+          "aisles": ["S3"],
+          "sections": [
+            {"aisle": "S3", "section": "Pens & Pencils", "coordinates": {"x": 170, "y": 450}}
+          ]
+        },
+        {
+          "name": "Furniture",
+          "aisles": ["F3"],
+          "sections": [
+            {"aisle": "F3", "section": "Shelving", "coordinates": {"x": 610, "y": 320}}
+          ]
+        },
+        {
+          "name": "Automotive",
+          "aisles": ["A1", "A3"],
+          "sections": [
+            {"aisle": "A1", "section": "Air Fresheners", "coordinates": {"x": 110, "y": 500}},
+            {"aisle": "A3", "section": "Cleaning Supplies", "coordinates": {"x": 210, "y": 500}}
+          ]
+        },
+        {
+          "name": "Pet Supplies",
+          "aisles": ["P1", "P4"],
+          "sections": [
+            {"aisle": "P1", "section": "Cat Care", "coordinates": {"x": 510, "y": 450}},
+            {"aisle": "P4", "section": "Fish Care", "coordinates": {"x": 610, "y": 450}}
+          ]
+        }
+      ],
+      "special_areas": [
+        {"name": "Customer Service", "coordinates": {"x": 120, "y": 90}},
+        {"name": "Pharmacy", "coordinates": {"x": 580, "y": 90}},
+        {"name": "Auto Center", "coordinates": {"x": 120, "y": 120}},
+        {"name": "Vision Center", "coordinates": {"x": 580, "y": 120}},
+        {"name": "Money Services", "coordinates": {"x": 350, "y": 90}},
+        {"name": "Checkout Lanes", "coordinates": {"x": 350, "y": 60}}
+      ]
+    }
+  }
+]

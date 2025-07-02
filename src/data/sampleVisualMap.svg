@@ -1,0 +1,231 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Store Boundary -->
+  <rect x="50" y="50" width="700" height="500" fill="#f8f9fa" stroke="#343a40" stroke-width="3" rx="10"/>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#343a40">
+    Walmart Supercenter - Downtown Store Layout
+  </text>
+  
+  <!-- Entrance -->
+  <rect x="350" y="50" width="100" height="20" fill="#28a745" stroke="#1e7e34" stroke-width="2"/>
+  <text x="400" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    MAIN ENTRANCE
+  </text>
+  
+  <!-- Customer Service -->
+  <rect x="70" y="80" width="80" height="30" fill="#ffc107" stroke="#e0a800" stroke-width="2"/>
+  <text x="110" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#212529">
+    Customer Service
+  </text>
+  
+  <!-- Checkout Area -->
+  <rect x="250" y="80" width="300" height="30" fill="#17a2b8" stroke="#138496" stroke-width="2"/>
+  <text x="400" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    CHECKOUT LANES
+  </text>
+  
+  <!-- Pharmacy -->
+  <rect x="650" y="80" width="80" height="30" fill="#dc3545" stroke="#c82333" stroke-width="2"/>
+  <text x="690" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">
+    Pharmacy
+  </text>
+  
+  <!-- Electronics Section -->
+  <g id="electronics">
+    <rect x="250" y="130" width="300" height="80" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+    <text x="400" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1976d2">
+      ELECTRONICS
+    </text>
+    
+    <!-- Electronics Aisles -->
+    <rect x="260" y="160" width="80" height="20" fill="#bbdefb" stroke="#1976d2"/>
+    <text x="300" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">E1 - TVs</text>
+    
+    <rect x="350" y="160" width="80" height="20" fill="#bbdefb" stroke="#1976d2"/>
+    <text x="390" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">E2 - Computers</text>
+    
+    <rect x="440" y="160" width="80" height="20" fill="#bbdefb" stroke="#1976d2"/>
+    <text x="480" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">E3 - Phones</text>
+    
+    <rect x="260" y="185" width="80" height="20" fill="#bbdefb" stroke="#1976d2"/>
+    <text x="300" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">E4 - Audio</text>
+    
+    <rect x="350" y="185" width="80" height="20" fill="#bbdefb" stroke="#1976d2"/>
+    <text x="390" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">E5 - Gaming</text>
+    
+    <rect x="440" y="185" width="80" height="20" fill="#bbdefb" stroke="#1976d2"/>
+    <text x="480" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#1976d2">E6 - Cameras</text>
+  </g>
+  
+  <!-- Groceries Section -->
+  <g id="groceries">
+    <rect x="70" y="130" width="150" height="200" fill="#e8f5e8" stroke="#388e3c" stroke-width="2"/>
+    <text x="145" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#388e3c">
+      GROCERIES
+    </text>
+    
+    <!-- Grocery Aisles -->
+    <rect x="80" y="160" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G1 - Produce</text>
+    
+    <rect x="80" y="180" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="192" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G2 - Vegetables</text>
+    
+    <rect x="80" y="200" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G3 - Dairy</text>
+    
+    <rect x="80" y="220" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G4 - Meat</text>
+    
+    <rect x="80" y="240" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G5 - Frozen</text>
+    
+    <rect x="80" y="260" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="272" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G6 - Snacks</text>
+    
+    <rect x="80" y="280" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="292" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G7 - Bakery</text>
+    
+    <rect x="80" y="300" width="130" height="15" fill="#c8e6c9" stroke="#388e3c"/>
+    <text x="145" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#388e3c">G8 - Beverages</text>
+  </g>
+  
+  <!-- Apparel Section -->
+  <g id="apparel">
+    <rect x="250" y="230" width="300" height="80" fill="#fce4ec" stroke="#c2185b" stroke-width="2"/>
+    <text x="400" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#c2185b">
+      APPAREL
+    </text>
+    
+    <!-- Apparel Aisles -->
+    <rect x="260" y="260" width="80" height="20" fill="#f8bbd9" stroke="#c2185b"/>
+    <text x="300" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#c2185b">C6 - Women's</text>
+    
+    <rect x="350" y="260" width="80" height="20" fill="#f8bbd9" stroke="#c2185b"/>
+    <text x="390" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#c2185b">C7 - Men's</text>
+    
+    <rect x="440" y="260" width="80" height="20" fill="#f8bbd9" stroke="#c2185b"/>
+    <text x="480" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#c2185b">C8 - Hoodies</text>
+    
+    <rect x="260" y="285" width="80" height="20" fill="#f8bbd9" stroke="#c2185b"/>
+    <text x="300" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#c2185b">C9 - Jeans</text>
+    
+    <rect x="350" y="285" width="80" height="20" fill="#f8bbd9" stroke="#c2185b"/>
+    <text x="390" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#c2185b">C10 - Pants</text>
+    
+    <rect x="440" y="285" width="80" height="20" fill="#f8bbd9" stroke="#c2185b"/>
+    <text x="480" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#c2185b">C11 - Shoes</text>
+  </g>
+  
+  <!-- Home Essentials Section -->
+  <g id="home">
+    <rect x="580" y="130" width="150" height="180" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+    <text x="655" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f57c00">
+      HOME
+    </text>
+    
+    <!-- Home Aisles -->
+    <rect x="590" y="160" width="130" height="20" fill="#ffe0b2" stroke="#f57c00"/>
+    <text x="655" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57c00">H3 - Kitchen</text>
+    
+    <rect x="590" y="185" width="130" height="20" fill="#ffe0b2" stroke="#f57c00"/>
+    <text x="655" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57c00">H6 - Appliances</text>
+    
+    <rect x="590" y="210" width="130" height="20" fill="#ffe0b2" stroke="#f57c00"/>
+    <text x="655" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57c00">H8 - Decor</text>
+    
+    <rect x="590" y="235" width="130" height="20" fill="#ffe0b2" stroke="#f57c00"/>
+    <text x="655" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57c00">H12 - Bedding</text>
+    
+    <rect x="590" y="260" width="130" height="20" fill="#ffe0b2" stroke="#f57c00"/>
+    <text x="655" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#f57c00">H15 - Storage</text>
+  </g>
+  
+  <!-- Health & Beauty Section -->
+  <g id="health">
+    <rect x="250" y="330" width="300" height="60" fill="#ffebee" stroke="#d32f2f" stroke-width="2"/>
+    <text x="400" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d32f2f">
+      HEALTH &amp; BEAUTY
+    </text>
+    
+    <!-- Health Aisles -->
+    <rect x="260" y="360" width="70" height="20" fill="#ffcdd2" stroke="#d32f2f"/>
+    <text x="295" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d32f2f">HB2 - Oral</text>
+    
+    <rect x="340" y="360" width="70" height="20" fill="#ffcdd2" stroke="#d32f2f"/>
+    <text x="375" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d32f2f">HB5 - Vitamins</text>
+    
+    <rect x="420" y="360" width="70" height="20" fill="#ffcdd2" stroke="#d32f2f"/>
+    <text x="455" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d32f2f">HB7 - Beauty</text>
+    
+    <rect x="500" y="360" width="70" height="20" fill="#ffcdd2" stroke="#d32f2f"/>
+    <text x="535" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#d32f2f">HB9 - Personal</text>
+  </g>
+  
+  <!-- Toys Section -->
+  <g id="toys">
+    <rect x="70" y="350" width="150" height="80" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+    <text x="145" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#7b1fa2">
+      TOYS
+    </text>
+    
+    <!-- Toy Aisles -->
+    <rect x="80" y="380" width="60" height="20" fill="#e1bee7" stroke="#7b1fa2"/>
+    <text x="110" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">T3 - Educational</text>
+    
+    <rect x="150" y="380" width="60" height="20" fill="#e1bee7" stroke="#7b1fa2"/>
+    <text x="180" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">T5 - RC Toys</text>
+    
+    <rect x="80" y="405" width="60" height="20" fill="#e1bee7" stroke="#7b1fa2"/>
+    <text x="110" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">T7 - Puzzles</text>
+    
+    <rect x="150" y="405" width="60" height="20" fill="#e1bee7" stroke="#7b1fa2"/>
+    <text x="180" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#7b1fa2">T8 - Blocks</text>
+  </g>
+  
+  <!-- Other Sections -->
+  <g id="other-sections">
+    <!-- Automotive -->
+    <rect x="70" y="450" width="100" height="40" fill="#e0f2f1" stroke="#00695c" stroke-width="2"/>
+    <text x="120" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#00695c">AUTO</text>
+    
+    <!-- Pet Supplies -->
+    <rect x="580" y="330" width="150" height="40" fill="#fff8e1" stroke="#ff8f00" stroke-width="2"/>
+    <text x="655" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ff8f00">PET SUPPLIES</text>
+    
+    <!-- Stationery -->
+    <rect x="250" y="410" width="150" height="40" fill="#f1f8e9" stroke="#558b2f" stroke-width="2"/>
+    <text x="325" y="430" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#558b2f">STATIONERY</text>
+    
+    <!-- Furniture -->
+    <rect x="580" y="390" width="150" height="60" fill="#fafafa" stroke="#424242" stroke-width="2"/>
+    <text x="655" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#424242">FURNITURE</text>
+  </g>
+  
+  <!-- Restrooms -->
+  <rect x="650" y="120" width="80" height="20" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2"/>
+  <text x="690" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#3f51b5">
+    Restrooms
+  </text>
+  
+  <!-- McDonald's -->
+  <rect x="70" y="120" width="80" height="20" fill="#ffecb3" stroke="#ffa000" stroke-width="2"/>
+  <text x="110" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ffa000">
+    McDonald's
+  </text>
+  
+  <!-- Legend -->
+  <g id="legend">
+    <rect x="580" y="480" width="150" height="60" fill="white" stroke="#666" stroke-width="1"/>
+    <text x="655" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">
+      LEGEND
+    </text>
+    <circle cx="590" cy="505" r="3" fill="#1976d2"/>
+    <text x="600" y="510" font-family="Arial, sans-serif" font-size="8" fill="#333">Electronics</text>
+    <circle cx="590" cy="515" r="3" fill="#388e3c"/>
+    <text x="600" y="520" font-family="Arial, sans-serif" font-size="8" fill="#333">Groceries</text>
+    <circle cx="590" cy="525" r="3" fill="#c2185b"/>
+    <text x="600" y="530" font-family="Arial, sans-serif" font-size="8" fill="#333">Apparel</text>
+  </g>
+</svg>

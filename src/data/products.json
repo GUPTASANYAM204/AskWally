@@ -1,0 +1,1402 @@
+[
+  {
+    "id": "ELEC001",
+    "title": "Samsung 65\" 4K Smart TV",
+    "description": "65-inch 4K UHD Smart TV with HDR, built-in streaming apps, and voice control. Crystal clear picture quality with vibrant colors.",
+    "category": "Electronics",
+    "brand": "Samsung",
+    "price": 799.99,
+    "image_url": "https://images.pexels.com/photos/1444416/pexels-photo-1444416.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": true,
+    "barcode": "8806090326745",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "E1",
+        "section": "TVs & Home Theater",
+        "shelf_label": "A3",
+        "quantity": 12
+      },
+      {
+        "store_id": "WM002",
+        "aisle_number": "E2",
+        "section": "Electronics",
+        "shelf_label": "B1",
+        "quantity": 8
+      }
+    ]
+  },
+  {
+    "id": "ELEC002",
+    "title": "Apple iPhone 15 Pro 128GB",
+    "description": "Latest iPhone with A17 Pro chip, advanced camera system, and all-day battery life. Available in multiple colors.",
+    "category": "Electronics",
+    "brand": "Apple",
+    "price": 999.99,
+    "image_url": "https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.8,
+    "is_featured": true,
+    "barcode": "194253433989",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "E3",
+        "section": "Cell Phones",
+        "shelf_label": "A1",
+        "quantity": 25
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "E1",
+        "section": "Mobile Devices",
+        "shelf_label": "A2",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "id": "ELEC003",
+    "title": "Sony WH-1000XM5 Wireless Headphones",
+    "description": "Industry-leading noise canceling headphones with exceptional sound quality and 30-hour battery life.",
+    "category": "Electronics",
+    "brand": "Sony",
+    "price": 349.99,
+    "image_url": "https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.7,
+    "is_featured": false,
+    "barcode": "027242920149",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "E4",
+        "section": "Audio & Headphones",
+        "shelf_label": "B2",
+        "quantity": 15
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "E3",
+        "section": "Audio",
+        "shelf_label": "A4",
+        "quantity": 10
+      }
+    ]
+  },
+  {
+    "id": "ELEC004",
+    "title": "HP Pavilion 15.6\" Laptop",
+    "description": "15.6-inch laptop with Intel Core i5 processor, 8GB RAM, and 256GB SSD. Perfect for work, school, and entertainment.",
+    "category": "Electronics",
+    "brand": "HP",
+    "price": 599.99,
+    "image_url": "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "195161001234",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "E1",
+        "section": "Computers",
+        "shelf_label": "C1",
+        "quantity": 20
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "E2",
+        "section": "Laptops",
+        "shelf_label": "A1",
+        "quantity": 14
+      }
+    ]
+  },
+  {
+    "id": "ELEC005",
+    "title": "Nintendo Switch OLED Console",
+    "description": "Gaming console with vibrant 7-inch OLED screen, enhanced audio, and versatile play modes for home and on-the-go gaming.",
+    "category": "Electronics",
+    "brand": "Nintendo",
+    "price": 349.99,
+    "image_url": "https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.8,
+    "is_featured": true,
+    "barcode": "045496596439",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "E5",
+        "section": "Gaming & Consoles",
+        "shelf_label": "A2",
+        "quantity": 30
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "E4",
+        "section": "Gaming",
+        "shelf_label": "B1",
+        "quantity": 22
+      }
+    ]
+  },
+  {
+    "id": "GROC001",
+    "title": "Organic Bananas - 3 lbs",
+    "description": "Fresh organic bananas, perfect for snacking, smoothies, or baking. Rich in potassium and natural energy.",
+    "category": "Groceries",
+    "brand": "Organic Valley",
+    "price": 2.99,
+    "image_url": "https://images.pexels.com/photos/2872755/pexels-photo-2872755.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "033383000123",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "G1",
+        "section": "Produce",
+        "shelf_label": "F1",
+        "quantity": 150
+      },
+      {
+        "store_id": "WM002",
+        "aisle_number": "G1",
+        "section": "Fresh Fruits",
+        "shelf_label": "A1",
+        "quantity": 120
+      }
+    ]
+  },
+  {
+    "id": "GROC002",
+    "title": "Whole Milk - 1 Gallon",
+    "description": "Fresh whole milk from local farms. Rich in calcium and protein, perfect for drinking or cooking.",
+    "category": "Groceries",
+    "brand": "Great Value",
+    "price": 3.49,
+    "image_url": "https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.7,
+    "is_featured": false,
+    "barcode": "078742370123",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "G3",
+        "section": "Dairy",
+        "shelf_label": "C1",
+        "quantity": 80
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "G2",
+        "section": "Refrigerated",
+        "shelf_label": "A2",
+        "quantity": 65
+      }
+    ]
+  },
+  {
+    "id": "GROC003",
+    "title": "Chocolate Chip Cookies - Family Pack",
+    "description": "Crispy chocolate chip cookies, perfect for snacking. Family-size pack with resealable packaging.",
+    "category": "Groceries",
+    "brand": "Chips Ahoy!",
+    "price": 4.99,
+    "image_url": "https://images.pexels.com/photos/230325/pexels-photo-230325.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "044000032456",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "G5",
+        "section": "Cookies & Snacks",
+        "shelf_label": "B3",
+        "quantity": 45
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "G3",
+        "section": "Snacks",
+        "shelf_label": "A4",
+        "quantity": 38
+      }
+    ]
+  },
+  {
+    "id": "GROC004",
+    "title": "Mixed Nuts Trail Mix - 16oz",
+    "description": "Premium mix of almonds, cashews, peanuts, and raisins. Perfect for snacking or adding to recipes.",
+    "category": "Groceries",
+    "brand": "Great Value",
+    "price": 6.99,
+    "image_url": "https://images.pexels.com/photos/1295572/pexels-photo-1295572.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "078742456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "G6",
+        "section": "Nuts & Trail Mix",
+        "shelf_label": "A2",
+        "quantity": 60
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "G4",
+        "section": "Healthy Snacks",
+        "shelf_label": "B1",
+        "quantity": 42
+      }
+    ]
+  },
+  {
+    "id": "GROC005",
+    "title": "Ground Beef 80/20 - 1 lb",
+    "description": "Fresh ground beef, 80% lean. Perfect for burgers, tacos, and family meals.",
+    "category": "Groceries",
+    "brand": "Fresh Market",
+    "price": 5.99,
+    "image_url": "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "021130987654",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "G4",
+        "section": "Meat & Seafood",
+        "shelf_label": "M1",
+        "quantity": 35
+      },
+      {
+        "store_id": "WM002",
+        "aisle_number": "G3",
+        "section": "Fresh Meat",
+        "shelf_label": "A3",
+        "quantity": 28
+      }
+    ]
+  },
+  {
+    "id": "APPR001",
+    "title": "Women's Cotton T-Shirt - Yellow",
+    "description": "Comfortable cotton t-shirt in bright yellow, perfect for casual wear. Made from 100% cotton with a relaxed fit.",
+    "category": "Apparel",
+    "brand": "Hanes",
+    "price": 12.99,
+    "image_url": "https://images.pexels.com/photos/914668/pexels-photo-914668.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "078715123456",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "C6",
+        "section": "Women's Tops",
+        "shelf_label": "Y1",
+        "quantity": 50
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "C2",
+        "section": "Women's Casual",
+        "shelf_label": "A2",
+        "quantity": 35
+      }
+    ]
+  },
+  {
+    "id": "APPR002",
+    "title": "Men's Blue Denim Jeans",
+    "description": "Classic straight-fit denim jeans with traditional five-pocket styling. Durable cotton blend construction.",
+    "category": "Apparel",
+    "brand": "Wrangler",
+    "price": 29.99,
+    "image_url": "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "037431987654",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "C9",
+        "section": "Jeans & Denim",
+        "shelf_label": "B2",
+        "quantity": 40
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "C3",
+        "section": "Men's Bottoms",
+        "shelf_label": "A1",
+        "quantity": 32
+      }
+    ]
+  },
+  {
+    "id": "APPR003",
+    "title": "Classic Yellow Hoodie Sweatshirt",
+    "description": "Cozy hoodie sweatshirt in sunny yellow, great for layering. Features a kangaroo pocket and adjustable drawstring hood.",
+    "category": "Apparel",
+    "brand": "Fruit of the Loom",
+    "price": 24.99,
+    "image_url": "https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.2,
+    "is_featured": false,
+    "barcode": "078715234567",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "C4",
+        "section": "Hoodies & Sweatshirts",
+        "shelf_label": "Y2",
+        "quantity": 25
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "C5",
+        "section": "Casual Wear",
+        "shelf_label": "B3",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "id": "APPR004",
+    "title": "Women's Black Dress Pants",
+    "description": "Professional dress pants perfect for work or formal occasions. Wrinkle-resistant fabric with comfortable stretch.",
+    "category": "Apparel",
+    "brand": "George",
+    "price": 22.99,
+    "image_url": "https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "078715345678",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "C10",
+        "section": "Dress Pants",
+        "shelf_label": "A3",
+        "quantity": 30
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "C6",
+        "section": "Women's Professional",
+        "shelf_label": "B1",
+        "quantity": 22
+      }
+    ]
+  },
+  {
+    "id": "APPR005",
+    "title": "Athletic Running Shoes",
+    "description": "Lightweight running shoes with breathable mesh upper and cushioned sole. Perfect for daily workouts.",
+    "category": "Apparel",
+    "brand": "Athletic Works",
+    "price": 39.99,
+    "image_url": "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.1,
+    "is_featured": false,
+    "barcode": "078715456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "C11",
+        "section": "Shoes & Footwear",
+        "shelf_label": "S1",
+        "quantity": 45
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "C7",
+        "section": "Athletic Footwear",
+        "shelf_label": "A2",
+        "quantity": 38
+      }
+    ]
+  },
+  {
+    "id": "HOME001",
+    "title": "Premium Coffee Maker - 12 Cup",
+    "description": "Programmable coffee maker with auto shut-off and glass carafe. Brews perfect coffee every time with easy-to-use controls.",
+    "category": "Home Essentials",
+    "brand": "Mr. Coffee",
+    "price": 45.99,
+    "image_url": "https://images.pexels.com/photos/324028/pexels-photo-324028.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.8,
+    "is_featured": true,
+    "barcode": "072179234567",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "H6",
+        "section": "Small Appliances",
+        "shelf_label": "A1",
+        "quantity": 20
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "H3",
+        "section": "Kitchen Appliances",
+        "shelf_label": "B2",
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "id": "HOME002",
+    "title": "Ceramic Dinnerware Set - 16 Piece",
+    "description": "Beautiful ceramic dinnerware set including plates, bowls, and mugs. Dishwasher and microwave safe.",
+    "category": "Home Essentials",
+    "brand": "Better Homes & Gardens",
+    "price": 39.99,
+    "image_url": "https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "072179345678",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "H2",
+        "section": "Kitchen & Dining",
+        "shelf_label": "D1",
+        "quantity": 25
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "H4",
+        "section": "Dinnerware",
+        "shelf_label": "A3",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "id": "HOME003",
+    "title": "LED Desk Lamp with USB Charging",
+    "description": "Modern LED desk lamp with adjustable brightness and built-in USB charging port. Perfect for home office or study.",
+    "category": "Home Essentials",
+    "brand": "Mainstays",
+    "price": 24.99,
+    "image_url": "https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "072179456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "H8",
+        "section": "Home Decor & Lighting",
+        "shelf_label": "L2",
+        "quantity": 35
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "H5",
+        "section": "Lighting",
+        "shelf_label": "B1",
+        "quantity": 28
+      }
+    ]
+  },
+  {
+    "id": "HOME004",
+    "title": "Memory Foam Pillow Set - 2 Pack",
+    "description": "Comfortable memory foam pillows that contour to your head and neck. Hypoallergenic and machine washable covers.",
+    "category": "Home Essentials",
+    "brand": "Lucid",
+    "price": 29.99,
+    "image_url": "https://images.pexels.com/photos/1034584/pexels-photo-1034584.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "072179567890",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "H12",
+        "section": "Bedding & Bath",
+        "shelf_label": "P1",
+        "quantity": 40
+      },
+      {
+        "store_id": "WM002",
+        "aisle_number": "H7",
+        "section": "Bedding",
+        "shelf_label": "A2",
+        "quantity": 32
+      }
+    ]
+  },
+  {
+    "id": "HOME005",
+    "title": "Storage Bins Set - 6 Pack",
+    "description": "Clear plastic storage bins with secure lids. Perfect for organizing closets, garages, and storage areas.",
+    "category": "Home Essentials",
+    "brand": "Sterilite",
+    "price": 19.99,
+    "image_url": "https://images.pexels.com/photos/4239146/pexels-photo-4239146.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "072179678901",
+    "store_availability": [
+      {
+        "store_id": "WM003",
+        "aisle_number": "H9",
+        "section": "Storage & Organization",
+        "shelf_label": "S2",
+        "quantity": 50
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "H6",
+        "section": "Organization",
+        "shelf_label": "A4",
+        "quantity": 42
+      }
+    ]
+  },
+  {
+    "id": "HLTH001",
+    "title": "Electric Toothbrush with Timer",
+    "description": "Advanced electric toothbrush with built-in timer and pressure sensor. Removes more plaque than manual brushing.",
+    "category": "Health & Beauty",
+    "brand": "Oral-B",
+    "price": 39.99,
+    "image_url": "https://images.pexels.com/photos/3845810/pexels-photo-3845810.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "300416234567",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "HB2",
+        "section": "Oral Care",
+        "shelf_label": "T1",
+        "quantity": 30
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "HB1",
+        "section": "Dental Care",
+        "shelf_label": "A2",
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "id": "HLTH002",
+    "title": "Vitamin D3 Supplements - 90 Count",
+    "description": "High-quality Vitamin D3 supplements to support bone health and immune system. USP verified for purity and potency.",
+    "category": "Health & Beauty",
+    "brand": "Nature Made",
+    "price": 12.99,
+    "image_url": "https://images.pexels.com/photos/3683107/pexels-photo-3683107.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "300416345678",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "HB3",
+        "section": "Vitamins & Supplements",
+        "shelf_label": "V2",
+        "quantity": 60
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "HB2",
+        "section": "Health Supplements",
+        "shelf_label": "B1",
+        "quantity": 45
+      }
+    ]
+  },
+  {
+    "id": "HLTH003",
+    "title": "Moisturizing Face Cream - Anti-Aging",
+    "description": "Advanced anti-aging face cream with retinol and hyaluronic acid. Reduces fine lines and improves skin texture.",
+    "category": "Health & Beauty",
+    "brand": "Olay",
+    "price": 18.99,
+    "image_url": "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "300416456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "HB7",
+        "section": "Skincare & Beauty",
+        "shelf_label": "S3",
+        "quantity": 40
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "HB4",
+        "section": "Beauty",
+        "shelf_label": "A1",
+        "quantity": 35
+      }
+    ]
+  },
+  {
+    "id": "HLTH004",
+    "title": "Multivitamin Gummies - 60 Count",
+    "description": "Delicious multivitamin gummies with essential vitamins and minerals. Great tasting and easy to take daily.",
+    "category": "Health & Beauty",
+    "brand": "Vitafusion",
+    "price": 9.99,
+    "image_url": "https://images.pexels.com/photos/3683107/pexels-photo-3683107.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "300416567890",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "HB3",
+        "section": "Vitamins & Supplements",
+        "shelf_label": "V1",
+        "quantity": 55
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "HB3",
+        "section": "Supplements",
+        "shelf_label": "B2",
+        "quantity": 48
+      }
+    ]
+  },
+  {
+    "id": "HLTH005",
+    "title": "Shampoo & Conditioner Set",
+    "description": "Moisturizing shampoo and conditioner set for all hair types. Leaves hair soft, shiny, and manageable.",
+    "category": "Health & Beauty",
+    "brand": "Pantene",
+    "price": 7.99,
+    "image_url": "https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.2,
+    "is_featured": false,
+    "barcode": "300416678901",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "HB9",
+        "section": "Personal Care",
+        "shelf_label": "H1",
+        "quantity": 70
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "HB5",
+        "section": "Hair Care",
+        "shelf_label": "A3",
+        "quantity": 62
+      }
+    ]
+  },
+  {
+    "id": "STAT001",
+    "title": "Wireless Bluetooth Keyboard",
+    "description": "Slim wireless keyboard with long battery life and comfortable typing experience. Compatible with multiple devices.",
+    "category": "Stationery",
+    "brand": "Logitech",
+    "price": 49.99,
+    "image_url": "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "097855234567",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "S1",
+        "section": "Office Supplies",
+        "shelf_label": "K1",
+        "quantity": 25
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "S2",
+        "section": "Computer Accessories",
+        "shelf_label": "A2",
+        "quantity": 18
+      }
+    ]
+  },
+  {
+    "id": "STAT002",
+    "title": "Notebook Set - 5 Pack",
+    "description": "College-ruled notebooks perfect for school or office use. Durable covers and quality paper.",
+    "category": "Stationery",
+    "brand": "Five Minute Journal",
+    "price": 12.99,
+    "image_url": "https://images.pexels.com/photos/1925536/pexels-photo-1925536.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "097855345678",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "S3",
+        "section": "School Supplies",
+        "shelf_label": "N1",
+        "quantity": 80
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "S1",
+        "section": "Notebooks",
+        "shelf_label": "B1",
+        "quantity": 65
+      }
+    ]
+  },
+  {
+    "id": "STAT003",
+    "title": "Gel Pen Set - 12 Colors",
+    "description": "Smooth-writing gel pens in vibrant colors. Perfect for note-taking, journaling, and creative projects.",
+    "category": "Stationery",
+    "brand": "Paper Mate",
+    "price": 8.99,
+    "image_url": "https://images.pexels.com/photos/159751/book-address-book-learning-learn-159751.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "097855456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "S2",
+        "section": "Writing Instruments",
+        "shelf_label": "P2",
+        "quantity": 90
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "S3",
+        "section": "Pens & Pencils",
+        "shelf_label": "A1",
+        "quantity": 75
+      }
+    ]
+  },
+  {
+    "id": "STAT004",
+    "title": "Desktop Organizer with Drawers",
+    "description": "Multi-compartment desk organizer with drawers. Keeps office supplies neat and easily accessible.",
+    "category": "Stationery",
+    "brand": "Sterilite",
+    "price": 15.99,
+    "image_url": "https://images.pexels.com/photos/4239146/pexels-photo-4239146.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.2,
+    "is_featured": false,
+    "barcode": "097855567890",
+    "store_availability": [
+      {
+        "store_id": "WM003",
+        "aisle_number": "S4",
+        "section": "Office Organization",
+        "shelf_label": "O1",
+        "quantity": 35
+      },
+      {
+        "store_id": "WM002",
+        "aisle_number": "S2",
+        "section": "Desk Accessories",
+        "shelf_label": "A3",
+        "quantity": 28
+      }
+    ]
+  },
+  {
+    "id": "STAT005",
+    "title": "Sticky Notes Variety Pack",
+    "description": "Assorted sticky notes in multiple sizes and colors. Essential for reminders, bookmarks, and organization.",
+    "category": "Stationery",
+    "brand": "Post-it",
+    "price": 6.99,
+    "image_url": "https://images.pexels.com/photos/1925536/pexels-photo-1925536.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "097855678901",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "S3",
+        "section": "Office Supplies",
+        "shelf_label": "S1",
+        "quantity": 100
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "S4",
+        "section": "Paper Products",
+        "shelf_label": "B2",
+        "quantity": 85
+      }
+    ]
+  },
+  {
+    "id": "TOYS001",
+    "title": "Building Blocks Set - 500 Pieces",
+    "description": "Creative building blocks set perfect for kids aged 6-12. Encourages creativity and problem-solving skills.",
+    "category": "Toys",
+    "brand": "LEGO",
+    "price": 29.99,
+    "image_url": "https://images.pexels.com/photos/298825/pexels-photo-298825.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "673419234567",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "T8",
+        "section": "Building Blocks",
+        "shelf_label": "L1",
+        "quantity": 40
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "T3",
+        "section": "Construction Toys",
+        "shelf_label": "A2",
+        "quantity": 32
+      }
+    ]
+  },
+  {
+    "id": "TOYS002",
+    "title": "Remote Control Racing Car",
+    "description": "High-speed remote control car with 2.4GHz frequency and rechargeable battery. Perfect for indoor and outdoor play.",
+    "category": "Toys",
+    "brand": "Hot Wheels",
+    "price": 34.99,
+    "image_url": "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.7,
+    "is_featured": true,
+    "barcode": "673419345678",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "T2",
+        "section": "Remote Control Toys",
+        "shelf_label": "R1",
+        "quantity": 25
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "T4",
+        "section": "RC Vehicles",
+        "shelf_label": "B1",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "id": "TOYS003",
+    "title": "Educational Tablet for Kids",
+    "description": "Interactive learning tablet with educational games, e-books, and creative activities. Designed for ages 3-9.",
+    "category": "Toys",
+    "brand": "LeapFrog",
+    "price": 79.99,
+    "image_url": "https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "673419456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "T3",
+        "section": "Educational Toys",
+        "shelf_label": "E1",
+        "quantity": 15
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "T1",
+        "section": "Learning Toys",
+        "shelf_label": "A1",
+        "quantity": 12
+      }
+    ]
+  },
+  {
+    "id": "TOYS004",
+    "title": "Action Figure Set - Superhero",
+    "description": "Detailed action figures with moveable joints and accessories. Perfect for imaginative play and collecting.",
+    "category": "Toys",
+    "brand": "Marvel",
+    "price": 19.99,
+    "image_url": "https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "673419567890",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "T5",
+        "section": "Action Figures",
+        "shelf_label": "A2",
+        "quantity": 50
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "T6",
+        "section": "Collectibles",
+        "shelf_label": "B3",
+        "quantity": 38
+      }
+    ]
+  },
+  {
+    "id": "TOYS005",
+    "title": "Puzzle Set - 1000 Pieces",
+    "description": "Challenging 1000-piece jigsaw puzzle featuring beautiful landscape artwork. Great for family bonding time.",
+    "category": "Toys",
+    "brand": "Ravensburger",
+    "price": 14.99,
+    "image_url": "https://images.pexels.com/photos/298825/pexels-photo-298825.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "673419678901",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "T7",
+        "section": "Puzzles & Games",
+        "shelf_label": "P1",
+        "quantity": 30
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "T2",
+        "section": "Board Games",
+        "shelf_label": "A3",
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "id": "FURN001",
+    "title": "Ergonomic Office Chair",
+    "description": "Comfortable office chair with lumbar support and adjustable height. Perfect for long work sessions.",
+    "category": "Furniture",
+    "brand": "Mainstays",
+    "price": 89.99,
+    "image_url": "https://images.pexels.com/photos/1957477/pexels-photo-1957477.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.2,
+    "is_featured": false,
+    "barcode": "681131234567",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "F1",
+        "section": "Office Furniture",
+        "shelf_label": "C1",
+        "quantity": 15
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "F2",
+        "section": "Chairs",
+        "shelf_label": "A1",
+        "quantity": 12
+      }
+    ]
+  },
+  {
+    "id": "FURN002",
+    "title": "Coffee Table - Modern Design",
+    "description": "Sleek modern coffee table with glass top and metal frame. Adds style to any living room.",
+    "category": "Furniture",
+    "brand": "Better Homes & Gardens",
+    "price": 129.99,
+    "image_url": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "681131345678",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "F3",
+        "section": "Living Room",
+        "shelf_label": "T1",
+        "quantity": 8
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "F1",
+        "section": "Tables",
+        "shelf_label": "B1",
+        "quantity": 6
+      }
+    ]
+  },
+  {
+    "id": "FURN003",
+    "title": "Bookshelf - 5 Tier",
+    "description": "Sturdy 5-tier bookshelf perfect for books, decorations, and storage. Easy assembly required.",
+    "category": "Furniture",
+    "brand": "Mainstays",
+    "price": 49.99,
+    "image_url": "https://images.pexels.com/photos/1957477/pexels-photo-1957477.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.1,
+    "is_featured": false,
+    "barcode": "681131456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "F4",
+        "section": "Storage Furniture",
+        "shelf_label": "S1",
+        "quantity": 20
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "F3",
+        "section": "Shelving",
+        "shelf_label": "A2",
+        "quantity": 16
+      }
+    ]
+  },
+  {
+    "id": "FURN004",
+    "title": "Dining Table Set - 4 Chairs",
+    "description": "Complete dining set with table and 4 matching chairs. Perfect for small dining rooms or kitchens.",
+    "category": "Furniture",
+    "brand": "Better Homes & Gardens",
+    "price": 199.99,
+    "image_url": "https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": true,
+    "barcode": "681131567890",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "F5",
+        "section": "Dining Room",
+        "shelf_label": "D1",
+        "quantity": 5
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "F4",
+        "section": "Dining Sets",
+        "shelf_label": "A3",
+        "quantity": 4
+      }
+    ]
+  },
+  {
+    "id": "FURN005",
+    "title": "Nightstand with Drawer",
+    "description": "Compact nightstand with drawer and open shelf. Perfect for bedside storage and organization.",
+    "category": "Furniture",
+    "brand": "Mainstays",
+    "price": 39.99,
+    "image_url": "https://images.pexels.com/photos/1957477/pexels-photo-1957477.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.0,
+    "is_featured": false,
+    "barcode": "681131678901",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "F6",
+        "section": "Bedroom Furniture",
+        "shelf_label": "N1",
+        "quantity": 25
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "F5",
+        "section": "Bedroom",
+        "shelf_label": "B2",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "id": "AUTO001",
+    "title": "Motor Oil - 5W-30 Full Synthetic",
+    "description": "High-quality full synthetic motor oil for superior engine protection and performance. 5-quart container.",
+    "category": "Automotive",
+    "brand": "Mobil 1",
+    "price": 24.99,
+    "image_url": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.7,
+    "is_featured": false,
+    "barcode": "071924234567",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "A1",
+        "section": "Motor Oil",
+        "shelf_label": "O1",
+        "quantity": 40
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "A2",
+        "section": "Automotive Fluids",
+        "shelf_label": "A1",
+        "quantity": 35
+      }
+    ]
+  },
+  {
+    "id": "AUTO002",
+    "title": "Car Air Freshener - New Car Scent",
+    "description": "Long-lasting car air freshener with new car scent. Eliminates odors and keeps your vehicle smelling fresh.",
+    "category": "Automotive",
+    "brand": "Little Trees",
+    "price": 2.99,
+    "image_url": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.2,
+    "is_featured": false,
+    "barcode": "071924345678",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "A3",
+        "section": "Car Care",
+        "shelf_label": "F1",
+        "quantity": 100
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "A1",
+        "section": "Air Fresheners",
+        "shelf_label": "B1",
+        "quantity": 85
+      }
+    ]
+  },
+  {
+    "id": "AUTO003",
+    "title": "Windshield Washer Fluid - 1 Gallon",
+    "description": "All-season windshield washer fluid that removes dirt, grime, and insects. Safe for all vehicle types.",
+    "category": "Automotive",
+    "brand": "Rain-X",
+    "price": 3.99,
+    "image_url": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "071924456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "A2",
+        "section": "Automotive Fluids",
+        "shelf_label": "W1",
+        "quantity": 60
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "A1",
+        "section": "Car Maintenance",
+        "shelf_label": "A2",
+        "quantity": 50
+      }
+    ]
+  },
+  {
+    "id": "AUTO004",
+    "title": "Tire Pressure Gauge - Digital",
+    "description": "Accurate digital tire pressure gauge with easy-to-read display. Essential for vehicle safety and fuel efficiency.",
+    "category": "Automotive",
+    "brand": "Slime",
+    "price": 12.99,
+    "image_url": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "071924567890",
+    "store_availability": [
+      {
+        "store_id": "WM003",
+        "aisle_number": "A4",
+        "section": "Auto Tools",
+        "shelf_label": "T1",
+        "quantity": 30
+      },
+      {
+        "store_id": "WM002",
+        "aisle_number": "A2",
+        "section": "Tire Care",
+        "shelf_label": "B2",
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "id": "AUTO005",
+    "title": "Car Wash Soap - Concentrated",
+    "description": "Concentrated car wash soap that produces rich suds and removes dirt without stripping wax. Makes 32 gallons.",
+    "category": "Automotive",
+    "brand": "Chemical Guys",
+    "price": 8.99,
+    "image_url": "https://images.pexels.com/photos/3807277/pexels-photo-3807277.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "071924678901",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "A3",
+        "section": "Car Wash",
+        "shelf_label": "S1",
+        "quantity": 45
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "A3",
+        "section": "Cleaning Supplies",
+        "shelf_label": "A3",
+        "quantity": 38
+      }
+    ]
+  },
+  {
+    "id": "PETS001",
+    "title": "Premium Dog Food - Chicken & Rice",
+    "description": "High-quality dry dog food with real chicken as the first ingredient. Complete nutrition for adult dogs.",
+    "category": "Pet Supplies",
+    "brand": "Purina Pro Plan",
+    "price": 32.99,
+    "image_url": "https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.6,
+    "is_featured": false,
+    "barcode": "017800234567",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "P1",
+        "section": "Dog Food",
+        "shelf_label": "D1",
+        "quantity": 25
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "P2",
+        "section": "Pet Food",
+        "shelf_label": "A1",
+        "quantity": 20
+      }
+    ]
+  },
+  {
+    "id": "PETS002",
+    "title": "Cat Litter - Clumping Clay",
+    "description": "Premium clumping clay cat litter with odor control. Easy to scoop and keeps litter box fresh.",
+    "category": "Pet Supplies",
+    "brand": "Tidy Cats",
+    "price": 14.99,
+    "image_url": "https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.4,
+    "is_featured": false,
+    "barcode": "017800345678",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "P3",
+        "section": "Cat Supplies",
+        "shelf_label": "L1",
+        "quantity": 40
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "P1",
+        "section": "Cat Care",
+        "shelf_label": "B1",
+        "quantity": 35
+      }
+    ]
+  },
+  {
+    "id": "PETS003",
+    "title": "Dog Leash - Retractable",
+    "description": "Durable retractable dog leash with comfortable grip handle. Extends up to 16 feet for freedom and control.",
+    "category": "Pet Supplies",
+    "brand": "Flexi",
+    "price": 19.99,
+    "image_url": "https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.3,
+    "is_featured": false,
+    "barcode": "017800456789",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "P2",
+        "section": "Dog Accessories",
+        "shelf_label": "L2",
+        "quantity": 30
+      },
+      {
+        "store_id": "WM003",
+        "aisle_number": "P1",
+        "section": "Pet Accessories",
+        "shelf_label": "A2",
+        "quantity": 25
+      }
+    ]
+  },
+  {
+    "id": "PETS004",
+    "title": "Pet Bed - Memory Foam",
+    "description": "Comfortable memory foam pet bed with removable, washable cover. Perfect for dogs and cats of all sizes.",
+    "category": "Pet Supplies",
+    "brand": "Best Friends by Sheri",
+    "price": 39.99,
+    "image_url": "https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.5,
+    "is_featured": false,
+    "barcode": "017800567890",
+    "store_availability": [
+      {
+        "store_id": "WM002",
+        "aisle_number": "P4",
+        "section": "Pet Comfort",
+        "shelf_label": "B1",
+        "quantity": 20
+      },
+      {
+        "store_id": "WM004",
+        "aisle_number": "P3",
+        "section": "Pet Beds",
+        "shelf_label": "B2",
+        "quantity": 15
+      }
+    ]
+  },
+  {
+    "id": "PETS005",
+    "title": "Fish Tank Filter - 10 Gallon",
+    "description": "Efficient aquarium filter for 10-gallon tanks. Provides mechanical, chemical, and biological filtration.",
+    "category": "Pet Supplies",
+    "brand": "Tetra",
+    "price": 24.99,
+    "image_url": "https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg?auto=compress&cs=tinysrgb&w=400",
+    "rating": 4.2,
+    "is_featured": false,
+    "barcode": "017800678901",
+    "store_availability": [
+      {
+        "store_id": "WM001",
+        "aisle_number": "P5",
+        "section": "Aquarium Supplies",
+        "shelf_label": "F1",
+        "quantity": 15
+      },
+      {
+        "store_id": "WM005",
+        "aisle_number": "P4",
+        "section": "Fish Care",
+        "shelf_label": "A4",
+        "quantity": 12
+      }
+    ]
+  }
+]
