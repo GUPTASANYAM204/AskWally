@@ -1,5 +1,6 @@
 import React from 'react';
 import { X } from 'lucide-react';
+import { getCategories, getBrands, getPriceRange } from '../data/mockProducts';
 import type { ParsedQuery } from '../utils/queryParser';
 
 interface ProductFiltersProps {
@@ -13,6 +14,10 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
   onFilterChange,
   category 
 }) => {
+  const categories = getCategories();
+  const brands = getBrands();
+  const priceRange = getPriceRange();
+
   const updateFilter = (key: string, value: any) => {
     const newFilters = { ...filters };
     if (value === '' || value === null || value === undefined) {
@@ -54,21 +59,28 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             <div>
               <input
                 type="number"
-                placeholder="Min"
+                placeholder={`Min ($${priceRange.min})`}
                 value={filters.price_min || ''}
                 onChange={(e) => updateFilter('price_min', e.target.value ? Number(e.target.value) : null)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
+                min={priceRange.min}
+                max={priceRange.max}
               />
             </div>
             <div>
               <input
                 type="number"
-                placeholder="Max"
+                placeholder={`Max ($${priceRange.max})`}
                 value={filters.price_max || ''}
                 onChange={(e) => updateFilter('price_max', e.target.value ? Number(e.target.value) : null)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
+                min={priceRange.min}
+                max={priceRange.max}
               />
             </div>
+          </div>
+          <div className="mt-2 text-xs text-gray-500">
+            Range: ${priceRange.min} - ${priceRange.max}
           </div>
         </div>
 
@@ -86,58 +98,13 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
           >
             <option value="">All Categories</option>
-            <option value="clothing">Clothing</option>
-            <option value="electronics">Electronics</option>
-            <option value="food">Food & Grocery</option>
-            <option value="home">Home & Garden</option>
-            <option value="toys">Toys & Games</option>
-            <option value="health">Health & Beauty</option>
-            <option value="sports">Sports & Outdoors</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </option>
+            ))}
           </select>
         </div>
-
-        {/* Color */}
-        {(category === 'clothing' || !category) && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
-              Color
-            </label>
-            <select
-              value={filters.color || ''}
-              onChange={(e) => updateFilter('color', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
-            >
-              <option value="">Any Color</option>
-              <option value="red">Red</option>
-              <option value="blue">Blue</option>
-              <option value="green">Green</option>
-              <option value="yellow">Yellow</option>
-              <option value="black">Black</option>
-              <option value="white">White</option>
-              <option value="pink">Pink</option>
-              <option value="purple">Purple</option>
-            </select>
-          </div>
-        )}
-
-        {/* Gender/Department */}
-        {category === 'clothing' && (
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
-              Department
-            </label>
-            <select
-              value={filters.gender || ''}
-              onChange={(e) => updateFilter('gender', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
-            >
-              <option value="">All Departments</option>
-              <option value="men">Men's</option>
-              <option value="women">Women's</option>
-              <option value="kids">Kids'</option>
-            </select>
-          </div>
-        )}
 
         {/* Brand */}
         <div>
@@ -150,16 +117,35 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
           >
             <option value="">Any Brand</option>
-            <option value="samsung">Samsung</option>
-            <option value="apple">Apple</option>
-            <option value="sony">Sony</option>
-            <option value="hp">HP</option>
-            <option value="nintendo">Nintendo</option>
-            <option value="hanes">Hanes</option>
-            <option value="lego">LEGO</option>
-            <option value="coleman">Coleman</option>
-            <option value="oral-b">Oral-B</option>
-            <option value="olay">Olay</option>
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Color */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-3">
+            Color
+          </label>
+          <select
+            value={filters.color || ''}
+            onChange={(e) => updateFilter('color', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue"
+          >
+            <option value="">Any Color</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+            <option value="black">Black</option>
+            <option value="white">White</option>
+            <option value="pink">Pink</option>
+            <option value="purple">Purple</option>
+            <option value="navy">Navy</option>
+            <option value="gray">Gray</option>
           </select>
         </div>
 
@@ -180,7 +166,49 @@ export const ProductFilters: React.FC<ProductFiltersProps> = ({
             <option value="5">5 Stars</option>
           </select>
         </div>
+
+        {/* Featured Products */}
+        <div>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={filters.is_featured || false}
+              onChange={(e) => updateFilter('is_featured', e.target.checked || null)}
+              className="w-4 h-4 text-walmart-blue border-gray-300 rounded focus:ring-walmart-blue"
+            />
+            <span className="text-sm font-semibold text-gray-700">Featured Products Only</span>
+          </label>
+        </div>
+
+        {/* In Stock Only */}
+        <div>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={filters.in_stock || false}
+              onChange={(e) => updateFilter('in_stock', e.target.checked || null)}
+              className="w-4 h-4 text-walmart-blue border-gray-300 rounded focus:ring-walmart-blue"
+            />
+            <span className="text-sm font-semibold text-gray-700">In Stock Only</span>
+          </label>
+        </div>
       </div>
+
+      {/* Active Filters Summary */}
+      {hasActiveFilters && (
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">Active Filters:</h4>
+          <div className="space-y-1 text-xs text-gray-600">
+            {filters.price_min && <p>Min Price: ${filters.price_min}</p>}
+            {filters.price_max && <p>Max Price: ${filters.price_max}</p>}
+            {filters.brand && <p>Brand: {filters.brand}</p>}
+            {filters.color && <p>Color: {filters.color}</p>}
+            {filters.rating_min && <p>Rating: {filters.rating_min}+ stars</p>}
+            {filters.is_featured && <p>Featured products only</p>}
+            {filters.in_stock && <p>In stock only</p>}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

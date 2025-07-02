@@ -14,450 +14,127 @@ export interface Product {
   storeLocation: string;
   aisle: string;
   description: string;
+  barcode?: string;
+  is_featured?: boolean;
+  store_availability?: StoreAvailability[];
 }
 
-export const mockProducts: Product[] = [
-  // Clothing
-  {
-    id: '1',
-    name: 'Women\'s Bright Yellow Cotton T-Shirt',
-    price: 12.99,
-    originalPrice: 16.99,
-    image: 'https://images.pexels.com/photos/914668/pexels-photo-914668.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.5,
-    reviewCount: 234,
-    brand: 'Hanes',
-    category: 'clothing',
-    color: 'yellow',
-    size: ['XS', 'S', 'M', 'L', 'XL'],
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'C7',
-    description: 'Comfortable cotton t-shirt in bright yellow, perfect for casual wear. Made from 100% cotton with a relaxed fit.'
-  },
-  {
-    id: '2',
-    name: 'Classic Yellow Hoodie Sweatshirt',
-    price: 24.99,
-    image: 'https://images.pexels.com/photos/1040945/pexels-photo-1040945.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.2,
-    reviewCount: 156,
-    brand: 'Fruit of the Loom',
-    category: 'clothing',
-    color: 'yellow',
-    size: ['S', 'M', 'L', 'XL'],
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'C8',
-    description: 'Cozy hoodie sweatshirt in sunny yellow, great for layering. Features a kangaroo pocket and adjustable drawstring hood.'
-  },
-  {
-    id: '3',
-    name: 'Lightweight Yellow Rain Jacket',
-    price: 19.99,
-    originalPrice: 29.99,
-    image: 'https://images.pexels.com/photos/1124465/pexels-photo-1124465.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.7,
-    reviewCount: 89,
-    brand: 'WeatherShield',
-    category: 'clothing',
-    color: 'yellow',
-    size: ['XS', 'S', 'M', 'L'],
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Oak Ave',
-    aisle: 'D12',
-    description: 'Water-resistant rain jacket in bright yellow for visibility and protection. Lightweight and packable design.'
-  },
-  {
-    id: '4',
-    name: 'Yellow Tank Top - Summer Collection',
-    price: 8.99,
-    image: 'https://images.pexels.com/photos/157675/fashion-men-s-individuality-black-and-white-157675.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.1,
-    reviewCount: 67,
-    brand: 'Summer Basics',
-    category: 'clothing',
-    color: 'yellow',
-    size: ['XS', 'S', 'M', 'L', 'XL'],
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'C6',
-    description: 'Breathable tank top perfect for hot summer days. Moisture-wicking fabric keeps you cool and comfortable.'
-  },
-  {
-    id: '5',
-    name: 'Men\'s Blue Denim Jeans',
-    price: 29.99,
-    originalPrice: 39.99,
-    image: 'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.6,
-    reviewCount: 342,
-    brand: 'Wrangler',
-    category: 'clothing',
-    color: 'blue',
-    size: ['30x30', '32x30', '34x32', '36x32', '38x34'],
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'C9',
-    description: 'Classic straight-fit denim jeans with traditional five-pocket styling. Durable cotton blend construction.'
-  },
-  {
-    id: '6',
-    name: 'Women\'s Black Dress Pants',
-    price: 22.99,
-    image: 'https://images.pexels.com/photos/1598508/pexels-photo-1598508.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.4,
-    reviewCount: 198,
-    brand: 'George',
-    category: 'clothing',
-    color: 'black',
-    size: ['2', '4', '6', '8', '10', '12', '14'],
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'C10',
-    description: 'Professional dress pants perfect for work or formal occasions. Wrinkle-resistant fabric with comfortable stretch.'
-  },
+export interface StoreAvailability {
+  store_id: string;
+  aisle_number: string;
+  section: string;
+  shelf_label: string;
+  quantity: number;
+}
 
-  // Electronics
-  {
-    id: '7',
-    name: 'Samsung 55" 4K Smart TV',
-    price: 449.99,
-    originalPrice: 599.99,
-    image: 'https://images.pexels.com/photos/1444416/pexels-photo-1444416.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.8,
-    reviewCount: 1247,
-    brand: 'Samsung',
-    category: 'electronics',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'E1',
-    description: '55-inch 4K UHD Smart TV with HDR, built-in streaming apps, and voice control. Crystal clear picture quality with vibrant colors.'
-  },
-  {
-    id: '8',
-    name: 'Apple iPhone 15 128GB',
-    price: 799.99,
-    image: 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.9,
-    reviewCount: 2156,
-    brand: 'Apple',
-    category: 'electronics',
-    color: 'blue',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'E3',
-    description: 'Latest iPhone with A17 Pro chip, advanced camera system, and all-day battery life. Available in multiple colors.'
-  },
-  {
-    id: '9',
-    name: 'Sony WH-1000XM5 Wireless Headphones',
-    price: 349.99,
-    originalPrice: 399.99,
-    image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.7,
-    reviewCount: 892,
-    brand: 'Sony',
-    category: 'electronics',
-    color: 'black',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Oak Ave',
-    aisle: 'E4',
-    description: 'Industry-leading noise canceling headphones with exceptional sound quality and 30-hour battery life.'
-  },
-  {
-    id: '10',
-    name: 'HP Pavilion 15.6" Laptop',
-    price: 599.99,
-    originalPrice: 749.99,
-    image: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.3,
-    reviewCount: 567,
-    brand: 'HP',
-    category: 'electronics',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'E2',
-    description: '15.6-inch laptop with Intel Core i5 processor, 8GB RAM, and 256GB SSD. Perfect for work, school, and entertainment.'
-  },
-  {
-    id: '11',
-    name: 'Nintendo Switch OLED Console',
-    price: 349.99,
-    image: 'https://images.pexels.com/photos/442576/pexels-photo-442576.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.8,
-    reviewCount: 1834,
-    brand: 'Nintendo',
-    category: 'electronics',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'E5',
-    description: 'Gaming console with vibrant 7-inch OLED screen, enhanced audio, and versatile play modes for home and on-the-go gaming.'
-  },
+export interface Store {
+  store_id: string;
+  store_name: string;
+  latitude: number;
+  longitude: number;
+  address: string;
+  phone: string;
+  hours: {
+    [key: string]: string;
+  };
+  services: string[];
+  layout: {
+    total_aisles: number;
+    departments: Department[];
+    special_areas: SpecialArea[];
+  };
+}
 
-  // Food & Grocery
-  {
-    id: '12',
-    name: 'Mixed Nuts Trail Mix - 16oz',
-    price: 6.99,
-    image: 'https://images.pexels.com/photos/1295572/pexels-photo-1295572.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.6,
-    reviewCount: 312,
-    brand: 'Great Value',
-    category: 'food',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'A14',
-    description: 'Premium mix of almonds, cashews, peanuts, and raisins. Perfect for snacking or adding to recipes.'
-  },
-  {
-    id: '13',
-    name: 'Chocolate Chip Cookies - Family Pack',
-    price: 4.99,
-    image: 'https://images.pexels.com/photos/230325/pexels-photo-230325.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.4,
-    reviewCount: 189,
-    brand: 'Chips Ahoy!',
-    category: 'food',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'A12',
-    description: 'Crispy chocolate chip cookies, perfect for snacking. Family-size pack with resealable packaging.'
-  },
-  {
-    id: '14',
-    name: 'Organic Bananas - 3 lbs',
-    price: 2.99,
-    image: 'https://images.pexels.com/photos/2872755/pexels-photo-2872755.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.5,
-    reviewCount: 456,
-    brand: 'Organic',
-    category: 'food',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'A1',
-    description: 'Fresh organic bananas, perfect for snacking, smoothies, or baking. Rich in potassium and natural energy.'
-  },
-  {
-    id: '15',
-    name: 'Whole Milk - 1 Gallon',
-    price: 3.49,
-    image: 'https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.7,
-    reviewCount: 234,
-    brand: 'Great Value',
-    category: 'food',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'A3',
-    description: 'Fresh whole milk from local farms. Rich in calcium and protein, perfect for drinking or cooking.'
-  },
+export interface Department {
+  name: string;
+  aisles: string[];
+  sections: Section[];
+}
 
-  // Home & Garden
-  {
-    id: '16',
-    name: 'Premium Coffee Maker - 12 Cup',
-    price: 45.99,
-    originalPrice: 59.99,
-    image: 'https://images.pexels.com/photos/324028/pexels-photo-324028.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.8,
-    reviewCount: 423,
-    brand: 'Mr. Coffee',
-    category: 'home',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Oak Ave',
-    aisle: 'H6',
-    description: 'Programmable coffee maker with auto shut-off and glass carafe. Brews perfect coffee every time with easy-to-use controls.'
-  },
-  {
-    id: '17',
-    name: 'Ceramic Dinnerware Set - 16 Piece',
-    price: 39.99,
-    originalPrice: 54.99,
-    image: 'https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.5,
-    reviewCount: 298,
-    brand: 'Better Homes & Gardens',
-    category: 'home',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'H3',
-    description: 'Beautiful ceramic dinnerware set including plates, bowls, and mugs. Dishwasher and microwave safe.'
-  },
-  {
-    id: '18',
-    name: 'LED Desk Lamp with USB Charging',
-    price: 24.99,
-    image: 'https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.4,
-    reviewCount: 167,
-    brand: 'Mainstays',
-    category: 'home',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'H8',
-    description: 'Modern LED desk lamp with adjustable brightness and built-in USB charging port. Perfect for home office or study.'
-  },
-  {
-    id: '19',
-    name: 'Memory Foam Pillow Set - 2 Pack',
-    price: 29.99,
-    originalPrice: 39.99,
-    image: 'https://images.pexels.com/photos/1034584/pexels-photo-1034584.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.6,
-    reviewCount: 512,
-    brand: 'Lucid',
-    category: 'home',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'H12',
-    description: 'Comfortable memory foam pillows that contour to your head and neck. Hypoallergenic and machine washable covers.'
-  },
+export interface Section {
+  aisle: string;
+  section: string;
+  coordinates: {
+    x: number;
+    y: number;
+  };
+}
 
-  // Toys & Games
-  {
-    id: '20',
-    name: 'Building Blocks Set - 500 Pieces',
-    price: 29.99,
-    image: 'https://images.pexels.com/photos/298825/pexels-photo-298825.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.5,
-    reviewCount: 267,
-    brand: 'LEGO',
-    category: 'toys',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'T8',
-    description: 'Creative building blocks set perfect for kids aged 6-12. Encourages creativity and problem-solving skills.'
-  },
-  {
-    id: '21',
-    name: 'Remote Control Racing Car',
-    price: 34.99,
-    originalPrice: 44.99,
-    image: 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.7,
-    reviewCount: 189,
-    brand: 'Hot Wheels',
-    category: 'toys',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'T5',
-    description: 'High-speed remote control car with 2.4GHz frequency and rechargeable battery. Perfect for indoor and outdoor play.'
-  },
-  {
-    id: '22',
-    name: 'Educational Tablet for Kids',
-    price: 79.99,
-    originalPrice: 99.99,
-    image: 'https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.3,
-    reviewCount: 445,
-    brand: 'LeapFrog',
-    category: 'toys',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'T3',
-    description: 'Interactive learning tablet with educational games, e-books, and creative activities. Designed for ages 3-9.'
-  },
+export interface SpecialArea {
+  name: string;
+  coordinates: {
+    x: number;
+    y: number;
+  };
+}
 
-  // Health & Beauty
-  {
-    id: '23',
-    name: 'Electric Toothbrush with Timer',
-    price: 39.99,
-    originalPrice: 54.99,
-    image: 'https://images.pexels.com/photos/3845810/pexels-photo-3845810.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.6,
-    reviewCount: 678,
-    brand: 'Oral-B',
-    category: 'health',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'HB2',
-    description: 'Advanced electric toothbrush with built-in timer and pressure sensor. Removes more plaque than manual brushing.'
-  },
-  {
-    id: '24',
-    name: 'Vitamin D3 Supplements - 90 Count',
-    price: 12.99,
-    image: 'https://images.pexels.com/photos/3683107/pexels-photo-3683107.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.5,
-    reviewCount: 234,
-    brand: 'Nature Made',
-    category: 'health',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'HB5',
-    description: 'High-quality Vitamin D3 supplements to support bone health and immune system. USP verified for purity and potency.'
-  },
-  {
-    id: '25',
-    name: 'Moisturizing Face Cream - Anti-Aging',
-    price: 18.99,
-    originalPrice: 24.99,
-    image: 'https://images.pexels.com/photos/3685530/pexels-photo-3685530.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.4,
-    reviewCount: 356,
-    brand: 'Olay',
-    category: 'health',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'HB7',
-    description: 'Advanced anti-aging face cream with retinol and hyaluronic acid. Reduces fine lines and improves skin texture.'
-  },
+// Import the realistic dataset
+import productsData from './products.json';
+import extendedProductsData from './extendedProducts.json';
+import storesData from './stores.json';
 
-  // Sports & Outdoors
-  {
-    id: '26',
-    name: 'Yoga Mat with Carrying Strap',
-    price: 19.99,
-    image: 'https://images.pexels.com/photos/3822864/pexels-photo-3822864.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.5,
-    reviewCount: 423,
-    brand: 'Gaiam',
-    category: 'sports',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'S4',
-    description: 'Premium yoga mat with excellent grip and cushioning. Includes carrying strap for easy transport to classes.'
-  },
-  {
-    id: '27',
-    name: 'Adjustable Dumbbells Set - 20 lbs',
-    price: 89.99,
-    originalPrice: 119.99,
-    image: 'https://images.pexels.com/photos/416717/pexels-photo-416717.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.7,
-    reviewCount: 289,
-    brand: 'CAP Barbell',
-    category: 'sports',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Main St',
-    aisle: 'S2',
-    description: 'Adjustable dumbbell set with quick-change weight plates. Perfect for home workouts and strength training.'
-  },
-  {
-    id: '28',
-    name: 'Camping Tent - 4 Person',
-    price: 79.99,
-    originalPrice: 99.99,
-    image: 'https://images.pexels.com/photos/2398220/pexels-photo-2398220.jpeg?auto=compress&cs=tinysrgb&w=400',
-    rating: 4.3,
-    reviewCount: 167,
-    brand: 'Coleman',
-    category: 'sports',
-    inStock: true,
-    storeLocation: 'Walmart Supercenter - Oak Ave',
-    aisle: 'S8',
-    description: 'Spacious 4-person camping tent with easy setup and weather-resistant design. Perfect for family camping trips.'
+// Combine all products
+const allProductsData = [...productsData, ...extendedProductsData];
+
+// Transform the imported data to match our Product interface
+export const mockProducts: Product[] = allProductsData.map((product: any) => {
+  // Find the primary store location for this product
+  const primaryStore = product.store_availability?.[0];
+  const store = storesData.find((s: any) => s.store_id === primaryStore?.store_id);
+  
+  return {
+    id: product.id,
+    name: product.title,
+    price: product.price,
+    originalPrice: product.original_price,
+    image: product.image_url,
+    rating: product.rating,
+    reviewCount: Math.floor(Math.random() * 1000) + 50, // Generate review count
+    brand: product.brand,
+    category: product.category.toLowerCase(),
+    color: extractColorFromName(product.title),
+    size: generateSizesForCategory(product.category),
+    inStock: (primaryStore?.quantity || 0) > 0,
+    storeLocation: store?.store_name || 'Walmart Supercenter - Main St',
+    aisle: primaryStore?.aisle_number || 'A1',
+    description: product.description,
+    barcode: product.barcode,
+    is_featured: product.is_featured,
+    store_availability: product.store_availability
+  };
+});
+
+// Store data
+export const stores: Store[] = storesData as Store[];
+
+// Helper functions
+function extractColorFromName(name: string): string | undefined {
+  const colors = ['red', 'blue', 'green', 'yellow', 'black', 'white', 'pink', 'purple', 'orange', 'brown', 'gray', 'navy'];
+  const lowerName = name.toLowerCase();
+  return colors.find(color => lowerName.includes(color));
+}
+
+function generateSizesForCategory(category: string): string[] | undefined {
+  const lowerCategory = category.toLowerCase();
+  
+  if (lowerCategory.includes('apparel') || lowerCategory.includes('clothing')) {
+    return ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
   }
-];
+  
+  if (lowerCategory.includes('shoes') || lowerCategory.includes('footwear')) {
+    return ['6', '7', '8', '9', '10', '11', '12'];
+  }
+  
+  return undefined;
+}
 
 export const getFilteredProducts = (category?: string, filters?: any): Product[] => {
   let filtered = [...mockProducts];
 
   if (category && category !== 'general') {
-    filtered = filtered.filter(product => product.category === category);
+    filtered = filtered.filter(product => 
+      product.category.toLowerCase().includes(category.toLowerCase())
+    );
   }
 
   if (filters) {
@@ -484,7 +161,101 @@ export const getFilteredProducts = (category?: string, filters?: any): Product[]
         product.brand.toLowerCase().includes(filters.brand.toLowerCase())
       );
     }
+
+    if (filters.is_featured) {
+      filtered = filtered.filter(product => product.is_featured === true);
+    }
+
+    if (filters.store_id) {
+      filtered = filtered.filter(product => 
+        product.store_availability?.some(store => store.store_id === filters.store_id)
+      );
+    }
   }
 
   return filtered;
 };
+
+// Get products by store
+export const getProductsByStore = (storeId: string): Product[] => {
+  return mockProducts.filter(product => 
+    product.store_availability?.some(store => store.store_id === storeId)
+  );
+};
+
+// Get store by ID
+export const getStoreById = (storeId: string): Store | undefined => {
+  return stores.find(store => store.store_id === storeId);
+};
+
+// Get product availability at specific store
+export const getProductAvailabilityAtStore = (productId: string, storeId: string): StoreAvailability | undefined => {
+  const product = mockProducts.find(p => p.id === productId);
+  return product?.store_availability?.find(store => store.store_id === storeId);
+};
+
+// Get featured products
+export const getFeaturedProducts = (): Product[] => {
+  return mockProducts.filter(product => product.is_featured === true);
+};
+
+// Search products by query
+export const searchProducts = (query: string): Product[] => {
+  const lowerQuery = query.toLowerCase();
+  return mockProducts.filter(product => 
+    product.name.toLowerCase().includes(lowerQuery) ||
+    product.brand.toLowerCase().includes(lowerQuery) ||
+    product.category.toLowerCase().includes(lowerQuery) ||
+    product.description.toLowerCase().includes(lowerQuery)
+  );
+};
+
+// Get products by category
+export const getProductsByCategory = (category: string): Product[] => {
+  return mockProducts.filter(product => 
+    product.category.toLowerCase() === category.toLowerCase()
+  );
+};
+
+// Get all unique categories
+export const getCategories = (): string[] => {
+  const categories = [...new Set(mockProducts.map(product => product.category))];
+  return categories.sort();
+};
+
+// Get all unique brands
+export const getBrands = (): string[] => {
+  const brands = [...new Set(mockProducts.map(product => product.brand))];
+  return brands.sort();
+};
+
+// Get price range
+export const getPriceRange = (): { min: number; max: number } => {
+  const prices = mockProducts.map(product => product.price);
+  return {
+    min: Math.min(...prices),
+    max: Math.max(...prices)
+  };
+};
+
+// Get products in specific aisle
+export const getProductsInAisle = (storeId: string, aisleNumber: string): Product[] => {
+  return mockProducts.filter(product => 
+    product.store_availability?.some(store => 
+      store.store_id === storeId && store.aisle_number === aisleNumber
+    )
+  );
+};
+
+// Get nearby stores (mock implementation)
+export const getNearbyStores = (latitude: number, longitude: number, radiusKm: number = 10): Store[] => {
+  // Simple distance calculation (in a real app, you'd use proper geolocation)
+  return stores.filter(store => {
+    const distance = Math.sqrt(
+      Math.pow(store.latitude - latitude, 2) + Math.pow(store.longitude - longitude, 2)
+    ) * 111; // Rough conversion to km
+    return distance <= radiusKm;
+  });
+};
+
+export default mockProducts;
