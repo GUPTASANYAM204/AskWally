@@ -21,7 +21,7 @@ export const WallyProductTracker: React.FC = () => {
       // Clear current product when leaving product page
       setCurrentProduct(null);
     }
-  }, [location.pathname, setCurrentProduct, setLastViewedProduct]);
+  }, [location.pathname]);
 
   return null; // This component doesn't render anything
 };

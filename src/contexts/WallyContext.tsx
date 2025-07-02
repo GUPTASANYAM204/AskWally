@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useMemo } from 'react';
 import type { Product } from '../data/mockProducts';
 
 export interface ChatMessage {
@@ -142,27 +142,44 @@ export const WallyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     console.log('Processing user input:', input, 'isVoice:', isVoice);
   };
 
+  const contextValue = useMemo(() => ({
+    ...state,
+    toggleAssistant,
+    openAssistant,
+    closeAssistant,
+    startListening,
+    stopListening,
+    startProcessing,
+    stopProcessing,
+    addMessage,
+    updateMessage,
+    setCurrentProduct,
+    setLastViewedProduct,
+    setComparisonProducts,
+    updateContext,
+    clearChat,
+    processUserInput,
+  }), [
+    state,
+    toggleAssistant,
+    openAssistant,
+    closeAssistant,
+    startListening,
+    stopListening,
+    startProcessing,
+    stopProcessing,
+    addMessage,
+    updateMessage,
+    setCurrentProduct,
+    setLastViewedProduct,
+    setComparisonProducts,
+    updateContext,
+    clearChat,
+    processUserInput,
+  ]);
+
   return (
-    <WallyContext.Provider
-      value={{
-        ...state,
-        toggleAssistant,
-        openAssistant,
-        closeAssistant,
-        startListening,
-        stopListening,
-        startProcessing,
-        stopProcessing,
-        addMessage,
-        updateMessage,
-        setCurrentProduct,
-        setLastViewedProduct,
-        setComparisonProducts,
-        updateContext,
-        clearChat,
-        processUserInput,
-      }}
-    >
+    <WallyContext.Provider value={contextValue}>
       {children}
     </WallyContext.Provider>
   );
