@@ -180,11 +180,11 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* Demo Credentials */}
-        <div className="mt-6 bg-walmart-blue/5 rounded-xl p-4 border border-walmart-blue/20">
+        {/* <div className="mt-6 bg-walmart-blue/5 rounded-xl p-4 border border-walmart-blue/20">
           <h3 className="font-semibold text-walmart-blue mb-2 text-sm">Demo Credentials</h3>
           <p className="text-xs text-gray-600 mb-1">Email: demo@askwally.com</p>
           <p className="text-xs text-gray-600">Password: demo123</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

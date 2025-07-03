@@ -65,7 +65,7 @@ export const SearchHero: React.FC<SearchHeroProps> = ({ onSearch, isSearching })
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Try: 'Show me a yellow top under $15 available near me'"
+                  placeholder="Try: 'Show me a yellow top under $15 '"
                   className="w-full px-6 py-4 pl-14 pr-32 text-lg rounded-2xl border-2 border-gray-200 bg-white/80 backdrop-blur-sm shadow-lg focus:outline-none focus:border-walmart-blue focus:ring-4 focus:ring-walmart-blue/20 transition-all duration-300 group-hover:shadow-xl"
                   disabled={isSearching}
                 />
