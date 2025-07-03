@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useWishlist } from '../contexts/WishlistContext';
 import { Trash2, Plus, Edit2, X, ChevronDown, ChevronUp, Trash } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
+import { useNavigate } from 'react-router-dom';
+import { mockProducts } from '../data/mockProducts';
 
 const WishlistPage: React.FC = () => {
   const {
@@ -13,6 +16,8 @@ const WishlistPage: React.FC = () => {
     selectWishlist,
     removeFromWishlist,
   } = useWishlist();
+  const { addItem } = useCart();
+  const navigate = useNavigate();
   const [newName, setNewName] = useState('');
   const [showNewForm, setShowNewForm] = useState(false);
   const [renameId, setRenameId] = useState<string | null>(null);
@@ -96,11 +101,26 @@ const WishlistPage: React.FC = () => {
                     >
                       <Trash2 className="w-5 h-5 text-red-400" />
                     </button>
-                    <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded mb-2" />
-                    <div className="font-semibold text-gray-800 text-center mb-1">{item.name}</div>
-                    {item.brand && <div className="text-xs text-gray-500 mb-1">{item.brand}</div>}
-                    <div className="text-walmart-blue font-bold">${item.price.toFixed(2)}</div>
-                    {item.selectedSize && <div className="text-xs text-gray-500">Size: {item.selectedSize}</div>}
+                    <button
+                      className="absolute top-2 left-2 p-1 rounded-full bg-white hover:bg-green-100 border border-gray-200"
+                      onClick={() => {
+                        const product = mockProducts.find(p => p.id === item.id);
+                        if (product) addItem(product, item.selectedSize);
+                      }}
+                      aria-label="Add to cart"
+                    >
+                      <Plus className="w-5 h-5 text-green-600" />
+                    </button>
+                    <div
+                      className="w-full flex flex-col items-center cursor-pointer"
+                      onClick={() => navigate(`/product/${item.id}`)}
+                    >
+                      <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded mb-2" />
+                      <div className="font-semibold text-gray-800 text-center mb-1">{item.name}</div>
+                      {item.brand && <div className="text-xs text-gray-500 mb-1">{item.brand}</div>}
+                      <div className="text-walmart-blue font-bold">${item.price.toFixed(2)}</div>
+                      {item.selectedSize && <div className="text-xs text-gray-500">Size: {item.selectedSize}</div>}
+                    </div>
                   </div>
                 ))}
               </div>

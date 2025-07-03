@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, MapPin, Package, ShoppingCart, Heart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
@@ -21,6 +21,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [newWishlistName, setNewWishlistName] = useState('');
   const [showWishlistPicker, setShowWishlistPicker] = useState(false);
   const [wishlistFeedback, setWishlistFeedback] = useState<string | null>(null);
+  const [loadingWishlist, setLoadingWishlist] = useState(false);
+  const defaultWishlistCreated = useRef(false);
+
+  useEffect(() => {
+    if (showWishlistPicker && wishlists.length === 0 && !defaultWishlistCreated.current) {
+      setLoadingWishlist(true);
+      createWishlist('My Wishlist');
+      defaultWishlistCreated.current = true;
+      setTimeout(() => setLoadingWishlist(false), 300);
+    }
+  }, [showWishlistPicker, wishlists.length, createWishlist]);
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -59,12 +70,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     if (newWishlistName.trim()) {
       const name = newWishlistName.trim();
       createWishlist(name);
-      setTimeout(() => {
+      setNewWishlistName('');
+      // Wait for the new wishlist to appear, then add the product
+      const tryAdd = () => {
         const created = wishlists.find(w => w.name === name);
         const newId = created ? created.id : wishlists[0]?.id;
-        handleAddToSelectedWishlist(newId);
-      }, 100);
-      setNewWishlistName('');
+        if (created) {
+          handleAddToSelectedWishlist(newId);
+        } else {
+          setTimeout(tryAdd, 100);
+        }
+      };
+      tryAdd();
     }
   };
 
@@ -104,13 +121,30 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {wishlistFeedback}
           </div>
         )}
-        <button
-          className={`absolute top-3 right-3 z-10 rounded-full p-1 bg-white/80 hover:bg-walmart-blue/10 border border-gray-200 shadow transition-colors duration-200`}
-          onClick={handleWishlistToggle}
-          aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-        >
-          <Heart className={`w-6 h-6 ${inWishlist || wishlistActive ? 'fill-walmart-blue text-walmart-blue' : 'text-gray-400'}`} />
-        </button>
+        <div className="relative overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+          {product.originalPrice && (
+            <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-lg text-sm font-semibold">
+              Sale
+            </div>
+          )}
+          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center space-x-1">
+            <Star className="w-4 h-4 text-yellow-400 fill-current" />
+            <span className="text-sm font-medium">{product.rating}</span>
+          </div>
+          <button
+            className={`absolute bottom-3 right-3 z-10 rounded-full p-1 bg-white/80 hover:bg-walmart-blue/10 border border-gray-200 shadow transition-colors duration-200`}
+            onClick={handleWishlistToggle}
+            aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+          >
+            <Heart className={`w-6 h-6 ${inWishlist || wishlistActive ? 'fill-walmart-blue text-walmart-blue' : 'text-gray-400'}`} />
+          </button>
+        </div>
+
         {showWishlistPicker && typeof window !== 'undefined' && typeof document !== 'undefined' &&
           ReactDOM.createPortal(
             <>
@@ -141,20 +175,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   </button>
                   <div className="font-bold text-2xl text-gray-800 mb-2 text-center">Add to Wishlist</div>
                   <div className="flex flex-col space-y-3 max-h-64 overflow-y-auto custom-scrollbar pr-1">
-                    {wishlists.length === 0 && (
+                    {loadingWishlist ? (
+                      <div className="text-gray-500 text-center py-2">Loading wishlist...</div>
+                    ) : wishlists.length === 0 ? (
                       <div className="text-gray-500 text-center py-2">No wishlists yet.</div>
+                    ) : (
+                      wishlists.map(wishlist => (
+                        <button
+                          key={wishlist.id}
+                          className={`w-full px-4 py-3 rounded-lg text-left font-semibold transition-all duration-150 border flex items-center space-x-3 text-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue ${wishlist.id === selectedWishlistId ? 'bg-walmart-blue/10 border-walmart-blue text-walmart-blue' : 'bg-gray-50 border-gray-200 hover:bg-walmart-blue/10 hover:text-walmart-blue'}`}
+                          onClick={e => { e.stopPropagation(); handleAddToSelectedWishlist(wishlist.id); }}
+                          tabIndex={0}
+                        >
+                          <Heart className="w-5 h-5" />
+                          <span>{wishlist.name}</span>
+                        </button>
+                      ))
                     )}
-                    {wishlists.map(wishlist => (
-                      <button
-                        key={wishlist.id}
-                        className={`w-full px-4 py-3 rounded-lg text-left font-semibold transition-all duration-150 border flex items-center space-x-3 text-lg focus:outline-none focus:ring-2 focus:ring-walmart-blue ${wishlist.id === selectedWishlistId ? 'bg-walmart-blue/10 border-walmart-blue text-walmart-blue' : 'bg-gray-50 border-gray-200 hover:bg-walmart-blue/10 hover:text-walmart-blue'}`}
-                        onClick={e => { e.stopPropagation(); handleAddToSelectedWishlist(wishlist.id); }}
-                        tabIndex={0}
-                      >
-                        <Heart className="w-5 h-5" />
-                        <span>{wishlist.name}</span>
-                      </button>
-                    ))}
                   </div>
                   <form
                     className="flex items-center mt-2 gap-2"
@@ -189,23 +226,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             document.body
           )
         }
-
-        <div className="relative overflow-hidden">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          {product.originalPrice && (
-            <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-lg text-sm font-semibold">
-              Sale
-            </div>
-          )}
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center space-x-1">
-            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span className="text-sm font-medium">{product.rating}</span>
-          </div>
-        </div>
 
         <div className="p-6">
           <div className="mb-3">

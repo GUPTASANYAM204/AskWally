@@ -5,12 +5,14 @@ import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { mockProducts } from '../data/mockProducts';
 import type { Product } from '../data/mockProducts';
+import { useWishlist } from '../contexts/WishlistContext';
 
 export const ProductDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addItem, openCart } = useCart();
   const { isAuthenticated } = useAuth();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -98,6 +100,8 @@ export const ProductDetailPage: React.FC = () => {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
+  const inWishlist = product ? isInWishlist(product.id, selectedSize) : false;
+
   return (
     <div className="pt-16 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -151,12 +155,28 @@ export const ProductDetailPage: React.FC = () => {
                 </h1>
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => setIsFavorited(!isFavorited)}
-                    className={`p-2 rounded-lg transition-colors duration-200 ${
-                      isFavorited ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
+                    onClick={() => {
+                      if (!product) return;
+                      if (inWishlist) {
+                        removeFromWishlist(product.id, selectedSize || undefined);
+                      } else {
+                        addToWishlist({
+                          id: product.id,
+                          name: product.name,
+                          image: product.image,
+                          brand: product.brand,
+                          price: product.price,
+                          selectedSize: selectedSize || undefined
+                        });
+                      }
+                    }}
+                    className={`p-2 rounded-lg transition-colors duration-200 bg-gray-100 hover:bg-gray-200`}
                   >
-                    <Heart className={`w-5 h-5 ${isFavorited ? 'fill-current' : ''}`} />
+                    <Heart
+                      className="w-5 h-5"
+                      color={inWishlist ? "#3B82F6" : "#9CA3AF"}
+                      fill={inWishlist ? "#3B82F6" : "none"}
+                    />
                   </button>
                   <button
                     onClick={handleShare}
