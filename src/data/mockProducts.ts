@@ -68,14 +68,13 @@ export interface SpecialArea {
   };
 }
 
-// Import the realistic datasets
+// Import the realistic dataset
 import productsData from './products.json';
-import extendedProductsData from './extendedProducts.json';
 import fullProductsData from './fullProducts.json';
 import storesData from './stores.json';
 
-// Combine all products from all datasets
-const allProductsData = [...productsData, ...extendedProductsData, ...fullProductsData];
+// Combine all products
+const allProductsData = [...productsData, ...fullProductsData];
 
 // Transform the imported data to match our Product interface
 export const mockProducts: Product[] = allProductsData.map((product: any) => {
