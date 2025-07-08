@@ -68,44 +68,40 @@ export interface SpecialArea {
   };
 }
 
-// Import the realistic dataset
-import productsData from './products.json';
-import fullProductsData from './fullProducts.json';
-import storesData from './stores.json';
+import walmartProductsRaw from './walmart-products-parsed.json';
 
-// Combine all products
-const allProductsData = [...productsData, ...fullProductsData];
+// Default store availability (can be improved later)
+const defaultStoreAvailability = [{
+  store_id: 'walmart-main',
+  aisle_number: 'A1',
+  section: 'General',
+  shelf_label: '1',
+  quantity: 10
+}];
 
-// Transform the imported data to match our Product interface
-export const mockProducts: Product[] = allProductsData.map((product: any) => {
-  // Find the primary store location for this product
-  const primaryStore = product.store_availability?.[0];
-  const store = storesData.find((s: any) => s.store_id === primaryStore?.store_id);
-  
-  return {
-    id: product.id,
-    name: product.title,
-    price: product.price,
-    originalPrice: product.original_price,
-    image: product.image_url,
-    rating: product.rating,
-    reviewCount: Math.floor(Math.random() * 1000) + 50, // Generate review count
-    brand: product.brand,
-    category: product.category.toLowerCase(),
-    color: extractColorFromName(product.title),
-    size: generateSizesForCategory(product.category),
-    inStock: (primaryStore?.quantity || 0) > 0,
-    storeLocation: store?.store_name || 'Walmart Supercenter - Main St',
-    aisle: primaryStore?.aisle_number || 'A1',
-    description: product.description,
-    barcode: product.barcode,
-    is_featured: product.is_featured,
-    store_availability: product.store_availability
-  };
-});
+export const mockProducts: Product[] = (walmartProductsRaw as any[]).map((item) => ({
+  id: item.product_id || item.sku || item.upc || Math.random().toString(36).slice(2),
+  name: item.product_name || item.title || '',
+  price: parseFloat(item.final_price || item.unit_price || '0'),
+  originalPrice: item.initial_price ? parseFloat(item.initial_price) : undefined,
+  image: Array.isArray(item.image_urls) ? item.image_urls[0] : (typeof item.main_image === 'string' ? item.main_image.replace(/^[\"]|[\"]$/g, '') : ''),
+  rating: parseFloat(item.rating) || 0,
+  reviewCount: parseInt(item.review_count) || 0,
+  brand: item.brand || '',
+  category: item.category_name || item.root_category_name || 'general',
+  color: Array.isArray(item.colors) ? item.colors[0] : undefined,
+  size: Array.isArray(item.sizes) ? item.sizes : undefined,
+  inStock: true,
+  storeLocation: 'Walmart Supercenter - Main St',
+  aisle: item.aisle || 'A1',
+  description: item.description || '',
+  barcode: item.upc || item.gtin || undefined,
+  is_featured: false,
+  store_availability: defaultStoreAvailability
+}));
 
 // Store data
-export const stores: Store[] = storesData as Store[];
+export const stores: Store[] = [] as Store[];
 
 // Helper functions
 function extractColorFromName(name: string): string | undefined {
