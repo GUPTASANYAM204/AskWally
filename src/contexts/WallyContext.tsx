@@ -19,6 +19,7 @@ export interface WallyState {
   lastViewedProduct: Product | null;
   comparisonProducts: Product[];
   conversationContext: any;
+  wakeWordEnabled: boolean;
 }
 
 type WallyAction =
@@ -35,7 +36,8 @@ type WallyAction =
   | { type: 'SET_LAST_VIEWED_PRODUCT'; payload: Product | null }
   | { type: 'SET_COMPARISON_PRODUCTS'; payload: Product[] }
   | { type: 'UPDATE_CONTEXT'; payload: any }
-  | { type: 'CLEAR_CHAT' };
+  | { type: 'CLEAR_CHAT' }
+  | { type: 'TOGGLE_WAKE_WORD' };
 
 const wallyReducer = (state: WallyState, action: WallyAction): WallyState => {
   switch (action.type) {
@@ -72,6 +74,8 @@ const wallyReducer = (state: WallyState, action: WallyAction): WallyState => {
       return { ...state, conversationContext: { ...state.conversationContext, ...action.payload } };
     case 'CLEAR_CHAT':
       return { ...state, messages: [], conversationContext: {} };
+    case 'TOGGLE_WAKE_WORD':
+      return { ...state, wakeWordEnabled: !state.wakeWordEnabled };
     default:
       return state;
   }
@@ -86,6 +90,7 @@ const initialState: WallyState = {
   lastViewedProduct: null,
   comparisonProducts: [],
   conversationContext: {},
+  wakeWordEnabled: true,
 };
 
 interface WallyContextType extends WallyState {
@@ -103,6 +108,7 @@ interface WallyContextType extends WallyState {
   setComparisonProducts: (products: Product[]) => void;
   updateContext: (context: any) => void;
   clearChat: () => void;
+  toggleWakeWord: () => void;
   processUserInput: (input: string, isVoice?: boolean) => Promise<void>;
 }
 
@@ -123,6 +129,7 @@ export const WallyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const setComparisonProducts = (products: Product[]) => dispatch({ type: 'SET_COMPARISON_PRODUCTS', payload: products });
   const updateContext = (context: any) => dispatch({ type: 'UPDATE_CONTEXT', payload: context });
   const clearChat = () => dispatch({ type: 'CLEAR_CHAT' });
+  const toggleWakeWord = () => dispatch({ type: 'TOGGLE_WAKE_WORD' });
 
   const addMessage = (message: Omit<ChatMessage, 'id' | 'timestamp'>) => {
     const fullMessage: ChatMessage = {
@@ -158,6 +165,7 @@ export const WallyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setComparisonProducts,
     updateContext,
     clearChat,
+    toggleWakeWord,
     processUserInput,
   }), [
     state,
@@ -175,6 +183,7 @@ export const WallyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setComparisonProducts,
     updateContext,
     clearChat,
+    toggleWakeWord,
     processUserInput,
   ]);
 

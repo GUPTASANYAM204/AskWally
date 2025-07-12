@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Search } from 'lucide-react';
 import { ProductGrid } from '../components/ProductGrid';
 import { ProductFilters } from '../components/ProductFilters';
 import { SearchSummary } from '../components/SearchSummary';
@@ -15,6 +16,7 @@ export const ProductsPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'rating' | 'name' | 'featured'>('rating');
   const [currentFilters, setCurrentFilters] = useState<ParsedQuery['filters']>(parsedQuery?.filters || {});
   const [selectedStore, setSelectedStore] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     if (parsedQuery) {
@@ -44,6 +46,26 @@ export const ProductsPage: React.FC = () => {
     setSelectedStore(storeId);
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Filter products based on search query
+    const filtered = getFilteredProducts(parsedQuery?.category, {
+      ...currentFilters,
+      store_id: selectedStore || undefined
+    });
+    
+    if (searchQuery.trim()) {
+      const searchResults = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setProducts(searchResults);
+    } else {
+      setProducts(filtered);
+    }
+  };
+
   const sortedProducts = [...products].sort((a, b) => {
     switch (sortBy) {
       case 'price-asc':
@@ -64,6 +86,28 @@ export const ProductsPage: React.FC = () => {
   return (
     <div className="pt-16 min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Search Bar */}
+        <div className="mb-8">
+          <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products by name, description, or brand..."
+                className="w-full px-6 py-4 pl-14 pr-4 text-lg rounded-2xl border-2 border-gray-200 bg-white shadow-lg focus:outline-none focus:border-walmart-blue focus:ring-4 focus:ring-walmart-blue/20 transition-all duration-300"
+              />
+              <Search className="absolute left-5 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-walmart-blue to-walmart-blue-dark text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
+
         {searchPerformed && (
           <SearchSummary 
             query={query} 
@@ -95,9 +139,7 @@ export const ProductsPage: React.FC = () => {
           
           <main className="flex-1">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-              <h2 className="text-2xl font-bold text-gray-800">
-                {products.length} Products Found
-              </h2>
+              
               
               <div className="flex flex-col sm:flex-row gap-3">
                 {/* Store Filter */}

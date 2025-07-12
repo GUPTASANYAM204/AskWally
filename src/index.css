@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Enhanced Animation Utilities */
+@layer utilities {
+  .transform-gpu {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 194, 32, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(255, 194, 32, 0.8), 0 0 60px rgba(0, 76, 145, 0.3); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 194, 32, 0.7);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 0 0 0 20px rgba(255, 194, 32, 0);
+  }
+}
+
 /* Custom animations for password strength indicator */
 @keyframes smoothPulse {
   0%, 100% {
@@ -79,4 +113,234 @@
 
 .animate-recording-pulse {
   animation: recordingPulse 1s ease-in-out infinite;
+}
+
+/* Enhanced Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #004c91, #ffc220);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #0071ce, #ffdd44);
+}
+
+/* Global Enhancements */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Smooth Transitions */
+* {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Enhanced Focus States */
+button:focus,
+input:focus {
+  outline: none;
+  ring: 4px;
+  ring-color: rgba(255, 194, 32, 0.3);
+}
+
+/* Button Effects */
+.btn-enhanced {
+  transition: all 0.3s ease;
+}
+
+.btn-enhanced:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.btn-enhanced:active {
+  transform: translateY(-1px);
+}
+
+/* Gradient Text Animation */
+.gradient-text {
+  background: linear-gradient(45deg, #004c91, #ffc220, #004c91);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Enhanced Card Hover Effects */
+.card-enhanced {
+  transition: all 0.4s ease;
+}
+
+.card-enhanced:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Floating Animation */
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Glow Effect */
+.glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+/* Pulse Glow */
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Text Shadow Effects */
+.text-shadow-enhanced {
+  text-shadow: 
+    1px 1px 0 rgba(0, 76, 145, 0.5),
+    2px 2px 0 rgba(0, 76, 145, 0.4),
+    3px 3px 0 rgba(0, 76, 145, 0.3),
+    4px 4px 0 rgba(0, 76, 145, 0.2),
+    5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Backdrop Blur */
+.backdrop-blur-enhanced {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Loading Spinner Enhancement */
+.spinner-enhanced {
+  animation: shimmer 2s linear infinite;
+}
+
+/* Interactive Elements */
+.interactive-element {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-element:hover {
+  transform: translateY(-2px);
+}
+
+.interactive-element:active {
+  transform: translateY(0);
+}
+
+/* Walmart Brand Colors */
+.bg-walmart-gradient {
+  background: linear-gradient(135deg, #004c91 0%, #ffc220 100%);
+}
+
+.text-walmart-gradient {
+  background: linear-gradient(135deg, #004c91 0%, #ffc220 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Enhanced Animations */
+.animate-bounce-slow {
+  animation: bounce 3s infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+  .card-enhanced:hover {
+    transform: translateY(-5px) scale(1.01);
+  }
+  
+  .btn-enhanced:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .card-enhanced {
+    border: 2px solid #000;
+  }
+  
+  .btn-enhanced {
+    border: 2px solid #000;
+  }
+}
+
+/* Glass Morphism Effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Neon Glow Effect */
+.neon-glow {
+  box-shadow: 
+    0 0 5px rgba(255, 194, 32, 0.5),
+    0 0 10px rgba(255, 194, 32, 0.5),
+    0 0 15px rgba(255, 194, 32, 0.5),
+    0 0 20px rgba(255, 194, 32, 0.5);
+}
+
+/* Gradient Border */
+.gradient-border {
+  position: relative;
+  background: linear-gradient(45deg, #004c91, #ffc220);
+  padding: 2px;
+  border-radius: 12px;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: white;
+  border-radius: 10px;
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection Colors */
+::selection {
+  background: rgba(255, 194, 32, 0.3);
+  color: #004c91;
+}
+
+::-moz-selection {
+  background: rgba(255, 194, 32, 0.3);
+  color: #004c91;
 }

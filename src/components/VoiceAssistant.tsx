@@ -1,177 +1,71 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Mic, MicOff, Loader2, Volume2, AlertCircle } from 'lucide-react';
+import { Mic, MicOff, Volume2, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface VoiceAssistantProps {
   onSearch: (query: string) => void;
   isSearching: boolean;
 }
 
-interface SpeechRecognitionEvent extends Event {
-  results: SpeechRecognitionResultList;
-  resultIndex: number;
-}
-
-interface SpeechRecognitionErrorEvent extends Event {
-  error: string;
-  message: string;
-}
-
-interface SpeechRecognition extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  start(): void;
-  stop(): void;
-  abort(): void;
-  onstart: ((this: SpeechRecognition, ev: Event) => any) | null;
-  onend: ((this: SpeechRecognition, ev: Event) => any) | null;
-  onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => any) | null;
-  onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => any) | null;
-}
-
-declare global {
-  interface Window {
-    SpeechRecognition: new () => SpeechRecognition;
-    webkitSpeechRecognition: new () => SpeechRecognition;
-  }
-}
-
 export const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onSearch, isSearching }) => {
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isSupported, setIsSupported] = useState(false);
-  const [showTranscript, setShowTranscript] = useState(false);
+  const [transcript, setTranscript] = useState('');
   const [confidence, setConfidence] = useState(0);
-  
   const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Check if speech recognition is supported
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    setIsSupported(!!SpeechRecognition);
-
-    if (SpeechRecognition) {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      setIsSupported(true);
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
-      const recognition = recognitionRef.current;
-
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
-
-      recognition.onstart = () => {
-        setIsListening(true);
-        setError(null);
-        setTranscript('');
-        setShowTranscript(true);
-      };
-
-      recognition.onresult = (event: SpeechRecognitionEvent) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const result = event.results[i];
-          if (result.isFinal) {
-            finalTranscript += result[0].transcript;
-            setConfidence(result[0].confidence);
-          } else {
-            interimTranscript += result[0].transcript;
-          }
-        }
-
-        setTranscript(finalTranscript || interimTranscript);
-
-        if (finalTranscript) {
-          handleVoiceSearch(finalTranscript.trim());
-        }
-      };
-
-      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-        setIsListening(false);
-        setIsProcessing(false);
-        
-        switch (event.error) {
-          case 'no-speech':
-            setError('No speech detected. Please try again.');
-            break;
-          case 'audio-capture':
-            setError('Microphone not accessible. Please check permissions.');
-            break;
-          case 'not-allowed':
-            setError('Microphone access denied. Please enable microphone permissions.');
-            break;
-          case 'network':
-            setError('Network error. Please check your connection.');
-            break;
-          default:
-            setError('Speech recognition error. Please try again.');
-        }
-      };
-
-      recognition.onend = () => {
-        setIsListening(false);
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-      };
-    }
-
-    return () => {
+      
       if (recognitionRef.current) {
-        recognitionRef.current.abort();
-      }
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.lang = 'en-US';
 
-  const handleVoiceSearch = async (query: string) => {
-    if (!query.trim()) return;
+        recognitionRef.current.onstart = () => {
+          setIsListening(true);
+          setTranscript('');
+        };
 
-    setIsProcessing(true);
-    
-    try {
-      // Simulate AI processing delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Process the search
-      onSearch(query);
-      
-      // Hide transcript after successful search
-      setTimeout(() => {
-        setShowTranscript(false);
-        setTranscript('');
-      }, 2000);
-      
-    } catch (error) {
-      setError('Failed to process voice search. Please try again.');
-    } finally {
-      setIsProcessing(false);
+        recognitionRef.current.onresult = (event) => {
+          let finalTranscript = '';
+          let interimTranscript = '';
+
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const result = event.results[i];
+            if (result.isFinal) {
+              finalTranscript += result[0].transcript;
+              setConfidence(result[0].confidence);
+            } else {
+              interimTranscript += result[0].transcript;
+            }
+          }
+
+          setTranscript(finalTranscript || interimTranscript);
+
+          if (finalTranscript) {
+            onSearch(finalTranscript.trim());
+          }
+        };
+
+        recognitionRef.current.onend = () => {
+          setIsListening(false);
+        };
+
+        recognitionRef.current.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          setIsListening(false);
+        };
+      }
     }
-  };
+  }, [onSearch]);
 
   const startListening = () => {
-    if (!recognitionRef.current || isListening || isSearching) return;
-
-    setError(null);
-    setTranscript('');
-    
-    try {
+    if (recognitionRef.current && !isListening && !isSearching) {
       recognitionRef.current.start();
-      
-      // Auto-stop after 10 seconds
-      timeoutRef.current = setTimeout(() => {
-        if (recognitionRef.current && isListening) {
-          recognitionRef.current.stop();
-        }
-      }, 10000);
-      
-    } catch (error) {
-      setError('Failed to start voice recognition. Please try again.');
     }
   };
 
@@ -179,189 +73,197 @@ export const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onSearch, isSear
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
     }
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-  };
-
-  const handleMicClick = () => {
-    if (isListening) {
-      stopListening();
-    } else {
-      startListening();
-    }
-  };
-
-  const clearError = () => {
-    setError(null);
-    setShowTranscript(false);
-    setTranscript('');
   };
 
   if (!isSupported) {
-    return (
-      <div className="flex items-center space-x-2 text-gray-500">
-        <MicOff className="w-5 h-5" />
-        <span className="text-sm">Voice search not supported</span>
-      </div>
-    );
+    return null;
   }
 
   return (
     <div className="relative">
-      {/* Voice Button */}
-      <button
-        onClick={handleMicClick}
-        disabled={isSearching || isProcessing}
-        className={`relative p-3 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed ${
+      {/* Voice Button with 3D Effects */}
+      <motion.button
+        type="button"
+        onClick={isListening ? stopListening : startListening}
+        disabled={isSearching}
+        className={`relative p-3 rounded-2xl font-semibold transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed perspective-1000 transform-gpu ${
           isListening
-            ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
-            : isProcessing
-            ? 'bg-walmart-blue text-white'
-            : 'bg-white hover:bg-gray-50 text-gray-700 border-2 border-gray-200 hover:border-walmart-blue'
+            ? 'bg-gradient-to-br from-red-500 to-red-600 text-white shadow-2xl'
+            : 'bg-gradient-to-br from-walmart-blue to-walmart-blue-dark text-white shadow-xl hover:shadow-2xl'
         }`}
-        title={isListening ? 'Stop listening' : 'Start voice search'}
+        whileHover={{ 
+          scale: 1.1,
+          rotateY: 10,
+          boxShadow: isListening 
+            ? '0 15px 35px rgba(239,68,68,0.4)' 
+            : '0 15px 35px rgba(0,76,145,0.4)'
+        }}
+        whileTap={{ scale: 0.9 }}
+        animate={isListening ? {
+          scale: [1, 1.1, 1],
+          boxShadow: [
+            '0 10px 25px rgba(239,68,68,0.3)',
+            '0 20px 40px rgba(239,68,68,0.5)',
+            '0 10px 25px rgba(239,68,68,0.3)'
+          ]
+        } : {}}
+        transition={isListening ? {
+          duration: 1,
+          repeat: Infinity,
+          ease: "easeInOut"
+        } : {}}
       >
-        {isProcessing ? (
-          <Loader2 className="w-6 h-6 animate-spin" />
-        ) : isListening ? (
-          <Mic className="w-6 h-6" />
-        ) : (
-          <Mic className="w-6 h-6" />
-        )}
-        
-        {/* Recording indicator */}
+        {/* Animated Background */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          animate={isListening ? {
+            background: [
+              'linear-gradient(45deg, rgba(255,255,255,0.1), transparent)',
+              'linear-gradient(135deg, rgba(255,255,255,0.2), transparent)',
+              'linear-gradient(225deg, rgba(255,255,255,0.1), transparent)',
+              'linear-gradient(315deg, rgba(255,255,255,0.2), transparent)',
+              'linear-gradient(45deg, rgba(255,255,255,0.1), transparent)'
+            ]
+          } : {}}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Icon with 3D Animation */}
+        <motion.div
+          className="relative z-10"
+          animate={isListening ? {
+            rotateY: [0, 360],
+            scale: [1, 1.2, 1]
+          } : {}}
+          transition={isListening ? {
+            rotateY: { duration: 2, repeat: Infinity, ease: "linear" },
+            scale: { duration: 1, repeat: Infinity, ease: "easeInOut" }
+          } : {}}
+        >
+          <AnimatePresence mode="wait">
+            {isSearching ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0, rotate: -180 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                exit={{ opacity: 0, rotate: 180 }}
+              >
+                <Loader2 className="w-5 h-5 animate-spin" />
+              </motion.div>
+            ) : isListening ? (
+              <motion.div
+                key="listening"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+              >
+                <MicOff className="w-5 h-5" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="idle"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0 }}
+              >
+                <Mic className="w-5 h-5" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Pulse Effect for Listening State */}
+        <AnimatePresence>
+          {isListening && (
+            <motion.div
+              className="absolute inset-0 rounded-2xl border-2 border-red-400"
+              initial={{ scale: 1, opacity: 1 }}
+              animate={{ 
+                scale: [1, 1.5, 2],
+                opacity: [1, 0.5, 0]
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ 
+                duration: 1.5, 
+                repeat: Infinity,
+                ease: "easeOut"
+              }}
+            />
+          )}
+        </AnimatePresence>
+      </motion.button>
+
+      {/* Voice Feedback Tooltip */}
+      <AnimatePresence>
         {isListening && (
-          <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
-        )}
-      </button>
-
-      {/* Transcript Display */}
-      {showTranscript && (transcript || isListening || isProcessing) && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 min-w-80 max-w-md">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <Volume2 className="w-5 h-5 text-walmart-blue" />
-                <span className="font-semibold text-gray-800">
-                  {isListening ? 'Listening...' : isProcessing ? 'Processing...' : 'Voice Search'}
-                </span>
-              </div>
-              <button
-                onClick={clearError}
-                className="text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          <motion.div
+            className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-xl text-sm whitespace-nowrap backdrop-blur-sm"
+            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.8 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center space-x-2">
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
               >
-                ×
-              </button>
+                <Volume2 className="w-4 h-4 text-red-400" />
+              </motion.div>
+              <span>Listening...</span>
+              {/* Audio Visualizer */}
+              <div className="flex items-center space-x-1">
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="w-1 bg-red-400 rounded-full"
+                    animate={{
+                      height: [4, 12, 4],
+                      opacity: [0.5, 1, 0.5]
+                    }}
+                    transition={{
+                      duration: 0.8,
+                      repeat: Infinity,
+                      delay: i * 0.2,
+                      ease: "easeInOut"
+                    }}
+                  />
+                ))}
+              </div>
             </div>
-
-            {/* Status Indicator */}
-            <div className="mb-4">
-              {isListening && (
-                <div className="flex items-center space-x-2 text-green-600">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm">Listening for your voice...</span>
-                </div>
-              )}
-              
-              {isProcessing && (
-                <div className="flex items-center space-x-2 text-walmart-blue">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="text-sm">Processing your request...</span>
-                </div>
-              )}
-            </div>
-
-            {/* Transcript */}
+            
+            {/* Transcript Preview */}
             {transcript && (
-              <div className="mb-4">
-                <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                  <p className="text-gray-800 leading-relaxed">
-                    "{transcript}"
-                  </p>
-                  {confidence > 0 && (
-                    <div className="mt-2 flex items-center space-x-2">
-                      <span className="text-xs text-gray-500">Confidence:</span>
-                      <div className="flex-1 bg-gray-200 rounded-full h-1">
-                        <div 
-                          className="bg-walmart-blue h-1 rounded-full transition-all duration-300"
-                          style={{ width: `${confidence * 100}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-xs text-gray-500">{Math.round(confidence * 100)}%</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Instructions */}
-            {isListening && !transcript && (
-              <div className="text-center">
-                <div className="mb-3">
-                  <div className="w-16 h-16 mx-auto bg-gradient-to-br from-walmart-blue to-walmart-blue-dark rounded-full flex items-center justify-center">
-                    <Mic className="w-8 h-8 text-white" />
-                  </div>
-                </div>
-                <p className="text-gray-600 text-sm mb-2">
-                  Try saying something like:
-                </p>
-                <div className="space-y-1 text-xs text-gray-500">
-                  <p>"Find a yellow top under $15"</p>
-                  <p>"Show me Samsung TVs"</p>
-                  <p>"Coffee maker with good reviews"</p>
-                </div>
-              </div>
-            )}
-
-            {/* Action Buttons */}
-            {isListening && (
-              <div className="flex justify-center mt-4">
-                <button
-                  onClick={stopListening}
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
-                >
-                  <MicOff className="w-4 h-4" />
-                  <span>Stop</span>
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Error Display */}
-      {error && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-4 z-50">
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 shadow-lg max-w-sm">
-            <div className="flex items-start space-x-3">
-              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-              <div className="flex-1">
-                <p className="text-red-800 text-sm font-medium mb-1">Voice Search Error</p>
-                <p className="text-red-600 text-sm">{error}</p>
-              </div>
-              <button
-                onClick={clearError}
-                className="text-red-400 hover:text-red-600 transition-colors duration-200"
+              <motion.div
+                className="mt-2 text-xs text-gray-300 max-w-48 truncate"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
               >
-                ×
-              </button>
-            </div>
-            <div className="mt-3 flex justify-end">
-              <button
-                onClick={() => {
-                  clearError();
-                  startListening();
-                }}
-                className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-medium transition-colors duration-200"
-              >
-                Try Again
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+                "{transcript}"
+              </motion.div>
+            )}
+
+            {/* Tooltip Arrow */}
+            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black/80" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Confidence Indicator */}
+      <AnimatePresence>
+        {confidence > 0 && !isListening && (
+          <motion.div
+            className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-xs text-gray-500"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {Math.round(confidence * 100)}% confident
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

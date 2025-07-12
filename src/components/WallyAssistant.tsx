@@ -54,6 +54,34 @@ export const WallyAssistant: React.FC = () => {
   // Check if we're on the home page
   const isHomePage = location.pathname === '/';
 
+  const voiceHook = useWallyVoice({
+    onResult: (transcript, isFinal) => {
+      if (isFinal && transcript.trim()) {
+        handleUserInput(transcript.trim(), true);
+        voiceHook.clearTranscript();
+      }
+    },
+    onError: (error) => {
+      console.error('Voice error:', error);
+    },
+    onWakeWordDetected: () => {
+      console.log('Wake word detected - opening assistant');
+      if (!isOpen) {
+        openAssistant();
+        // Add a welcome message
+        addMessage({
+          type: 'assistant',
+          content: "Hey there! 👋 I heard you call my name. How can I help you today?",
+        });
+      }
+      // Start listening for command after wake word
+      setTimeout(() => {
+        voiceHook.startListening(10000); // Listen for 10 seconds
+      }, 500);
+    },
+    enabled: !isHomePage
+  });
+
   const {
     isListening,
     isSupported,
@@ -68,28 +96,7 @@ export const WallyAssistant: React.FC = () => {
     clearTranscript,
     clearError,
     requestPermission
-  } = useWallyVoice({
-    onResult: (transcript, isFinal) => {
-      if (isFinal && transcript.trim()) {
-        handleUserInput(transcript.trim(), true);
-        clearTranscript();
-      }
-    },
-    onError: (error) => {
-      console.error('Voice error:', error);
-    },
-    onWakeWordDetected: () => {
-      console.log('Wake word detected - opening assistant');
-      if (!isOpen) {
-        openAssistant();
-      }
-      // Start listening for command after wake word
-      setTimeout(() => {
-        startListening(10000); // Listen for 10 seconds
-      }, 500);
-    },
-    enabled: !isHomePage
-  });
+  } = voiceHook;
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -113,6 +120,16 @@ export const WallyAssistant: React.FC = () => {
       setShowPermissionPrompt(false);
     }
   }, [isSupported, hasPermission, isHomePage]);
+
+  // Auto-start wake word listening when permission is granted
+  useEffect(() => {
+    if (hasPermission === true && isSupported && !isHomePage && !isWakeWordListening) {
+      const timer = setTimeout(() => {
+        startWakeWordListening();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasPermission, isSupported, isHomePage, isWakeWordListening, startWakeWordListening]);
 
   const handleUserInput = async (input: string, isVoice = false) => {
     if (!input.trim()) return;
@@ -338,6 +355,13 @@ export const WallyAssistant: React.FC = () => {
                   <li>• Voice commands for cart and wishlist</li>
                 </ul>
               </div>
+
+              {voiceError && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                  <p className="text-sm text-red-800 font-medium">Error:</p>
+                  <p className="text-xs text-red-600">{voiceError}</p>
+                </div>
+              )}
             </div>
             
             <div className="flex space-x-3">
@@ -383,12 +407,22 @@ export const WallyAssistant: React.FC = () => {
             {voiceError && (
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full"></div>
             )}
+
+            {/* Permission denied indicator */}
+            {hasPermission === false && (
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 rounded-full"></div>
+            )}
           </div>
           
-          {/* Wake word status tooltip */}
+          {/* Status tooltips */}
           {isWakeWordListening && (
             <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-black text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
               Listening for "Hey Wally"
+            </div>
+          )}
+          {hasPermission === false && (
+            <div className="absolute bottom-full right-0 mb-2 px-3 py-1 bg-amber-600 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              Microphone access needed
             </div>
           )}
         </button>
@@ -415,6 +449,11 @@ export const WallyAssistant: React.FC = () => {
               <p className="text-xs opacity-90">
                 {isWakeWordListening ? 'Listening for "Hey Wally"' : 'AI Shopping Assistant'}
               </p>
+              {isWakeWordListening && (
+                <p className="text-xs opacity-75 mt-1">
+                  💡 Try saying: "Hey Wally, find me a laptop"
+                </p>
+              )}
             </div>
           </div>
           
@@ -453,6 +492,9 @@ export const WallyAssistant: React.FC = () => {
                     <p>Try saying: "Find a black laptop under $500"</p>
                     <p>Or: "Navigate me to store map"</p>
                     {isWakeWordListening && <p className="text-green-600 font-medium">🎤 Wake word: "Hey Wally"</p>}
+                    {!isSupported && <p className="text-red-600 font-medium">❌ Voice not supported in this browser</p>}
+                    {hasPermission === false && <p className="text-amber-600 font-medium">⚠️ Microphone access needed</p>}
+                    {isSupported && hasPermission && <p className="text-green-600 font-medium">✅ Voice features ready</p>}
                   </div>
                 </div>
               )}
@@ -644,6 +686,12 @@ export const WallyAssistant: React.FC = () => {
                     <div className="flex items-center space-x-1">
                       <AlertCircle className="w-3 h-3 text-amber-500" />
                       <span className="text-amber-600">Voice features disabled</span>
+                    </div>
+                  )}
+                  {!isSupported && (
+                    <div className="flex items-center space-x-1">
+                      <AlertCircle className="w-3 h-3 text-red-500" />
+                      <span className="text-red-600">Voice not supported</span>
                     </div>
                   )}
                 </div>
