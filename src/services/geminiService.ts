@@ -112,7 +112,7 @@ class GeminiService {
     else if (lowerInput.includes('help') || lowerInput.includes('what can you do')) {
       intent = 'help';
       action = 'show_help';
-      response = `Hi! I'm Wally, your shopping assistant. I can help you:
+      response = `Hi! I'm your shopping assistant. I can help you:
       
 • Find products: "Find a black laptop under $500"
 • Add to wishlist: "Add this to my wishlist"
@@ -127,7 +127,7 @@ What would you like to do?`;
     else if (lowerInput.includes('hello') || lowerInput.includes('hi') || lowerInput.includes('hey')) {
       intent = 'greeting';
       action = 'greet';
-      response = "Hello! I'm Wally, your AI shopping assistant. How can I help you find the perfect products today?";
+      response = "Hello! I'm your AI shopping assistant. How can I help you find the perfect products today?";
     }
     
     // Default fallback

@@ -2,6 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Mic, MicOff, Volume2, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Type declarations for Web Speech API
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 interface VoiceAssistantProps {
   onSearch: (query: string) => void;
   isSearching: boolean;
@@ -12,7 +20,9 @@ export const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onSearch, isSear
   const [isSupported, setIsSupported] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [confidence, setConfidence] = useState(0);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const recognitionRef = useRef<any>(null);
+  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -98,15 +108,16 @@ export const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onSearch, isSear
         }
       }, 10000);
       
-    } catch (error) {
-      if (error.message.includes('Microphone access denied')) {
-        setError(error.message);
-      } else {
-        setError('Failed to start voice recognition. Please try again.');
+          } catch (error) {
+        if (error instanceof Error && error.message.includes('Microphone access denied')) {
+          setError(error.message);
+        } else {
+          setError('Failed to start voice recognition. Please try again.');
+        }
       }
+    };
 
-
-  const stopListening = () => {
+    const stopListening = () => {
     if (recognitionRef.current && isListening) {
       recognitionRef.current.stop();
     }
