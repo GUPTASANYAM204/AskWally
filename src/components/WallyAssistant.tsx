@@ -18,6 +18,7 @@ import { useVoiceRecognition } from '../hooks/useVoiceRecognition';
 import { ProductProcessor } from '../services/productProcessor';
 import { LocalProductSearch } from '../services/localProductSearch';
 import { ProcessedProduct } from '../types/Product';
+import { parseQuery } from '../utils/queryParser';
 
 // Import both raw data for processing and processed data as fallback
 import { rawWalmartProducts } from '../data/mockProducts';
@@ -82,7 +83,13 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Wally, your AI shopping assistant! I can help you find products, compare items, and answer your shopping questions. What are you looking for today?",
+      text: "Hi! I'm Wally, your AI shopping assistant! I can help you find products from our local database. What are you looking for today?",
+      sender: 'assistant',
+      timestamp: new Date()
+    },
+    {
+      id: '2',
+      text: "💡 Search Tips:\n• Try: 'show me eyeshadow under $30'\n• Or: 'find Laura Mercier products'\n• Use voice search by clicking the mic button\n• I'll take you to the products page with results!",
       sender: 'assistant',
       timestamp: new Date()
     }
@@ -117,6 +124,7 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
     },
     onError: (error) => {
       console.error('Voice recognition error:', error);
+      setApiError(`Voice recognition error: ${error}`);
     }
   });
 
@@ -142,10 +150,21 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
   // Helper function to check if message is asking for products
   const isProductSearchQuery = (message: string): boolean => {
     const productKeywords = [
-      'show me', 'find', 'search', 'looking for', 'need', 'want', 'buy',
+      'show me', 'find', 'search', 'looking for', 'need', 'want', 'buy', 'get',
       'eyeshadow', 'makeup', 'beauty', 'cosmetics', 'laura mercier',
       'under', 'price', 'cheap', 'expensive', 'dollar', '$', 'category',
-      'brand', 'product', 'item', 'clothing', 'electronics', 'food'
+      'brand', 'product', 'item', 'clothing', 'electronics', 'food', 'shoes',
+      'phone', 'laptop', 'computer', 'tshirt', 'shirt', 'dress', 'pants',
+      'cosmetic', 'skincare', 'hair', 'perfume', 'jewelry', 'watch',
+      'toy', 'game', 'book', 'kitchen', 'home', 'garden', 'sports',
+      'baby', 'pet', 'automotive', 'health', 'pharmacy',
+      // Additional product-related terms
+      'recommend', 'suggestion', 'option', 'alternative', 'similar',
+      'compare', 'best', 'top', 'popular', 'trending', 'new',
+      'sale', 'deal', 'discount', 'offer', 'promotion',
+      'gift', 'present', 'birthday', 'anniversary', 'holiday',
+      'outfit', 'style', 'fashion', 'trend', 'design',
+      'quality', 'premium', 'budget', 'affordable', 'luxury'
     ];
     
     const lowerMessage = message.toLowerCase();
@@ -170,7 +189,7 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
     return "I'm here to help you find products! Try asking me about specific items, brands, categories, or price ranges. For example, 'show me makeup under $25' or 'find beauty products'.";
   };
 
-  // Updated handleSendMessage to use backend API with Ollama
+  // Updated handleSendMessage to use local search for products and backend for general chat
   const handleSendMessage = async (text: string) => {
     if (!text.trim() || isProcessing) return;
 
@@ -188,47 +207,84 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
     setApiError(null);
 
     try {
-      // Call the backend API
-      const response = await fetch('http://localhost:5000/api/ai/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: text,
-          context: {
-            currentUrl: location.pathname,
-            timestamp: new Date().toISOString()
-          }
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      // Check if this is a product search query
+      const isProductQuery = isProductSearchQuery(text);
       
-      if (!data.success) {
-        throw new Error(data.message || 'API call failed');
+      if (isProductQuery) {
+        // Use local search for product queries and navigate to ProductsPage
+        const products = productSearch.searchProducts(text);
+        const response = productSearch.generateAIResponse(text, products);
+        
+        // Navigate to ProductsPage with search results
+        navigate('/products', {
+          state: {
+            query: text,
+            parsedQuery: parseQuery(text),
+            searchPerformed: true,
+            searchResults: products,
+            aiResponse: response,
+            totalResults: products.length
+          }
+        });
+        
+        // Add a message indicating navigation
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: `I found ${products.length} products matching "${text}". Taking you to the search results page! 🔍`,
+          sender: 'assistant',
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
+        
+        // Close the assistant after navigation
+        setTimeout(() => {
+          onToggle();
+        }, 2000);
+        
+      } else {
+        // Use backend API for general chat responses
+        const response = await fetch('http://localhost:5000/api/ai/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: text,
+            context: {
+              currentUrl: location.pathname,
+              timestamp: new Date().toISOString()
+            }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error(data.message || 'API call failed');
+        }
+
+        // Process the API response
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: data.message,
+          sender: 'assistant',
+          timestamp: new Date(),
+          products: data.products || [],
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
       }
-
-      // Process the API response
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: data.message,
-        sender: 'assistant',
-        timestamp: new Date(),
-        products: data.products || [], // Include products if returned
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
 
     } catch (error) {
-      console.error('Error calling backend API:', error);
+      console.error('Error processing message:', error);
       setApiError(error instanceof Error ? error.message : 'Unknown error');
       
-      // Fallback to local search on API failure
+      // Fallback to local search for all queries on API failure
       try {
         const isProductQuery = isProductSearchQuery(text);
         let fallbackResponse = '';
@@ -237,19 +293,46 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
         if (isProductQuery) {
           fallbackProducts = productSearch.searchProducts(text);
           fallbackResponse = productSearch.generateAIResponse(text, fallbackProducts);
+          
+          // Navigate to ProductsPage with search results
+          navigate('/products', {
+            state: {
+              query: text,
+              parsedQuery: parseQuery(text),
+              searchPerformed: true,
+              searchResults: fallbackProducts,
+              aiResponse: fallbackResponse,
+              totalResults: fallbackProducts.length
+            }
+          });
+          
+          // Add a message indicating navigation
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: `I found ${fallbackProducts.length} products matching "${text}". Taking you to the search results page! 🔍`,
+            sender: 'assistant',
+            timestamp: new Date()
+          };
+
+          setMessages(prev => [...prev, assistantMessage]);
+          
+          // Close the assistant after navigation
+          setTimeout(() => {
+            onToggle();
+          }, 2000);
+          
         } else {
           fallbackResponse = generateGeneralResponse(text);
+          
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: fallbackResponse,
+            sender: 'assistant',
+            timestamp: new Date()
+          };
+
+          setMessages(prev => [...prev, assistantMessage]);
         }
-
-        const assistantMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: fallbackResponse + " (Using local search - backend unavailable)",
-          sender: 'assistant',
-          timestamp: new Date(),
-          products: fallbackProducts.slice(0, 10),
-        };
-
-        setMessages(prev => [...prev, assistantMessage]);
       } catch (fallbackError) {
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
@@ -281,10 +364,27 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
       stopListening();
     } else {
       try {
+        // Clear any previous errors
+        setApiError(null);
+        clearError();
+        
+        // Request microphone permission first
         await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // Start listening with a timeout
         startListening(10000); // 10 second timeout
+        
+        // Add a message to show voice is active
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          text: "🎤 Listening... Speak your search query now!",
+          sender: 'assistant',
+          timestamp: new Date()
+        }]);
+        
       } catch (error) {
         console.error('Microphone permission denied:', error);
+        setApiError('Microphone access denied. Please allow microphone permissions and try again.');
       }
     }
   };
@@ -417,93 +517,6 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
                       <div className="flex-1">
                         <p className="text-sm whitespace-pre-line">{message.text}</p>
                         
-                        {/* Display products if any */}
-                        {message.products && message.products.length > 0 && (
-                          <div className="mt-3 space-y-2">
-                            {message.products.slice(0, 3).map((product) => (
-                              <div
-                                key={product.id}
-                                className="bg-white border rounded-lg p-2 text-gray-800 cursor-pointer hover:shadow-md transition-shadow"
-                                onClick={() => handleProductAction(product, 'view')}
-                              >
-                                <div className="flex items-center space-x-2">
-                                  <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-12 h-12 object-cover rounded"
-                                    onError={(e) => {
-                                      const target = e.target as HTMLImageElement;
-                                      target.src = '/placeholder-product.jpg';
-                                    }}
-                                  />
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-xs font-medium truncate">
-                                      {product.name}
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                      {product.brand} • ${product.price.toFixed(2)}
-                                    </p>
-                                    {product.rating > 0 && (
-                                      <p className="text-xs text-yellow-600">
-                                        ⭐ {product.rating}/5 ({product.reviewCount} reviews)
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div className="flex space-x-1">
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleProductAction(product, 'cart');
-                                      }}
-                                      className="p-1 text-blue-600 hover:bg-blue-50 rounded"
-                                      title="Add to Cart"
-                                    >
-                                      <ShoppingCart className="w-3 h-3" />
-                                    </button>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleProductAction(product, 'wishlist');
-                                      }}
-                                      className="p-1 text-red-600 hover:bg-red-50 rounded"
-                                      title="Add to Wishlist"
-                                    >
-                                      <Heart className="w-3 h-3" />
-                                    </button>
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleProductAction(product, 'view');
-                                      }}
-                                      className="p-1 text-gray-600 hover:bg-gray-50 rounded"
-                                      title="View on Walmart"
-                                    >
-                                      <ExternalLink className="w-3 h-3" />
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                                                        {/* Show "View All" if there are more products */}
-                            {message.products.length > 3 && (
-                              <button
-                                onClick={() => {
-                                  // Navigate to products page with search results
-                                  navigate('/products', { 
-                                    state: { 
-                                      searchResults: message.products,
-                                      searchQuery: message.text 
-                                    }
-                                  });
-                                }}
-                                className="w-full py-2 text-blue-600 hover:text-blue-800 text-xs font-medium border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
-                              >
-                                View All {message.products.length} Products →
-                              </button>
-                            )}
-                          </div>
-                        )}
-                        
                         <p className={`text-xs mt-1 ${
                           message.sender === 'user' ? 'text-white/70' : 'text-gray-500'
                         }`}>
@@ -580,7 +593,7 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask me about products... (e.g., 'show me eyeshadow under $30')"
+                    placeholder="Search for products... (e.g., 'show me eyeshadow under $30')"
                     className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-walmart-blue focus:border-transparent"
                     disabled={isProcessing}
                   />
@@ -597,28 +610,19 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
                   type="button"
                   onClick={handleVoiceToggle}
                   disabled={isProcessing}
-                  className={`p-2 rounded-full transition-all duration-300 ${
+                  className={`p-3 rounded-full transition-all duration-300 ${
                     isListening
-                      ? 'bg-red-500 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  } ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      ? 'bg-red-500 text-white shadow-lg animate-pulse'
+                      : 'bg-walmart-blue text-white hover:bg-walmart-blue-dark'
+                  } ${isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}`}
                   whileHover={!isProcessing ? { scale: 1.1 } : {}}
                   whileTap={!isProcessing ? { scale: 0.9 } : {}}
-                  animate={isListening ? {
-                    scale: [1, 1.1, 1],
-                    boxShadow: [
-                      '0 0 0 rgba(239,68,68,0)',
-                      '0 0 0 8px rgba(239,68,68,0.3)',
-                      '0 0 0 0 rgba(239,68,68,0)'
-                    ]
-                  } : {}}
-                  transition={isListening ? {
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  } : {}}
                 >
-                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                  {isListening ? (
+                    <MicOff className="w-5 h-5" />
+                  ) : (
+                    <Mic className="w-5 h-5" />
+                  )}
                 </motion.button>
                 
                 {/* Send Button */}
