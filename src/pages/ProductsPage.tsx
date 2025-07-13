@@ -19,7 +19,33 @@ export const ProductsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
-    if (parsedQuery) {
+    if (visualSearch && parsedQuery) {
+      // Handle visual search - show kids dresses
+      let allDresses = getFilteredProducts(undefined, {}).filter(
+        p => {
+          const name = p.name.toLowerCase();
+          const category = p.category.toLowerCase();
+          // Must be a gown/princess dress/party dress/frock
+          const isGownLike = name.includes('gown') || name.includes('princess dress') || name.includes('party dress') || name.includes('frock');
+          // Must be for kids/little girls
+          const isForKids = category.includes('kid') || category.includes('child') || category.includes('toddler') || name.includes('kid') || name.includes('child') || name.includes('toddler') || name.includes('girl');
+          // Exclude shoes, costumes, shorts, sets, rompers
+          const isNotExcluded = !name.includes('shoe') && !category.includes('shoe') && !name.includes('costume') && !category.includes('costume') && !name.includes('short') && !category.includes('short') && !name.includes('set') && !category.includes('set') && !name.includes('romper') && !category.includes('romper');
+          return isGownLike && isForKids && isNotExcluded;
+        }
+      );
+      // Prefer pink
+      let pinkDresses = allDresses.filter(
+        p => (p.color && p.color.toLowerCase() === 'pink') || p.name.toLowerCase().includes('pink')
+      );
+      let results: Product[] = [];
+      if (pinkDresses.length >= 9) {
+        results = pinkDresses.slice(0, 9);
+      } else {
+        results = [...pinkDresses, ...allDresses.filter(p => !pinkDresses.includes(p))].slice(0, 9);
+      }
+      setProducts(results);
+    } else if (parsedQuery) {
       const filtered = getFilteredProducts(parsedQuery.category, {
         ...parsedQuery.filters,
         store_id: selectedStore || undefined
@@ -31,7 +57,7 @@ export const ProductsPage: React.FC = () => {
       });
       setProducts(filtered);
     }
-  }, [parsedQuery, selectedStore]);
+  }, [parsedQuery, selectedStore, visualSearch]);
 
   const handleFilterChange = (newFilters: ParsedQuery['filters']) => {
     setCurrentFilters(newFilters);
