@@ -19,6 +19,10 @@ import { ProductProcessor } from '../services/productProcessor';
 import { LocalProductSearch } from '../services/localProductSearch';
 import { ProcessedProduct } from '../types/Product';
 import { parseQuery } from '../utils/queryParser';
+import { OrderAnalysisService } from '../services/orderAnalysisService';
+import { useOrders } from '../contexts/OrderContext';
+import { useCart } from '../contexts/CartContext';
+import { useWishlist } from '../contexts/WishlistContext';
 
 // Import both raw data for processing and processed data as fallback
 import { rawWalmartProducts } from '../data/mockProducts';
@@ -79,17 +83,20 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
   const location = useLocation();
   const navigate = useNavigate();
   const isLandingPage = location.pathname === '/';
+  const { orders } = useOrders();
+  const { items: cartItems, total: cartTotal, itemCount: cartItemCount } = useCart();
+  const { wishlists, selectedWishlist } = useWishlist();
   
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm Wally, your AI shopping assistant! I can help you find products from our local database. What are you looking for today?",
+      text: "Hi! I'm Wally, your AI shopping assistant! I can help you find products, analyze your cart, wishlist, and order history. What can I help you with today?",
       sender: 'assistant',
       timestamp: new Date()
     },
     {
       id: '2',
-      text: "💡 Search Tips:\n• Try: 'show me eyeshadow under $30'\n• Or: 'find Laura Mercier products'\n• Use voice search by clicking the mic button\n• I'll take you to the products page with results!",
+      text: "💡 What I can do:\n• Product Search: 'show me eyeshadow under $30'\n• Cart Analysis: 'what's in my cart?'\n• Wishlist Info: 'my wishlist'\n• Order History: 'how much have I spent?'\n• Voice Search: Click the mic button",
       sender: 'assistant',
       timestamp: new Date()
     }
@@ -171,6 +178,50 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
     return productKeywords.some(keyword => lowerMessage.includes(keyword));
   };
 
+  // Helper function to check if message is asking for order history
+  const isOrderHistoryQuery = (message: string): boolean => {
+    const orderKeywords = [
+      'order history', 'my orders', 'past orders', 'order summary',
+      'how much spent', 'total spent', 'spending', 'purchase history',
+      'most purchased', 'favorite item', 'bought most', 'order count',
+      'number of orders', 'recent orders', 'last order', 'order frequency',
+      'favorite brand', 'most bought brand', 'category', 'type of items',
+      'order insights', 'order analysis', 'shopping history'
+    ];
+    
+    const lowerMessage = message.toLowerCase();
+    return orderKeywords.some(keyword => lowerMessage.includes(keyword));
+  };
+
+  // Helper function to check if message is asking for cart information
+  const isCartQuery = (message: string): boolean => {
+    const cartKeywords = [
+      'cart', 'shopping cart', 'my cart', 'what\'s in my cart',
+      'cart items', 'cart total', 'cart count', 'items in cart',
+      'what do i have', 'what\'s in cart', 'cart summary',
+      'cart analysis', 'cart contents', 'my shopping cart'
+    ];
+    
+    const lowerMessage = message.toLowerCase();
+    return cartKeywords.some(keyword => lowerMessage.includes(keyword));
+  };
+
+  // Helper function to check if message is asking for wishlist information
+  const isWishlistQuery = (message: string): boolean => {
+    const wishlistKeywords = [
+      'wishlist', 'my wishlist', 'wish list', 'saved items',
+      'wishlist items', 'saved products', 'favorites', 'liked items',
+      'what\'s in wishlist', 'wishlist summary', 'saved products',
+      'my favorites', 'liked products', 'wishlist contents',
+      'tell me what products', 'what products', 'total cost',
+      'cost of wishlist', 'wishlist cost', 'wishlist value',
+      'how much is my wishlist', 'wishlist total'
+    ];
+    
+    const lowerMessage = message.toLowerCase();
+    return wishlistKeywords.some(keyword => lowerMessage.includes(keyword));
+  };
+
   const generateGeneralResponse = (message: string): string => {
     const lowerMessage = message.toLowerCase();
     
@@ -187,6 +238,130 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
     }
     
     return "I'm here to help you find products! Try asking me about specific items, brands, categories, or price ranges. For example, 'show me makeup under $25' or 'find beauty products'.";
+  };
+
+  // Function to analyze cart data
+  const analyzeCart = (): string => {
+    if (cartItems.length === 0) {
+      return "Your shopping cart is empty! 🛒\n\nTry searching for products and adding them to your cart.";
+    }
+
+    const totalItems = cartItemCount;
+    const totalValue = cartTotal;
+    const uniqueItems = cartItems.length;
+    
+    // Get most common categories and brands
+    const categories = cartItems.map(item => item.category).filter(Boolean);
+    const brands = cartItems.map(item => item.brand).filter(Boolean);
+    
+    const categoryCounts = categories.reduce((acc, category) => {
+      if (category) {
+        acc[category] = (acc[category] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const brandCounts = brands.reduce((acc, brand) => {
+      if (brand) {
+        acc[brand] = (acc[brand] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const topCategory = Object.entries(categoryCounts)
+      .sort(([,a], [,b]) => (b as number) - (a as number))[0];
+    const topBrand = Object.entries(brandCounts)
+      .sort(([,a], [,b]) => (b as number) - (a as number))[0];
+    
+    let response = `🛒 **Your Shopping Cart Summary:**\n\n`;
+    response += `• **Total Items:** ${totalItems}\n`;
+    response += `• **Unique Products:** ${uniqueItems}\n`;
+    response += `• **Total Value:** $${totalValue.toFixed(2)}\n`;
+    
+    if (topCategory) {
+      response += `• **Top Category:** ${topCategory[0]} (${topCategory[1]} items)\n`;
+    }
+    
+    if (topBrand) {
+      response += `• **Top Brand:** ${topBrand[0]} (${topBrand[1]} items)\n`;
+    }
+    
+    response += `\n**Items in your cart:**\n`;
+    cartItems.forEach((item, index) => {
+      response += `${index + 1}. ${item.name} - $${item.price.toFixed(2)} (Qty: ${item.quantity})\n`;
+    });
+    
+    return response;
+  };
+
+  // Function to analyze wishlist data with specific query handling
+  const analyzeWishlist = (query?: string): string => {
+    if (!selectedWishlist || selectedWishlist.items.length === 0) {
+      return "Your wishlist is empty! 💝\n\nTry searching for products and adding them to your wishlist.";
+    }
+
+    const items = selectedWishlist.items;
+    const totalValue = items.reduce((sum, item) => sum + item.price, 0);
+    const uniqueItems = items.length;
+    const lowerQuery = query?.toLowerCase() || '';
+    
+    // Handle specific queries
+    if (lowerQuery.includes('total cost') || lowerQuery.includes('total value') || lowerQuery.includes('cost') || lowerQuery.includes('value')) {
+      return `💝 **Wishlist Total Cost:** $${totalValue.toFixed(2)}\n\nYou have ${uniqueItems} items in your wishlist with a total value of $${totalValue.toFixed(2)}.`;
+    }
+    
+    if (lowerQuery.includes('products') || lowerQuery.includes('items') || lowerQuery.includes('what') || lowerQuery.includes('tell me')) {
+      let response = `💝 **Products in your wishlist:**\n\n`;
+      response += `**Total Items:** ${uniqueItems}\n`;
+      response += `**Total Value:** $${totalValue.toFixed(2)}\n\n`;
+      
+      items.forEach((item, index) => {
+        response += `${index + 1}. **${item.name}** - $${item.price.toFixed(2)}`;
+        if (item.brand) {
+          response += ` (${item.brand})`;
+        }
+        response += `\n`;
+      });
+      
+      return response;
+    }
+    
+    if (lowerQuery.includes('count') || lowerQuery.includes('how many')) {
+      return `💝 **Wishlist Count:** You have ${uniqueItems} items in your wishlist with a total value of $${totalValue.toFixed(2)}.`;
+    }
+    
+    // Default comprehensive response
+    const brands = items.map(item => item.brand).filter(Boolean);
+    
+    const brandCounts = brands.reduce((acc, brand) => {
+      if (brand) {
+        acc[brand] = (acc[brand] || 0) + 1;
+      }
+      return acc;
+    }, {} as Record<string, number>);
+    
+    const topBrand = Object.entries(brandCounts)
+      .sort(([,a], [,b]) => (b as number) - (a as number))[0];
+    
+    let response = `💝 **Your Wishlist Summary:**\n\n`;
+    response += `• **Wishlist Name:** ${selectedWishlist.name}\n`;
+    response += `• **Total Items:** ${uniqueItems}\n`;
+    response += `• **Total Value:** $${totalValue.toFixed(2)}\n`;
+    
+    if (topBrand) {
+      response += `• **Top Brand:** ${topBrand[0]} (${topBrand[1]} items)\n`;
+    }
+    
+    response += `\n**Items in your wishlist:**\n`;
+    items.forEach((item, index) => {
+      response += `${index + 1}. ${item.name} - $${item.price.toFixed(2)}`;
+      if (item.brand) {
+        response += ` (${item.brand})`;
+      }
+      response += `\n`;
+    });
+    
+    return response;
   };
 
   // Updated handleSendMessage to use local search for products and backend for general chat
@@ -209,6 +384,9 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
     try {
       // Check if this is a product search query
       const isProductQuery = isProductSearchQuery(text);
+      const isOrderQuery = isOrderHistoryQuery(text);
+      const isCartQueryType = isCartQuery(text);
+      const isWishlistQueryType = isWishlistQuery(text);
       
       if (isProductQuery) {
         // Use local search for product queries and navigate to ProductsPage
@@ -241,6 +419,46 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
         setTimeout(() => {
           onToggle();
         }, 2000);
+        
+      } else if (isOrderQuery) {
+        // Handle order history queries
+        const orderAnalysis = OrderAnalysisService.analyzeOrders(orders);
+        const orderResponse = OrderAnalysisService.answerOrderQuery(text, orderAnalysis);
+        
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: orderResponse,
+          sender: 'assistant',
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
+        
+      } else if (isCartQueryType) {
+        // Handle cart queries
+        const cartResponse = analyzeCart();
+        
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: cartResponse,
+          sender: 'assistant',
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
+        
+      } else if (isWishlistQueryType) {
+        // Handle wishlist queries
+        const wishlistResponse = analyzeWishlist(text);
+        
+        const assistantMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: wishlistResponse,
+          sender: 'assistant',
+          timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, assistantMessage]);
         
       } else {
         // Use backend API for general chat responses
@@ -287,6 +505,9 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
       // Fallback to local search for all queries on API failure
       try {
         const isProductQuery = isProductSearchQuery(text);
+        const isOrderQuery = isOrderHistoryQuery(text);
+        const isCartQueryType = isCartQuery(text);
+        const isWishlistQueryType = isWishlistQuery(text);
         let fallbackResponse = '';
         let fallbackProducts: ProcessedProduct[] = [];
 
@@ -320,6 +541,46 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
           setTimeout(() => {
             onToggle();
           }, 2000);
+          
+        } else if (isOrderQuery) {
+          // Handle order history queries in fallback
+          const orderAnalysis = OrderAnalysisService.analyzeOrders(orders);
+          fallbackResponse = OrderAnalysisService.answerOrderQuery(text, orderAnalysis);
+          
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: fallbackResponse,
+            sender: 'assistant',
+            timestamp: new Date()
+          };
+
+          setMessages(prev => [...prev, assistantMessage]);
+          
+        } else if (isCartQueryType) {
+          // Handle cart queries in fallback
+          fallbackResponse = analyzeCart();
+          
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: fallbackResponse,
+            sender: 'assistant',
+            timestamp: new Date()
+          };
+
+          setMessages(prev => [...prev, assistantMessage]);
+          
+        } else if (isWishlistQueryType) {
+          // Handle wishlist queries in fallback
+          fallbackResponse = analyzeWishlist(text);
+          
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: fallbackResponse,
+            sender: 'assistant',
+            timestamp: new Date()
+          };
+
+          setMessages(prev => [...prev, assistantMessage]);
           
         } else {
           fallbackResponse = generateGeneralResponse(text);
@@ -593,7 +854,7 @@ export const WallyAssistant: React.FC<WallyAssistantProps> = ({
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Search for products... (e.g., 'show me eyeshadow under $30')"
+                    placeholder="Ask me anything... (e.g., 'show me makeup' or 'how much have I spent?')"
                     className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-walmart-blue focus:border-transparent"
                     disabled={isProcessing}
                   />
