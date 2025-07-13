@@ -126,7 +126,7 @@ export const ProductDetailPage: React.FC = () => {
             </div>
             
             {/* Additional product images would go here */}
-            <div className="grid grid-cols-4 gap-3">
+{/*             <div className="grid grid-cols-4 gap-3">
               {[product.image, product.image, product.image, product.image].map((img, index) => (
                 <button
                   key={index}
@@ -142,7 +142,7 @@ export const ProductDetailPage: React.FC = () => {
                   />
                 </button>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Product Details */}
