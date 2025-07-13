@@ -69,39 +69,102 @@ export interface SpecialArea {
 }
 
 import walmartProductsRaw from './walmart-products-parsed.json';
+import storesData from './stores.json';
+
+// Store data from stores.json
+export const stores: Store[] = storesData as Store[];
+
+// Helper function to assign products to stores and aisles
+function assignProductToStore(product: any, index: number): any {
+  const storeIds = stores.map(store => store.store_id);
+  const selectedStoreId = storeIds[index % storeIds.length];
+  const selectedStore = stores.find(store => store.store_id === selectedStoreId);
+  
+  if (!selectedStore) {
+    return {
+      store_id: 'WM001',
+      aisle_number: 'A1',
+      section: 'General',
+      shelf_label: '1',
+      quantity: Math.floor(Math.random() * 20) + 1
+    };
+  }
+
+  // Find a suitable department and aisle based on product category
+  const category = (product.category_name || product.root_category_name || 'general').toLowerCase();
+  let selectedDepartment = selectedStore.layout.departments[0];
+  let selectedSection = selectedDepartment.sections[0];
+
+  // Try to match category to department
+  for (const dept of selectedStore.layout.departments) {
+    const deptName = dept.name.toLowerCase();
+    if (category.includes('electronics') && deptName.includes('electronics')) {
+      selectedDepartment = dept;
+      break;
+    } else if (category.includes('grocery') && deptName.includes('groceries')) {
+      selectedDepartment = dept;
+      break;
+    } else if (category.includes('clothing') && deptName.includes('apparel')) {
+      selectedDepartment = dept;
+      break;
+    } else if (category.includes('home') && deptName.includes('home')) {
+      selectedDepartment = dept;
+      break;
+    } else if (category.includes('health') && deptName.includes('health')) {
+      selectedDepartment = dept;
+      break;
+    } else if (category.includes('toy') && deptName.includes('toys')) {
+      selectedDepartment = dept;
+      break;
+    }
+  }
+
+  // Select a random section from the department
+  selectedSection = selectedDepartment.sections[index % selectedDepartment.sections.length];
+
+  return {
+    store_id: selectedStoreId,
+    aisle_number: selectedSection.aisle,
+    section: selectedSection.section,
+    shelf_label: (index % 5 + 1).toString(),
+    quantity: Math.floor(Math.random() * 20) + 1
+  };
+}
 
 // Default store availability (can be improved later)
 const defaultStoreAvailability = [{
-  store_id: 'walmart-main',
+  store_id: 'WM001',
   aisle_number: 'A1',
   section: 'General',
   shelf_label: '1',
   quantity: 10
 }];
 
-export const mockProducts: Product[] = (walmartProductsRaw as any[]).map((item) => ({
-  id: item.product_id || item.sku || item.upc || Math.random().toString(36).slice(2),
-  name: item.product_name || item.title || '',
-  price: parseFloat(item.final_price || item.unit_price || '0'),
-  originalPrice: item.initial_price ? parseFloat(item.initial_price) : undefined,
-  image: Array.isArray(item.image_urls) ? item.image_urls[0] : (typeof item.main_image === 'string' ? item.main_image.replace(/^[\"]|[\"]$/g, '') : ''),
-  rating: parseFloat(item.rating) || 0,
-  reviewCount: parseInt(item.review_count) || 0,
-  brand: item.brand || '',
-  category: item.category_name || item.root_category_name || 'general',
-  color: Array.isArray(item.colors) ? item.colors[0] : undefined,
-  size: Array.isArray(item.sizes) ? item.sizes : undefined,
-  inStock: true,
-  storeLocation: 'Walmart Supercenter - Main St',
-  aisle: item.aisle || 'A1',
-  description: item.description || '',
-  barcode: item.upc || item.gtin || undefined,
-  is_featured: false,
-  store_availability: defaultStoreAvailability
-}));
-
-// Store data
-export const stores: Store[] = [] as Store[];
+export const mockProducts: Product[] = (walmartProductsRaw as any[]).map((item, index) => {
+  const storeAssignment = assignProductToStore(item, index);
+  const selectedStore = stores.find(store => store.store_id === storeAssignment.store_id);
+  
+  return {
+    id: item.product_id || item.sku || item.upc || Math.random().toString(36).slice(2),
+    name: item.product_name || item.title || '',
+    price: parseFloat(item.final_price || item.unit_price || '0'),
+    originalPrice: item.initial_price ? parseFloat(item.initial_price) : undefined,
+    image: Array.isArray(item.image_urls) ? item.image_urls[0] : (typeof item.main_image === 'string' ? item.main_image.replace(/^[\"]|[\"]$/g, '') : ''),
+    rating: parseFloat(item.rating) || 0,
+    reviewCount: parseInt(item.review_count) || 0,
+    brand: item.brand || '',
+    category: item.category_name || item.root_category_name || 'general',
+    color: Array.isArray(item.colors) ? item.colors[0] : undefined,
+    size: Array.isArray(item.sizes) ? item.sizes : undefined,
+    inStock: true,
+    storeLocation: selectedStore?.store_name || 'Walmart Supercenter - Downtown',
+    aisle: storeAssignment.aisle_number,
+    description: item.description || '',
+    barcode: item.upc || item.gtin || undefined,
+    is_featured: false,
+    store_availability: [storeAssignment]
+  };
+});
 
 // Helper functions
 function extractColorFromName(name: string): string | undefined {

@@ -53,6 +53,8 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isActiveRef = useRef(true);
+  const wakeWordRestartAttempts = useRef(0);
+  const maxRestartAttempts = 5;
 
   const {
     onResult,
@@ -67,17 +69,36 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
   // Check microphone permission
   const checkMicrophonePermission = useCallback(async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        } 
+      });
       stream.getTracks().forEach(track => track.stop());
       setHasPermission(true);
+      setError(null);
       return true;
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Microphone permission error:', error);
       setHasPermission(false);
-      setError('Microphone access denied. Please enable microphone permissions for voice features.');
+      
+      let errorMessage = 'Microphone access denied. Please enable microphone permissions for voice features.';
+      if (error.name === 'NotAllowedError') {
+        errorMessage = 'Microphone access denied. Please allow microphone access in your browser settings.';
+      } else if (error.name === 'NotFoundError') {
+        errorMessage = 'No microphone found. Please connect a microphone and try again.';
+      } else if (error.name === 'NotReadableError') {
+        errorMessage = 'Microphone is already in use by another application.';
+      }
+      
+      setError(errorMessage);
       return false;
     }
   }, []);
 
+  // Initialize speech recognition
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
@@ -95,6 +116,7 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       recognition.lang = 'en-US';
 
       recognition.onstart = () => {
+        console.log('Main recognition started');
         setIsListening(true);
         setError(null);
         onStart?.();
@@ -119,6 +141,7 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+        console.error('Main recognition error:', event.error);
         let errorMessage = 'Speech recognition error occurred.';
         
         switch (event.error) {
@@ -136,6 +159,9 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
           case 'network':
             errorMessage = 'Network error. Please check your connection.';
             break;
+          case 'aborted':
+            // Don't show error for aborted recognition
+            return;
         }
         
         setError(errorMessage);
@@ -144,6 +170,7 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       };
 
       recognition.onend = () => {
+        console.log('Main recognition ended');
         setIsListening(false);
         onEnd?.();
         if (timeoutRef.current) {
@@ -158,6 +185,11 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       wakeWordRecognition.interimResults = false;
       wakeWordRecognition.lang = 'en-US';
 
+      wakeWordRecognition.onstart = () => {
+        console.log('Wake word recognition started');
+        setIsWakeWordListening(true);
+      };
+
       wakeWordRecognition.onresult = (event: SpeechRecognitionEvent) => {
         if (!isActiveRef.current) return;
         
@@ -165,7 +197,8 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
           const result = event.results[i];
           if (result.isFinal) {
             const transcript = result[0].transcript.toLowerCase().trim();
-            console.log('Wake word detection heard:', transcript);
+            const confidence = result[0].confidence || 0;
+            console.log('Wake word detection heard:', transcript, 'confidence:', confidence);
             
             // Check for wake word with some flexibility
             const wakeWords = [
@@ -173,17 +206,22 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
               'hey wally',
               'hi wally',
               'hello wally',
-              'wally'
+              'wally',
+              'wally assistant',
+              'hey wally assistant'
             ];
             
-            const isWakeWordDetected = wakeWords.some(word => 
-              transcript.includes(word) || 
-              transcript.replace(/[^\w\s]/g, '').includes(word.replace(/[^\w\s]/g, ''))
-            );
+            const isWakeWordDetected = wakeWords.some(word => {
+              const cleanTranscript = transcript.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
+              const cleanWord = word.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim();
+              return cleanTranscript.includes(cleanWord) || cleanWord.includes(cleanTranscript);
+            });
             
-            if (isWakeWordDetected) {
-              console.log('Wake word detected!');
+            if (isWakeWordDetected && confidence > 0.3) {
+              console.log('Wake word detected! Confidence:', confidence);
               onWakeWordDetected?.();
+              // Reset restart attempts on successful detection
+              wakeWordRestartAttempts.current = 0;
             }
           }
         }
@@ -195,33 +233,52 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
         // Don't show errors for wake word recognition unless it's permission-related
         if (event.error === 'not-allowed' || event.error === 'audio-capture') {
           setHasPermission(false);
+          setError('Microphone access required for wake word detection.');
         }
         
-        // Restart wake word listening after a delay
+        // Restart wake word listening after a delay with exponential backoff
         if (restartTimeoutRef.current) {
           clearTimeout(restartTimeoutRef.current);
         }
-        restartTimeoutRef.current = setTimeout(() => {
-          if (isWakeWordListening && enabled && isActiveRef.current) {
-            startWakeWordListening();
-          }
-        }, 3000);
+        
+        const delay = Math.min(1000 * Math.pow(2, wakeWordRestartAttempts.current), 10000);
+        wakeWordRestartAttempts.current++;
+        
+        if (wakeWordRestartAttempts.current <= maxRestartAttempts) {
+          restartTimeoutRef.current = setTimeout(() => {
+            if (enabled && isActiveRef.current && hasPermission) {
+              console.log(`Restarting wake word listening (attempt ${wakeWordRestartAttempts.current})`);
+              startWakeWordListening();
+            }
+          }, delay);
+        } else {
+          console.log('Max wake word restart attempts reached');
+          setIsWakeWordListening(false);
+        }
       };
 
       wakeWordRecognition.onend = () => {
+        console.log('Wake word recognition ended');
+        setIsWakeWordListening(false);
+        
         // Automatically restart wake word listening
         if (restartTimeoutRef.current) {
           clearTimeout(restartTimeoutRef.current);
         }
-        restartTimeoutRef.current = setTimeout(() => {
-          if (isWakeWordListening && enabled && isActiveRef.current) {
-            startWakeWordListening();
-          }
-        }, 1000);
+        
+        if (enabled && isActiveRef.current && hasPermission && wakeWordRestartAttempts.current <= maxRestartAttempts) {
+          restartTimeoutRef.current = setTimeout(() => {
+            if (enabled && isActiveRef.current && hasPermission) {
+              console.log('Auto-restarting wake word listening');
+              startWakeWordListening();
+            }
+          }, 1000);
+        }
       };
 
     } else {
       setIsSupported(false);
+      setError('Speech recognition is not supported in this browser.');
     }
 
     // Handle page visibility changes
@@ -256,10 +313,18 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       
       if (recognitionRef.current) {
-        recognitionRef.current.abort();
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {
+          console.log('Error aborting main recognition:', e);
+        }
       }
       if (wakeWordRecognitionRef.current) {
-        wakeWordRecognitionRef.current.abort();
+        try {
+          wakeWordRecognitionRef.current.abort();
+        } catch (e) {
+          console.log('Error aborting wake word recognition:', e);
+        }
       }
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -314,7 +379,11 @@ export const useWallyVoice = (options: UseWallyVoiceOptions = {}) => {
 
   const stopListening = useCallback(() => {
     if (recognitionRef.current && isListening) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (error) {
+        console.error('Error stopping main recognition:', error);
+      }
     }
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);

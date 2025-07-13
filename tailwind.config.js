@@ -21,11 +21,22 @@ export default {
           error: '#F31260',
           purple: '#7C3AED',
           pink: '#EC4899',
-        }
+        },
+        // Additional Walmart brand colors
+        'walmart-blue': '#0071ce',
+        'walmart-blue-dark': '#004f9a',
+        'walmart-yellow': '#ffc220',
+        'walmart-yellow-dark': '#f2a900',
+        
+        // Additional accent colors
+        'accent-purple': '#6e45e2',
+        'accent-pink': '#ff52a1',
+        'accent-success': '#38b2ac',
+        'accent-warning': '#ed8936',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
-        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'scale-in': 'scaleIn 0.3s ease-out',
