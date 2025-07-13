@@ -63,11 +63,48 @@ export const VoiceAssistant: React.FC<VoiceAssistantProps> = ({ onSearch, isSear
     }
   }, [onSearch]);
 
-  const startListening = () => {
-    if (recognitionRef.current && !isListening && !isSearching) {
+
+  const startListening = async () => {
+    if (!recognitionRef.current || isListening || isSearching) return;
+
+    setError(null);
+    setTranscript('');
+    
+    try {
+      // Check if getUserMedia is supported
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // First, request microphone access
+        await navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(function(stream) {
+            console.log("Microphone access granted");
+            // Stop the stream as we just needed permission
+            stream.getTracks().forEach(track => track.stop());
+          })
+          .catch(function(err) {
+            console.error("Microphone access denied:", err);
+            throw new Error('Microphone access denied. Please allow microphone permissions and try again.');
+          });
+      } else {
+        console.warn("getUserMedia not supported");
+      }
+
+      // Now start speech recognition
       recognitionRef.current.start();
-    }
-  };
+      
+      // Auto-stop after 10 seconds
+      timeoutRef.current = setTimeout(() => {
+        if (recognitionRef.current && isListening) {
+          recognitionRef.current.stop();
+        }
+      }, 10000);
+      
+    } catch (error) {
+      if (error.message.includes('Microphone access denied')) {
+        setError(error.message);
+      } else {
+        setError('Failed to start voice recognition. Please try again.');
+      }
+
 
   const stopListening = () => {
     if (recognitionRef.current && isListening) {
